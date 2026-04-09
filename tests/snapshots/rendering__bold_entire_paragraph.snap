@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"**Everything is bold here.**\")"
+---
+[bold]Everything is bold here.[/intensity]

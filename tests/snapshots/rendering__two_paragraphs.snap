@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"First paragraph.\\n\\nSecond paragraph.\")"
+---
+First paragraph.
+
+Second paragraph.

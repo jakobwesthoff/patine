@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"~~**bold and struck**~~\")"
+---
+[strike][bold]bold and struck[/intensity][/strike]

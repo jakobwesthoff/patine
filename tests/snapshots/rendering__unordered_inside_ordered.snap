@@ -1,0 +1,8 @@
+---
+source: tests/rendering.rs
+expression: "render(\"1. Item\\n   - Sub a\\n   - Sub b\\n2. Item\")"
+---
+1. Item
+  • Sub a
+  • Sub b
+2. Item

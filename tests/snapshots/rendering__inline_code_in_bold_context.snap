@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"**bold `code` bold**\")"
+---
+[bold]bold[code] code[/color] bold[/intensity]

@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"This is *italic* text.\")"
+---
+This is[italic] italic[/italic] text.

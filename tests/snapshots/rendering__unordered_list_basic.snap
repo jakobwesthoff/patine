@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"- Alpha\\n- Beta\\n- Gamma\")"
+---
+• Alpha
+• Beta
+• Gamma

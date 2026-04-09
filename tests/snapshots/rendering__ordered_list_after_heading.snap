@@ -1,0 +1,8 @@
+---
+source: tests/rendering.rs
+expression: "render(\"## Section\\n\\n1. First\\n2. Second\")"
+---
+[bold]Section[/intensity]
+
+1. First
+2. Second

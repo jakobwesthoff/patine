@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: render(&long)
+---
+word word word word word word word word word word word word word word word word
+word word word word

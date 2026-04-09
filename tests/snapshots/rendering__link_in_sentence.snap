@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"See the [documentation](https://example.com/docs) for details.\")"
+---
+See the [underline]documentation[/underline][dim] (https://example.com/docs)[/intensity] for details.

@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"This is ~~deleted~~ text.\")"
+---
+This is[strike] deleted[/strike] text.

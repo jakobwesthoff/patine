@@ -1,0 +1,8 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```\\nfn main() {\\n    println!(\\\"hello\\\");\\n}\\n```\")"
+---
+[code]  fn main() {
+      println!("hello");
+  }
+[/color]

@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: render(&long)
+---
+[italic][bold]styled styled styled styled styled styled styled styled styled styled styled
+[italic][bold]styled styled styled styled[/intensity][/italic]

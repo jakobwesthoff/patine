@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"Above\\n\\n---\\n\\nBelow\")"
+---
+Above
+
+────────────────────────────────────────────────────────────────────────────────
+
+Below

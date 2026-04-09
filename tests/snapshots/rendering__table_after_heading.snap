@@ -1,0 +1,11 @@
+---
+source: tests/rendering.rs
+expression: "render(\"## Priority\\n\\n| Level | Items |\\n|---|---|\\n| High | Bugs |\")"
+---
+[bold]Priority[/intensity]
+
+┌───────┬───────┐
+│ [bold]Level[/intensity] │ [bold]Items[/intensity] │
+├───────┼───────┤
+│ High  │ Bugs  │
+└───────┴───────┘

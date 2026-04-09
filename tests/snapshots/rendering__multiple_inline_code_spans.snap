@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"Use `foo` and `bar` together.\")"
+---
+Use[code] foo[/color] and[code] bar[/color] together.

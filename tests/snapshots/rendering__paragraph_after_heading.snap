@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"## Title\\n\\nSome body text here.\")"
+---
+[bold]Title[/intensity]
+
+Some body text here.

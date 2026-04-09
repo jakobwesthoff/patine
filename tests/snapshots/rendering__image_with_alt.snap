@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"![Architecture diagram](./docs/arch.png)\")"
+---
+[image: Architecture diagram][dim] (./docs/arch.png)[/intensity]

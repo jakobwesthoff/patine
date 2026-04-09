@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"Use `println!` to print.\")"
+---
+Use[code] println![/color] to print.

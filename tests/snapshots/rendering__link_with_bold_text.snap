@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"[**bold link**](https://example.com)\")"
+---
+[underline][bold]bold link[/intensity][/underline][dim] (https://example.com)[/intensity]

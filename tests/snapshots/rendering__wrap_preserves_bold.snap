@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: render(&long)
+---
+[bold]bold bold bold bold bold bold bold bold bold bold bold bold bold bold bold bold
+[bold]bold bold bold bold[/intensity]

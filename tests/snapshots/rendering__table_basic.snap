@@ -1,0 +1,11 @@
+---
+source: tests/rendering.rs
+expression: "render(\"| Level | Items |\\n|---|---|\\n| High | Fix bugs |\\n| Low | Cleanup |\")"
+---
+┌───────┬──────────┐
+│ [bold]Level[/intensity] │ [bold] Items  [/intensity] │
+├───────┼──────────┤
+│ High  │ Fix bugs │
+├───────┼──────────┤
+│ Low   │ Cleanup  │
+└───────┴──────────┘

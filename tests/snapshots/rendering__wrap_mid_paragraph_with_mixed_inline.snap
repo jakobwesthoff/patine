@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: render(&text)
+---
+Before[bold] bold section that is quite long quite long quite long quite long quite
+[bold]long quite long quite long quite long enough to wrap[/intensity] after.

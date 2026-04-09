@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```rust\\nlet x = 42;\\n```\")"
+---
+[code]  let x = 42;
+[/color]

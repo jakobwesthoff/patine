@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"Start **bold** middle *italic* end.\")"
+---
+Start[bold] bold[/intensity] middle[italic] italic[/italic] end.

@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"5. Fifth\\n6. Sixth\")"
+---
+5. Fifth
+6. Sixth

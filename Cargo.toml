@@ -1,0 +1,16 @@
+[package]
+name = "patine"
+version = "1.0.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "Render Markdown beautifully in the terminal"
+
+[dependencies]
+anyhow = "1.0.102"
+clap = { version = "4.6.0", features = ["derive"] }
+crossterm = "0.29.0"
+markdown = "1.0.0"
+unicode-width = "0.2.2"
+
+[dev-dependencies]
+insta = "1.47.2"

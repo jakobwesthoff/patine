@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"# Hello **bold** World\")"
+---
+[italic][underline]Hello[bold] bold[/intensity] World[/underline][/italic]

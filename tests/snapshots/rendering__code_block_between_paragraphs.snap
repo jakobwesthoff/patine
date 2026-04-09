@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"Before.\\n\\n```\\ncode\\n```\\n\\nAfter.\")"
+---
+Before.
+
+[code]  code
+[/color]
+After.

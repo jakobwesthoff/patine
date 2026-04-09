@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"| Name | Description |\\n|---|---|\\n| a | Short |\")"
+---
+┌──────┬─────────────┐
+│ [bold]Name[/intensity] │ [bold]Description[/intensity] │
+├──────┼─────────────┤
+│ a    │ Short       │
+└──────┴─────────────┘
