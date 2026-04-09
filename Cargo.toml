@@ -4,6 +4,9 @@ version = "1.0.0"
 edition = "2024"
 license = "MPL-2.0"
 description = "Render Markdown beautifully in the terminal"
+authors = ["Jakob Westhoff <jakob@westhoffswelt.de>"]
+homepage = "https://westhoffswelt.de"
+repository = "https://github.com/jakobwesthoff/patine"
 
 [dependencies]
 anyhow = "1.0.102"
