@@ -1,0 +1,8 @@
+---
+source: tests/rendering.rs
+expression: output
+---
+• first paragraph
+
+  second paragraph
+• next item

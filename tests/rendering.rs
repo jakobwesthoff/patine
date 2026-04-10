@@ -1120,3 +1120,196 @@ fn effective_width_floored_thematic_break_not_empty() {
         "thematic break must not disappear at zero effective width:\n{output}"
     );
 }
+
+// =========================================================
+// Edge case: very small terminal widths
+// =========================================================
+
+#[test]
+fn very_narrow_width_zero_does_not_panic() {
+    // Width 0 should not panic; the `effective_width().max(1)` floor and
+    // `wrap_text`'s `width.max(1)` defensive clamp together should be
+    // enough. Whatever we produce is allowed to overflow — but the
+    // render call itself must succeed and produce non-empty output for
+    // non-empty input.
+    let output = render_with_width("hello world", 0);
+    assert!(!output.trim().is_empty(), "empty output at width 0");
+    assert!(output.contains("hello"));
+    assert!(output.contains("world"));
+}
+
+#[test]
+fn very_narrow_width_one_does_not_panic() {
+    let output = render_with_width("hello world", 1);
+    assert!(!output.trim().is_empty(), "empty output at width 1");
+    assert!(output.contains("hello"));
+    assert!(output.contains("world"));
+}
+
+#[test]
+fn narrow_width_five_wraps_every_word() {
+    // At width 5, "hello" fits exactly, so each word goes on its own line.
+    let output = render_with_width("hello world foo bar", 5);
+    // Every word should appear.
+    for word in ["hello", "world", "foo", "bar"] {
+        assert!(output.contains(word), "missing {word:?} in:\n{output}");
+    }
+    // Every word should be on its own line (because 5+1+5 > 5).
+    let visible_lines: Vec<String> = output
+        .lines()
+        .map(strip_tags)
+        .filter(|l| !l.trim().is_empty())
+        .collect();
+    assert!(
+        visible_lines.len() >= 4,
+        "expected ≥4 lines (one per word), got {}:\n{output}",
+        visible_lines.len()
+    );
+}
+
+#[test]
+fn narrow_width_heading_does_not_panic() {
+    // Headings have their own block spacing and underline logic; make
+    // sure it survives narrow widths without panicking.
+    let output = render_with_width("# a heading", 3);
+    assert!(output.contains("heading") || output.contains("a"));
+}
+
+#[test]
+fn narrow_width_code_block_does_not_panic() {
+    let output = render_with_width("```\nlong code line here\n```", 6);
+    // The content should still appear; code blocks don't wrap, so this
+    // just confirms we don't panic and output is non-empty.
+    assert!(!output.trim().is_empty());
+    assert!(output.contains("long"));
+}
+
+// =========================================================
+// Edge case: hard line breaks
+// =========================================================
+
+#[test]
+fn hard_break_trailing_backslash() {
+    // A `\` at the end of a line is a Markdown hard break. The two
+    // parts must appear on separate visual lines (not joined by a
+    // space).
+    let output = render("first line\\\nsecond line");
+    // Check: "first line" and "second line" are on different lines.
+    let lines: Vec<String> = output.lines().map(strip_tags).collect();
+    let first_idx = lines
+        .iter()
+        .position(|l| l.contains("first line"))
+        .expect("first line present");
+    let second_idx = lines
+        .iter()
+        .position(|l| l.contains("second line"))
+        .expect("second line present");
+    assert_ne!(
+        first_idx, second_idx,
+        "hard break must put the two halves on different visual lines:\n{output}"
+    );
+}
+
+#[test]
+fn hard_break_two_trailing_spaces() {
+    // Two trailing spaces before a newline is the classic Markdown
+    // hard-break spelling. Same expected behavior as the backslash
+    // form.
+    let output = render("first line  \nsecond line");
+    let lines: Vec<String> = output.lines().map(strip_tags).collect();
+    let first_idx = lines
+        .iter()
+        .position(|l| l.contains("first line"))
+        .expect("first line present");
+    let second_idx = lines
+        .iter()
+        .position(|l| l.contains("second line"))
+        .expect("second line present");
+    assert_ne!(
+        first_idx, second_idx,
+        "hard break must put the two halves on different visual lines:\n{output}"
+    );
+}
+
+// =========================================================
+// Edge case: multi-paragraph list items
+// =========================================================
+
+#[test]
+fn list_item_with_multiple_paragraphs() {
+    // A single list item containing two paragraphs. Both paragraphs
+    // must render inside the item (indented past the bullet), with a
+    // blank line between them — not glued together inline.
+    let md = "- first paragraph\n\n  second paragraph\n- next item";
+    let output = render(md);
+    assert!(
+        output.contains("first paragraph"),
+        "missing first paragraph:\n{output}"
+    );
+    assert!(
+        output.contains("second paragraph"),
+        "missing second paragraph:\n{output}"
+    );
+    assert!(
+        output.contains("next item"),
+        "missing next item:\n{output}"
+    );
+    // The second paragraph must appear after the first and before
+    // "next item" in the output.
+    let first_pos = output.find("first paragraph").unwrap();
+    let second_pos = output.find("second paragraph").unwrap();
+    let next_pos = output.find("next item").unwrap();
+    assert!(
+        first_pos < second_pos && second_pos < next_pos,
+        "paragraphs out of order:\nfirst@{first_pos} second@{second_pos} next@{next_pos}\n{output}"
+    );
+    // There must be at least one newline between the two paragraphs
+    // of the same list item — they cannot be glued together inline.
+    let between = &output[first_pos + "first paragraph".len()..second_pos];
+    assert!(
+        between.contains('\n'),
+        "expected newline between the two paragraphs, got {between:?}\nfull:\n{output}"
+    );
+    // Pin the exact visual shape so regressions are loud.
+    assert_snapshot!(output);
+}
+
+// =========================================================
+// Edge case: empty code blocks
+// =========================================================
+
+#[test]
+fn empty_code_block_does_not_panic() {
+    // A fenced code block with no body must render without panicking
+    // and must produce no visible text (empty → empty). ANSI style
+    // escapes may still be emitted around the absent body; they're
+    // ignored here by stripping tags before inspecting visible
+    // content.
+    let output = render("```\n```");
+    let visible = strip_tags(&output);
+    assert!(
+        visible.trim().is_empty(),
+        "empty code block should produce no visible content, got {visible:?}"
+    );
+}
+
+#[test]
+fn empty_code_block_with_language_does_not_panic() {
+    let output = render("```rust\n```");
+    let visible = strip_tags(&output);
+    assert!(
+        visible.trim().is_empty(),
+        "empty code block should produce no visible content, got {visible:?}"
+    );
+}
+
+#[test]
+fn empty_code_block_then_following_content_still_renders() {
+    // An empty code block followed by a paragraph should not swallow
+    // or mangle the following content.
+    let output = render("```\n```\n\ntext after empty block");
+    assert!(
+        output.contains("text after empty block"),
+        "content after empty code block must still render:\n{output}"
+    );
+}

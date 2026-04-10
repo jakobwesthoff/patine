@@ -302,11 +302,39 @@ impl<'w, W: Write> Renderer<'w, W> {
         self.continuation_indent = prefix_width;
 
         // Render item content. ListItem children are typically Paragraph
-        // nodes. We render their inline children directly to avoid the
-        // paragraph's own block spacing and indentation.
+        // nodes. We render the first paragraph's inline children
+        // directly so that the text starts immediately after the
+        // bullet — bypassing the paragraph's own block spacing keeps
+        // the bullet and its first line on the same visual row.
+        //
+        // Subsequent paragraphs (loose lists with multiple paragraphs
+        // per item) need a blank-line separator AND must re-emit the
+        // continuation indent so they sit past the bullet, aligned
+        // with the wrapped lines of the first paragraph. We do this
+        // ourselves rather than calling `render_paragraph`, because
+        // `render_paragraph`'s `ensure_block_spacing` alone leaves the
+        // caret at column 0 — without re-emitting the continuation
+        // indent, the second paragraph would render back at the left
+        // margin instead of aligned under the bullet.
+        let mut is_first = true;
         for child in &item.children {
             match child {
-                Node::Paragraph(p) => self.render_children(&p.children)?,
+                Node::Paragraph(p) => {
+                    if !is_first {
+                        self.ensure_block_spacing()?;
+                        self.write_indent()?;
+                        if self.continuation_indent > 0 {
+                            let spaces = " ".repeat(self.continuation_indent);
+                            write!(self.writer, "{spaces}")
+                                .context("write list continuation indent")?;
+                            self.column += self.continuation_indent;
+                            self.consecutive_newlines = 0;
+                            self.at_start = false;
+                        }
+                        self.reapply_styles()?;
+                    }
+                    self.render_children(&p.children)?;
+                }
                 // Nested lists and other block content get their own indent.
                 // Ensure we're on a new line before starting nested content.
                 other => {
@@ -316,6 +344,7 @@ impl<'w, W: Write> Renderer<'w, W> {
                     self.extra_indent -= 1;
                 }
             }
+            is_first = false;
         }
 
         self.continuation_indent = prev_continuation;
