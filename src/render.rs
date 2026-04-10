@@ -226,7 +226,7 @@ impl<'w, W: Write> Renderer<'w, W> {
         // renderer's normal line prefix — nesting indent *and* blockquote
         // bars — via `write_indent`. This matches the pattern used by
         // `render_code_block`.
-        for line in crate::table::layout_table(table) {
+        for line in crate::table::layout_table(table, self.effective_width()) {
             self.write_indent()?;
             write!(self.writer, "{line}").context("write table line")?;
             // Table rows occupy full content lines; once the line is

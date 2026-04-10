@@ -4,6 +4,7 @@
 
 mod render;
 mod table;
+mod wrap;
 
 use std::io::Write;
 

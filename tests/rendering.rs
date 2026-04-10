@@ -582,6 +582,227 @@ fn table_in_nested_blockquote_snapshot() {
 }
 
 // =========================================================
+// Table cell wrapping and width-aware column layout (phase 2)
+// =========================================================
+
+#[test]
+fn table_wraps_long_cell_text() {
+    // A table with a long sentence in one cell, rendered at a width too
+    // narrow to fit naturally. After wrapping, no output line should
+    // exceed the target width and every word from the input must still
+    // appear somewhere in the rendered output.
+    let md = "\
+| Topic | Notes |
+|---|---|
+| cats | The quick brown fox jumps over the lazy dog repeatedly |";
+    let output = render_with_width(md, 30);
+    for line in output.lines() {
+        let visible = strip_tags(line);
+        assert!(
+            unicode_width::UnicodeWidthStr::width(visible.as_str()) <= 30,
+            "line exceeds width 30: {visible:?}\nfull:\n{output}"
+        );
+    }
+    for word in [
+        "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", "repeatedly",
+    ] {
+        assert!(
+            output.contains(word),
+            "missing word {word:?} after wrapping:\n{output}"
+        );
+    }
+}
+
+#[test]
+fn table_preserves_column_proportions() {
+    // Three columns with very different natural widths. Their sum far
+    // exceeds a 40-column budget, so the table must shrink. After
+    // shrinking, (a) the overall table must fit in 40 columns and
+    // (b) the column containing longer content must still be wider
+    // than the one containing shorter content — proportions are
+    // respected, not flattened.
+    let md = "\
+| A | Middle column | Much longer final column content |
+|---|---|---|
+| x | medium text | a lot more text here to pad it out |";
+    let output = render_with_width(md, 40);
+    // Every line must fit in 40 columns — this is the primary "shrank"
+    // assertion that fails without width-aware layout.
+    for line in output.lines() {
+        let visible = strip_tags(line);
+        assert!(
+            unicode_width::UnicodeWidthStr::width(visible.as_str()) <= 40,
+            "line exceeds width 40: {visible:?}\nfull:\n{output}"
+        );
+    }
+    // Find the top border line (deterministic shape): `┌─...┬─...┬─...┐`.
+    let border = output
+        .lines()
+        .map(strip_tags)
+        .find(|l| l.starts_with('┌'))
+        .expect("expected top border");
+    // Segment widths are the number of `─` runs between the corners/T
+    // junctions. Split on the junction characters to get each column's
+    // segment (including its +2 padding).
+    let segments: Vec<usize> = border
+        .trim_start_matches('┌')
+        .trim_end_matches('┐')
+        .split('┬')
+        .map(|seg| seg.chars().filter(|&c| c == '─').count())
+        .collect();
+    assert_eq!(segments.len(), 3, "expected 3 columns, got {segments:?}");
+    // Column 3 (longest natural width) must remain widest; column 1
+    // (shortest) must remain narrowest, even after shrinking.
+    assert!(
+        segments[2] > segments[1],
+        "column 3 should be wider than column 2: {segments:?}"
+    );
+    assert!(
+        segments[1] > segments[0],
+        "column 2 should be wider than column 1: {segments:?}"
+    );
+}
+
+#[test]
+fn table_overflows_when_minimum_widths_exceed_budget() {
+    // Each column contains a single long word that cannot wrap any
+    // narrower. At a tiny terminal width, the table is forced to
+    // overflow — but it must still render cleanly (no panic, no empty
+    // output) and the wide words must appear intact (never split).
+    let md = "\
+| Col1 | Col2 |
+|---|---|
+| antidisestablishmentarianism | supercalifragilisticexpialidocious |";
+    let output = render_with_width(md, 10);
+    assert!(
+        !output.trim().is_empty(),
+        "expected non-empty output even when overflow is forced"
+    );
+    assert!(
+        output.contains("antidisestablishmentarianism"),
+        "first long word must appear intact:\n{output}"
+    );
+    assert!(
+        output.contains("supercalifragilisticexpialidocious"),
+        "second long word must appear intact:\n{output}"
+    );
+}
+
+#[test]
+fn table_header_centered_with_wrapping() {
+    // A long header name forced to wrap to a narrow column. The header
+    // cell must span more than one visual line (= wrapping happened),
+    // and every line that contains one of the header words must also
+    // carry the `[bold]` styling tag.
+    let md = "\
+| Very Long Header Name | x |
+|---|---|
+| a | b |";
+    let output = render_with_width(md, 24);
+
+    // Count distinct header-content lines: lines that start with the
+    // table's left border `│` and contain any of the header words.
+    let lines: Vec<String> = output.lines().map(strip_tags).collect();
+    let header_words = ["Very", "Long", "Header", "Name"];
+    let header_line_count = lines
+        .iter()
+        .filter(|l| l.starts_with('│') && header_words.iter().any(|w| l.contains(w)))
+        .count();
+    assert!(
+        header_line_count >= 2,
+        "header should wrap to ≥2 lines, saw {header_line_count}:\n{output}"
+    );
+
+    // Every header word must appear on a line that also contains the
+    // bold styling tag (i.e. the wrapped header lines all stay bold).
+    for word in header_words {
+        let found = output
+            .lines()
+            .any(|line| line.contains("[bold]") && line.contains(word));
+        assert!(found, "header word {word:?} must appear bold:\n{output}");
+    }
+}
+
+#[test]
+fn table_in_blockquote_with_wrapping() {
+    // Phase 1 × Phase 2: a table inside a blockquote at narrow width.
+    // Every line must still carry the blockquote bar prefix, and the
+    // cells must be wrapped so the whole structure fits within the
+    // available (content minus bar) width.
+    let md = "\
+> | Topic | Notes |
+> |---|---|
+> | cats | The quick brown fox jumps over the lazy dog |";
+    let output = render_with_width(md, 36);
+    // Every non-border table line and every border line must begin
+    // with the blockquote bar after tag stripping.
+    for line in output.lines() {
+        let visible = strip_tags(line);
+        if visible.is_empty() {
+            continue;
+        }
+        // Identify lines that belong to the table by the box-drawing
+        // characters; they must all start with the blockquote bar.
+        let is_table_line = ['┌', '├', '└', '│']
+            .iter()
+            .any(|c| visible.contains(*c));
+        if is_table_line {
+            assert!(
+                visible.starts_with("│ "),
+                "table line inside blockquote missing bar prefix:\nline: {visible:?}\nfull:\n{output}"
+            );
+        }
+    }
+    // The table must fit within 36 columns (content stripped of tags).
+    for line in output.lines() {
+        let visible = strip_tags(line);
+        assert!(
+            unicode_width::UnicodeWidthStr::width(visible.as_str()) <= 36,
+            "line exceeds width 36: {visible:?}\nfull:\n{output}"
+        );
+    }
+}
+
+#[test]
+fn table_variable_row_heights() {
+    // One cell wraps to multiple lines while its sibling is short. The
+    // row must be tall enough for the wrapped cell, with the short
+    // sibling blank-padded on the extra lines (not collapsed).
+    let md = "\
+| Tall | Short |
+|---|---|
+| one two three four five six | x |";
+    let output = render_with_width(md, 22);
+    // Count the number of content lines between the header separator
+    // and the bottom border by looking for lines that begin with the
+    // table's left border `│` and contain the short "x" cell or any
+    // wrapped word of the tall cell.
+    let lines: Vec<String> = output.lines().map(strip_tags).collect();
+    // Indices of separator and bottom border anchor the data region.
+    let sep_idx = lines
+        .iter()
+        .position(|l| l.starts_with('├'))
+        .expect("separator");
+    let bot_idx = lines
+        .iter()
+        .position(|l| l.starts_with('└'))
+        .expect("bottom border");
+    // The data row should span more than one content line because the
+    // tall cell wrapped.
+    let row_lines = &lines[sep_idx + 1..bot_idx];
+    assert!(
+        row_lines.len() >= 2,
+        "expected variable-height row to span ≥2 lines, got {}: {row_lines:#?}",
+        row_lines.len()
+    );
+    // The "x" must appear on at least one of those lines.
+    assert!(
+        row_lines.iter().any(|l| l.contains(" x ")),
+        "short cell 'x' must appear on at least one row line:\n{output}"
+    );
+}
+
+// =========================================================
 // Code blocks
 // =========================================================
 
