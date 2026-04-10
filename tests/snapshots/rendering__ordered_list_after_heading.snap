@@ -2,7 +2,7 @@
 source: tests/rendering.rs
 expression: "render(\"## Section\\n\\n1. First\\n2. Second\")"
 ---
-[bold]Section[/intensity]
+[bold][underline]Section[/underline][/intensity]
 
 1. First
 2. Second

@@ -2,4 +2,4 @@
 source: tests/rendering.rs
 expression: "render(\"## Section Title\")"
 ---
-[bold]Section Title[/intensity]
+[bold][underline]Section Title[/underline][/intensity]

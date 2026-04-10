@@ -16,19 +16,28 @@ All examples show the visual output, not the Markdown source.
 
 Markdown `#` markers are stripped. A blank line appears after each heading.
 
-- **H1**: italic + underlined, default terminal color.
-- **H2–H6**: bold, default terminal color.
+Every heading is **bold** as a consistent baseline; underline decorations
+create the visual hierarchy between levels:
+
+- **H1**: bold + italic + double underline.
+- **H2**: bold + underlined.
+- **H3–H6**: bold only.
 
 ```
-AI Templates: POC → Product — Summary    ← italic, underlined
+AI Templates: POC → Product — Summary    ← bold, italic, double-underlined
                                          ← blank line
-Business Decisions (need alignment)      ← bold
+Business Decisions (need alignment)      ← bold, underlined
                                          ← blank line
 Sub-Section Heading                      ← bold
 ```
 
-No color differentiation between heading levels — styling relies on
-italic/underline for H1 and bold for all others.
+Double underline is emitted as the modern `CSI 4:2 m` (Kitty
+sub-parameter) sequence, which terminals that don't support it
+gracefully degrade to a single underline. Italic on H1 keeps it
+distinguishable from H2 even after such a degradation.
+
+No color differentiation between heading levels — the entire hierarchy
+relies on bold + underline decorations.
 
 ## Paragraphs
 
@@ -87,6 +96,11 @@ See the documentation (https://example.com/docs) for details.
 For autolinks and bare URLs, the entire URL is rendered underlined with the
 URL in dimmed parentheses.
 
+The dimmed `(url)` block is treated as one atomic unit when wrapping. If
+it doesn't fit alongside the link text on the current line, the whole
+`(url)` block moves to a fresh line — the URL itself is never broken
+mid-string so it remains copy-pasteable.
+
 ## Ordered Lists
 
 Number and period preserved from source. Inline formatting (bold, code, etc.)
@@ -132,14 +146,32 @@ and vice versa).
 
 All nesting levels use the same `•` bullet character.
 
+A single list item may contain multiple paragraphs (a "loose" list).
+Subsequent paragraphs are separated from the first by a blank line and
+aligned to the same continuation indent — i.e. they sit past the bullet,
+vertically aligned with the wrapped lines of the first paragraph rather
+than back at the left margin.
+
 ## Tables
 
 Tables use full Unicode box-drawing characters with single-line borders.
 
 - **Header row**: text **centered** within the column, rendered **bold**.
+  Centering is applied per wrapped line when header text wraps across
+  multiple lines.
 - **Data rows**: text **left-aligned** with 1 space padding on each side.
 - **Separators**: horizontal rules between the header and every data row.
-- **Column width**: sized to fit the widest cell content in each column.
+- **Column width**: a three-tier algorithm. (1) If the natural cell
+  widths fit within the available terminal width, use them. (2)
+  Otherwise, distribute the available width proportionally between each
+  column's minimum (the widest unbreakable token in that column) and
+  its natural width. (3) If even the per-column minimums don't fit, use
+  the minimums and accept that the table overflows the terminal —
+  preferred over breaking words mid-string.
+- **Row height**: each cell is word-wrapped to its allocated column
+  width, and the row height is the max wrapped height across its cells.
+  Shorter cells are blank-padded on the extra lines so the row aligns
+  vertically.
 
 ```
 ┌──────────┬────────────────────────────┐
@@ -212,6 +244,11 @@ Nested blockquotes add additional `│` bars:
 │ │ Inner quote
 ```
 
+Block-level elements nested inside a blockquote (such as tables, code
+blocks, lists, and horizontal rules) carry the `│ ` bar prefix on
+every rendered line — including border, header, separator, and data
+lines for tables.
+
 ## Horizontal Rules
 
 Rendered as a line of `─` characters spanning the full terminal width.
@@ -237,6 +274,11 @@ If no alt text is provided:
 [image] (./docs/screenshot.png)
 ```
 
+The dimmed `(url)` block follows the same atomic-wrapping rule as for
+links: if it doesn't fit alongside the image marker on the current
+line, it moves to a fresh line below rather than being broken
+mid-string.
+
 ## Style Summary
 
 The default terminal color is used everywhere unless noted otherwise.
@@ -245,8 +287,9 @@ restrained use of color and styling.
 
 | Element             | Style                              |
 |---------------------|------------------------------------|
-| H1                  | Italic, underlined                 |
-| H2–H6              | Bold                               |
+| H1                  | Bold, italic, double-underlined    |
+| H2                  | Bold, underlined                   |
+| H3–H6               | Bold                               |
 | Body text           | Default                            |
 | **Bold**            | Bold                               |
 | *Italic*            | Italic                             |

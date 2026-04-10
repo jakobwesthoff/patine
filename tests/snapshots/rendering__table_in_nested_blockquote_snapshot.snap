@@ -7,4 +7,4 @@ expression: "render(\"> > | a | b |\\n> > |--|--|\\n> > | 1 | 2 |\")"
 [dim]│ │ [/intensity][dim][italic][dim][italic]├───┼───┤
 [dim]│ │ [/intensity][dim][italic][dim][italic]│ 1 │ 2 │
 [dim]│ │ [/intensity][dim][italic][dim][italic]└───┴───┘
-[/italic][/intensity][/italic][/intensity]
+[/italic][italic][/intensity][dim][/italic][/intensity]

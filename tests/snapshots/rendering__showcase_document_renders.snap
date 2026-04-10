@@ -2,9 +2,9 @@
 source: tests/rendering.rs
 expression: render(SHOWCASE_MD)
 ---
-[italic][underline]Field Manual 42-B: Interdimensional Incident Response[/underline][/italic]
+[bold][italic][double-underline]Field Manual 42-B: Interdimensional Incident Response[/underline][/italic][/intensity]
 
-[bold]Preamble[/intensity]
+[bold][underline]Preamble[/underline][/intensity]
 
 This manual describes standard operating procedure for[bold] Class-III multiverse
 [bold]incursions[/intensity], as adopted by the[italic] Intergalactic Committee on Narrative Integrity[/italic]
@@ -16,11 +16,11 @@ memorize Section 4 before their next shift.
 [dim]│ [/intensity][dim][italic]
 [dim]│ [/intensity][dim][italic]— Admiral Ackbar, 2387 budget hearing
 [dim]│ [/intensity][dim][italic]
-[dim][italic][dim]│ │ [/intensity][dim][italic][dim][italic]Accounting note: next time, please file form[italic][bold] W-42B[/intensity][dim][/italic] in triplicate.
-[/italic][/intensity][/italic][/intensity]
+[dim][italic][dim]│ │ [/intensity][dim][italic][dim][italic]Accounting note: next time, please file form[italic][bold] W-42B[/intensity][dim][/italic][italic] in triplicate.
+[/italic][italic][/intensity][dim][/italic][/intensity]
 ────────────────────────────────────────────────────────────────────────────────
 
-[bold]Section 1 — Crossover Classification[/intensity]
+[bold][underline]Section 1 — Crossover Classification[/underline][/intensity]
 
 The following incursion types have been observed in the last[strike] fiscal quarter[/strike]
 epoch:
@@ -39,7 +39,7 @@ See [underline]the full classification taxonomy[/underline][dim] (https://exampl
 additional detail, or browse the quick reference at [underline]
 [underline]https://example.invalid/icni/quick-ref[/underline][dim] (https://example.invalid/icni/quick-ref)[/intensity].
 
-[bold]Section 2 — Initial Response[/intensity]
+[bold][underline]Section 2 — Initial Response[/underline][/intensity]
 
 Upon detecting an incursion, operatives should:
 
@@ -61,7 +61,7 @@ If the output looks garbled, try the unflagged variant:
 
 [code]  multiverse-scan
 [/color]
-[bold]Section 3 — Field Kit[/intensity]
+[bold][underline]Section 3 — Field Kit[/underline][/intensity]
 
 Operatives carry the following items at all times:
 
@@ -92,7 +92,7 @@ Incidents escalate in the following order:
 
 ────────────────────────────────────────────────────────────────────────────────
 
-[bold]Appendix A — Poetry Corner[/intensity]
+[bold][underline]Appendix A — Poetry Corner[/underline][/intensity]
 
 By long-standing tradition, every manual concludes with a verse. The following
 was composed by R2-D2 during his tenure as guest editor:

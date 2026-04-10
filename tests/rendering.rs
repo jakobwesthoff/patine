@@ -37,6 +37,9 @@ fn render_with_width(markdown: &str, width: usize) -> String {
         .replace("\x1b[1m", "[bold]")
         .replace("\x1b[2m", "[dim]")
         .replace("\x1b[3m", "[italic]")
+        // Order matters: `\x1b[4:2m` (double underline) must be replaced
+        // before `\x1b[4m` (single underline) so the longer prefix wins.
+        .replace("\x1b[4:2m", "[double-underline]")
         .replace("\x1b[4m", "[underline]")
         .replace("\x1b[9m", "[strike]")
         .replace("\x1b[29m", "[/strike]")
@@ -86,12 +89,12 @@ fn whitespace_only_input() {
 // =========================================================
 
 #[test]
-fn h1_italic_underline() {
+fn h1_bold_italic_double_underline() {
     assert_snapshot!(render("# Hello World"));
 }
 
 #[test]
-fn h2_bold() {
+fn h2_bold_underline() {
     assert_snapshot!(render("## Section Title"));
 }
 

@@ -2,6 +2,6 @@
 source: tests/rendering.rs
 expression: "render(\"## Title\\n\\nSome body text here.\")"
 ---
-[bold]Title[/intensity]
+[bold][underline]Title[/underline][/intensity]
 
 Some body text here.

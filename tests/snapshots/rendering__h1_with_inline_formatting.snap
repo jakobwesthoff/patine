@@ -2,4 +2,4 @@
 source: tests/rendering.rs
 expression: "render(\"# Hello **bold** World\")"
 ---
-[italic][underline]Hello[bold] bold[/intensity] World[/underline][/italic]
+[bold][italic][double-underline]Hello[bold] bold[/intensity][bold] World[/underline][/italic][/intensity]

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-11
+
+### Added
+
+- Heading hierarchy now uses bold + underline decorations to create a
+  clearer visual ladder. **H1**: bold + italic + double underline.
+  **H2**: bold + underlined. **H3–H6**: bold (unchanged). Double
+  underline is emitted as the modern `CSI 4:2 m` (Kitty sub-parameter)
+  sequence; terminals that don't support it gracefully degrade to a
+  single underline, with H1's italic keeping it distinct from H2.
+
+### Fixed
+
+- Style state could leak across nested inline scopes when the same
+  attribute appeared more than once on the style stack — for example,
+  `# Heading with **bold**` would lose its heading bold for the rest
+  of the line after the inline `**bold**` closed, and `*italic*` text
+  inside an italic blockquote would similarly drop the blockquote's
+  italic. The disable-style routine now re-emits Bold, Italic, Dim,
+  Strikethrough, and Underline / DoubleUnderline if an outer scope
+  still has them on the stack.
+
 ## [1.1.1] - 2026-04-11
 
 ### Changed

@@ -36,6 +36,7 @@ enum Style {
     Bold,
     Italic,
     Underline,
+    DoubleUnderline,
     Dim,
     Strikethrough,
     ForegroundColor(Color),
@@ -174,15 +175,21 @@ impl<'w, W: Write> Renderer<'w, W> {
         self.ensure_block_spacing()?;
         self.write_indent()?;
 
-        if heading.depth == 1 {
-            self.push_style(Style::Italic)?;
-            self.push_style(Style::Underline)?;
-            self.render_children(&heading.children)?;
-            self.pop_style()?;
-            self.pop_style()?;
-        } else {
-            self.push_style(Style::Bold)?;
-            self.render_children(&heading.children)?;
+        // Heading hierarchy: every level is bold (consistent baseline),
+        // and underline decorations create the H1/H2/H3+ visual ladder.
+        // H1 additionally uses italic so it remains distinct from H2 even
+        // on terminals that fall back from `4:2` (double underline) to a
+        // plain single underline.
+        let styles: &[Style] = match heading.depth {
+            1 => &[Style::Bold, Style::Italic, Style::DoubleUnderline],
+            2 => &[Style::Bold, Style::Underline],
+            _ => &[Style::Bold],
+        };
+        for &style in styles {
+            self.push_style(style)?;
+        }
+        self.render_children(&heading.children)?;
+        for _ in styles {
             self.pop_style()?;
         }
 
@@ -655,6 +662,9 @@ impl<'w, W: Write> Renderer<'w, W> {
             Style::Bold => queue!(self.writer, SetAttribute(Attribute::Bold))?,
             Style::Italic => queue!(self.writer, SetAttribute(Attribute::Italic))?,
             Style::Underline => queue!(self.writer, SetAttribute(Attribute::Underlined))?,
+            Style::DoubleUnderline => {
+                queue!(self.writer, SetAttribute(Attribute::DoubleUnderlined))?;
+            }
             Style::Dim => queue!(self.writer, SetAttribute(Attribute::Dim))?,
             Style::Strikethrough => queue!(self.writer, SetAttribute(Attribute::CrossedOut))?,
             Style::ForegroundColor(c) => queue!(self.writer, SetForegroundColor(c))?,
@@ -684,20 +694,62 @@ impl<'w, W: Write> Renderer<'w, W> {
         match style {
             // NoBold (SGR 21) is interpreted as "doubly underlined" by many
             // terminals. Use NormalIntensity (SGR 22) instead, which clears
-            // both Bold and Dim. Re-apply Dim if it's still on the stack.
+            // both Bold and Dim. Re-apply Bold itself (when an outer Bold
+            // is still on the stack — e.g. inline `**bold**` inside a bold
+            // heading) and Dim (when an outer Dim is still on the stack).
             Style::Bold => {
                 queue!(self.writer, SetAttribute(Attribute::NormalIntensity))?;
+                if self.style_stack.contains(&Style::Bold) {
+                    queue!(self.writer, SetAttribute(Attribute::Bold))?;
+                }
                 if self.style_stack.contains(&Style::Dim) {
                     queue!(self.writer, SetAttribute(Attribute::Dim))?;
                 }
             }
-            Style::Italic => queue!(self.writer, SetAttribute(Attribute::NoItalic))?,
-            Style::Underline => queue!(self.writer, SetAttribute(Attribute::NoUnderline))?,
+            // Re-emit Italic if an outer Italic is still on the stack
+            // (e.g. inline `*italic*` inside an italic-bearing H1 or
+            // blockquote).
+            Style::Italic => {
+                queue!(self.writer, SetAttribute(Attribute::NoItalic))?;
+                if self.style_stack.contains(&Style::Italic) {
+                    queue!(self.writer, SetAttribute(Attribute::Italic))?;
+                }
+            }
+            // NoUnderline (SGR 24) clears both single and double underline.
+            // After disabling, re-emit whichever underline variants are
+            // still on the stack so outer scopes are preserved.
+            Style::Underline => {
+                queue!(self.writer, SetAttribute(Attribute::NoUnderline))?;
+                if self.style_stack.contains(&Style::DoubleUnderline) {
+                    queue!(self.writer, SetAttribute(Attribute::DoubleUnderlined))?;
+                }
+                if self.style_stack.contains(&Style::Underline) {
+                    queue!(self.writer, SetAttribute(Attribute::Underlined))?;
+                }
+            }
+            Style::DoubleUnderline => {
+                queue!(self.writer, SetAttribute(Attribute::NoUnderline))?;
+                if self.style_stack.contains(&Style::DoubleUnderline) {
+                    queue!(self.writer, SetAttribute(Attribute::DoubleUnderlined))?;
+                }
+                if self.style_stack.contains(&Style::Underline) {
+                    queue!(self.writer, SetAttribute(Attribute::Underlined))?;
+                }
+            }
             Style::Strikethrough => {
                 queue!(self.writer, SetAttribute(Attribute::NotCrossedOut))?;
+                if self.style_stack.contains(&Style::Strikethrough) {
+                    queue!(self.writer, SetAttribute(Attribute::CrossedOut))?;
+                }
             }
+            // Symmetric to the Bold case above: NormalIntensity clears
+            // both Bold and Dim, so re-emit Dim and/or Bold if the outer
+            // scope still wants them.
             Style::Dim => {
                 queue!(self.writer, SetAttribute(Attribute::NormalIntensity))?;
+                if self.style_stack.contains(&Style::Dim) {
+                    queue!(self.writer, SetAttribute(Attribute::Dim))?;
+                }
                 if self.style_stack.contains(&Style::Bold) {
                     queue!(self.writer, SetAttribute(Attribute::Bold))?;
                 }

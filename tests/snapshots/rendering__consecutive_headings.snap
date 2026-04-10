@@ -2,8 +2,8 @@
 source: tests/rendering.rs
 expression: "render(\"# Title\\n\\n## Section\\n\\n### Sub\")"
 ---
-[italic][underline]Title[/underline][/italic]
+[bold][italic][double-underline]Title[/underline][/italic][/intensity]
 
-[bold]Section[/intensity]
+[bold][underline]Section[/underline][/intensity]
 
 [bold]Sub[/intensity]
