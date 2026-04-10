@@ -504,6 +504,8 @@ impl<'w, W: Write> Renderer<'w, W> {
     }
 
     fn write_indent(&mut self) -> Result<()> {
+        let has_indent = self.extra_indent > 0 || self.blockquote_depth > 0;
+
         for _ in 0..self.extra_indent {
             write!(self.writer, "{NEST_INDENT}").context("write nesting indent")?;
         }
@@ -521,9 +523,14 @@ impl<'w, W: Write> Renderer<'w, W> {
             queue!(self.writer, SetAttribute(Attribute::NormalIntensity))?;
             self.reapply_styles()?;
         }
-        self.consecutive_newlines = 0;
-        self.at_start = false;
-        self.pending_space = false;
+
+        // Only update output-tracking state when we actually wrote something,
+        // so that a zero-indent call doesn't silently claim output occurred.
+        if has_indent {
+            self.consecutive_newlines = 0;
+            self.at_start = false;
+            self.pending_space = false;
+        }
         Ok(())
     }
 
