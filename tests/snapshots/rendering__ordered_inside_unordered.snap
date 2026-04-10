@@ -2,7 +2,7 @@
 source: tests/rendering.rs
 expression: "render(\"- Item\\n  1. Sub one\\n  2. Sub two\\n- Item\")"
 ---
-● Item
+• Item
   1. Sub one
   2. Sub two
-● Item
+• Item

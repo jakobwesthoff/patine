@@ -288,7 +288,7 @@ impl<'w, W: Write> Renderer<'w, W> {
         let prefix = if ordered {
             format!("{number}. ")
         } else {
-            "● ".to_string()
+            "• ".to_string()
         };
         write!(self.writer, "{prefix}").context("write list marker")?;
         let prefix_width = UnicodeWidthStr::width(prefix.as_str());
