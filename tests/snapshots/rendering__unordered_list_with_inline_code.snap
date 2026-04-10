@@ -2,5 +2,5 @@
 source: tests/rendering.rs
 expression: "render(\"- Use `foo`\\n- Use `bar`\")"
 ---
-• Use[code] foo[/color]
-• Use[code] bar[/color]
+● Use[code] foo[/color]
+● Use[code] bar[/color]

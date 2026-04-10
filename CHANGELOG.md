@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-04-11
+
+### Added
+
+- Tables now word-wrap cell contents to fit the available terminal
+  width. Column widths are distributed proportionally toward each
+  column's minimum (the widest unbreakable token) and rows lay out at
+  variable height to accommodate wrapped cells. Tables that cannot fit
+  even at their minimum widths overflow the terminal rather than
+  breaking words mid-string.
+- Long link and image URLs whose `(url)` suffix does not fit alongside
+  the preceding content now move to their own line instead of
+  overflowing inline. The URL itself is never broken mid-string so it
+  remains copy-pasteable.
+
+### Changed
+
+- Unordered list bullets now use `●` (U+25CF BLACK CIRCLE) instead of
+  `•` (U+2022 BULLET) for a larger, more visually distinct marker.
+
+### Fixed
+
+- Tables rendered inside blockquotes now carry the blockquote `│` bar
+  prefix on every line, including border and separator lines.
+  Previously the bars were dropped, visually breaking the table out of
+  its enclosing blockquote.
+- Multi-paragraph list items no longer render their paragraphs glued
+  together with no separator. Subsequent paragraphs now emit a
+  blank-line separator and sit past the bullet, aligned with the
+  wrapped lines of the first paragraph.
+- `effective_width()` could reach zero with deep nesting, producing
+  invisible horizontal rules and degenerate one-word-per-line
+  wrapping. It now floors at 1.
+
 ## [1.0.0] - 2026-04-09
 
 ### Added

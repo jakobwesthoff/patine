@@ -939,9 +939,9 @@ fn list_item_wrap_indentation() {
         "expected wrapping to produce multiple lines"
     );
     // The second line should have more indentation than just the 2-space
-    // global indent — it should align with the text after "• ".
+    // global indent — it should align with the text after "● ".
     let second_line = lines[1];
-    // "• " is 2 columns, so continuation should start with 2 spaces.
+    // "● " is 2 columns, so continuation should start with 2 spaces.
     assert!(
         second_line.starts_with("  "),
         "wrapped list continuation should be indented past the bullet.\nSecond line: '{second_line}'"

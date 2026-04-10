@@ -2,7 +2,7 @@
 source: tests/rendering.rs
 expression: output
 ---
-• first paragraph
+● first paragraph
 
   second paragraph
-• next item
+● next item

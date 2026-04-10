@@ -2,8 +2,8 @@
 source: tests/rendering.rs
 expression: "render(\"- Top\\n  - Nested\\n    - Deep\\n  - Back\\n- Top again\")"
 ---
-• Top
-  • Nested
-    • Deep
-  • Back
-• Top again
+● Top
+  ● Nested
+    ● Deep
+  ● Back
+● Top again
