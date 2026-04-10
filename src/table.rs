@@ -2,13 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-use std::io::Write;
+use std::fmt::Write;
 
-use anyhow::{Context, Result};
-use crossterm::{
-    queue,
-    style::{Attribute, SetAttribute},
-};
 use markdown::mdast::Node;
 use unicode_width::UnicodeWidthStr;
 
@@ -27,6 +22,15 @@ const RIGHT_T: &str = "┤";
 const CROSS: &str = "┼";
 const HORIZONTAL: &str = "─";
 const VERTICAL: &str = "│";
+
+// ANSI SGR sequences for header styling. The table module emits these
+// directly into the returned line strings rather than going through the
+// Renderer's style machinery — this keeps `layout_table` pure.
+//
+// NormalIntensity (SGR 22) is used instead of NoBold (SGR 21) because
+// several terminals misinterpret SGR 21 as "doubly underlined".
+const SGR_BOLD: &str = "\x1b[1m";
+const SGR_NORMAL_INTENSITY: &str = "\x1b[22m";
 
 // =========================================================
 // Cell text extraction
@@ -61,27 +65,37 @@ fn row_texts(row: &Node) -> Vec<String> {
 }
 
 // =========================================================
-// Table rendering
+// Table layout
 // =========================================================
 
-/// Render a GFM table with Unicode box-drawing borders.
+/// Lay out a GFM table as a list of pre-formatted lines. Each returned
+/// line is ready to be written verbatim by the caller *after* the
+/// caller emits its own per-line prefix (nesting indent, blockquote
+/// bars, etc.) via its normal `write_indent` machinery.
 ///
-/// Layout rules (from output-style.md):
+/// Lines may contain ANSI SGR escape sequences for styled header cells
+/// (bold) — these are embedded directly rather than routed through the
+/// `Renderer`'s style stack, since this module is intentionally pure and
+/// stateless.
+///
+/// Layout rules:
 ///   - Header row text is **centered** and **bold**.
-///   - Data rows are **left-aligned** with 1 space padding on each side.
-///   - Horizontal separators appear between the header and every data row.
+///   - Data rows are left-aligned with one space padding on each side.
+///   - Horizontal separators appear between every pair of adjacent rows.
 ///   - Column widths are sized to the widest cell in each column.
-pub fn render_table<W: Write>(
-    writer: &mut W,
-    table: &markdown::mdast::Table,
-    indent: &str,
-) -> Result<()> {
+///
+/// An empty table (no rows) yields an empty `Vec`; the caller is
+/// expected to treat that as "nothing to render".
+pub fn layout_table(table: &markdown::mdast::Table) -> Vec<String> {
     let rows: Vec<Vec<String>> = table.children.iter().map(row_texts).collect();
     if rows.is_empty() {
-        return Ok(());
+        return Vec::new();
     }
 
     // ── Measure column widths ────────────────────────────────────────────
+    // Each column is sized to fit the widest cell. Short rows (fewer
+    // cells than the max) contribute nothing and are later padded with
+    // empty cells during rendering.
     let num_cols = rows.iter().map(|r| r.len()).max().unwrap_or(0);
     let mut col_widths: Vec<usize> = vec![0; num_cols];
     for row in &rows {
@@ -93,88 +107,83 @@ pub fn render_table<W: Write>(
         }
     }
 
-    // ── Draw the table ───────────────────────────────────────────────────
-    write_border(writer, indent, &col_widths, TOP_LEFT, TOP_T, TOP_RIGHT)?;
+    // ── Build the lines ──────────────────────────────────────────────────
+    let mut lines: Vec<String> = Vec::new();
+    lines.push(border_line(&col_widths, TOP_LEFT, TOP_T, TOP_RIGHT));
 
     for (row_idx, row) in rows.iter().enumerate() {
-        let is_header = row_idx == 0;
-
-        write!(writer, "{indent}").context("write table indent")?;
-        for (col, cell) in row.iter().enumerate() {
-            write!(writer, "{VERTICAL} ").context("write cell border")?;
-            let width = col_widths[col];
-            let cell_width = UnicodeWidthStr::width(cell.as_str());
-            let padding = width.saturating_sub(cell_width);
-
-            if is_header {
-                // Header: centered + bold.
-                let left_pad = padding / 2;
-                let right_pad = padding - left_pad;
-                queue!(writer, SetAttribute(Attribute::Bold))?;
-                write!(
-                    writer,
-                    "{:left_pad$}{cell}{:right_pad$}",
-                    "",
-                    "",
-                    left_pad = left_pad,
-                    right_pad = right_pad,
-                )
-                .context("write header cell")?;
-                // Use NormalIntensity (SGR 22) instead of NoBold (SGR 21)
-                // to avoid the "doubly underlined" misinterpretation on some
-                // terminals.
-                queue!(writer, SetAttribute(Attribute::NormalIntensity))?;
-            } else {
-                // Data: left-aligned (per spec; alignment from markdown
-                // column markers is intentionally ignored for now).
-                write!(writer, "{cell}{:padding$}", "", padding = padding)
-                    .context("write data cell")?;
-            }
-            write!(writer, " ").context("write cell trailing space")?;
-        }
-        // Fill any missing cells in this row.
-        for &width in col_widths.iter().skip(row.len()) {
-            write!(writer, "{VERTICAL} {:width$} ", "").context("write empty cell")?;
-        }
-        writeln!(writer, "{VERTICAL}").context("write row end")?;
-
-        // Separator after header and between every data row.
+        lines.push(row_line(row, &col_widths, /* is_header */ row_idx == 0));
         if row_idx < rows.len() - 1 {
-            write_border(writer, indent, &col_widths, LEFT_T, CROSS, RIGHT_T)?;
+            lines.push(border_line(&col_widths, LEFT_T, CROSS, RIGHT_T));
         }
     }
 
-    write_border(
-        writer,
-        indent,
+    lines.push(border_line(
         &col_widths,
         BOTTOM_LEFT,
         BOTTOM_T,
         BOTTOM_RIGHT,
-    )?;
+    ));
 
-    Ok(())
+    lines
 }
 
-/// Write a horizontal border line: `left` + repeated `─` segments joined
-/// by `middle`, ending with `right`.
-fn write_border<W: Write>(
-    writer: &mut W,
-    indent: &str,
-    col_widths: &[usize],
-    left: &str,
-    middle: &str,
-    right: &str,
-) -> Result<()> {
-    write!(writer, "{indent}{left}").context("write border start")?;
+// =========================================================
+// Line builders
+// =========================================================
+
+/// Build a single row of table content as one line. Header rows are
+/// centered and bold; data rows are left-aligned.
+fn row_line(cells: &[String], col_widths: &[usize], is_header: bool) -> String {
+    let mut line = String::new();
+
+    for (col, width) in col_widths.iter().copied().enumerate() {
+        // Left border of this cell (which also doubles as the right
+        // border of the previous cell) + one space of padding.
+        line.push_str(VERTICAL);
+        line.push(' ');
+
+        let cell: &str = cells.get(col).map(String::as_str).unwrap_or("");
+        let cell_width = UnicodeWidthStr::width(cell);
+        let padding = width.saturating_sub(cell_width);
+
+        if is_header {
+            // Header cells are centered. The extra column of the padding
+            // (when `padding` is odd) goes on the right.
+            let left_pad = padding / 2;
+            let right_pad = padding - left_pad;
+            let _ = write!(
+                line,
+                "{SGR_BOLD}{:left_pad$}{cell}{:right_pad$}{SGR_NORMAL_INTENSITY}",
+                "", "",
+            );
+        } else {
+            let _ = write!(line, "{cell}{:padding$}", "");
+        }
+
+        // Trailing space of the cell's padding.
+        line.push(' ');
+    }
+
+    // Final right border of the row.
+    line.push_str(VERTICAL);
+    line
+}
+
+/// Build a horizontal border line: `left` + repeated `─` segments joined
+/// by `middle`, ending with `right`. Width of each segment is the cell
+/// column width plus two — one for each side of the cell padding.
+fn border_line(col_widths: &[usize], left: &str, middle: &str, right: &str) -> String {
+    let mut line = String::new();
+    line.push_str(left);
     for (i, &w) in col_widths.iter().enumerate() {
-        // +2 for the 1-space padding on each side of the cell content.
-        let seg: String = HORIZONTAL.repeat(w + 2);
-        write!(writer, "{seg}").context("write border segment")?;
+        for _ in 0..(w + 2) {
+            line.push_str(HORIZONTAL);
+        }
         if i < col_widths.len() - 1 {
-            write!(writer, "{middle}").context("write border middle")?;
+            line.push_str(middle);
         }
     }
-    writeln!(writer, "{right}").context("write border end")?;
-    Ok(())
+    line.push_str(right);
+    line
 }

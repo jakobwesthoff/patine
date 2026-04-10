@@ -1,0 +1,10 @@
+---
+source: tests/rendering.rs
+expression: "render(\"> | col1 | col2 |\\n> |------|------|\\n> | a    | b    |\")"
+---
+[dim][italic][dim]│ [/intensity][dim][italic]┌──────┬──────┐
+[dim]│ [/intensity][dim][italic]│ [bold]col1[/intensity] │ [bold]col2[/intensity] │
+[dim]│ [/intensity][dim][italic]├──────┼──────┤
+[dim]│ [/intensity][dim][italic]│ a    │ b    │
+[dim]│ [/intensity][dim][italic]└──────┴──────┘
+[/italic][/intensity]

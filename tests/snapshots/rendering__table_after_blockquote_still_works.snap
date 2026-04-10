@@ -1,0 +1,11 @@
+---
+source: tests/rendering.rs
+expression: "render(\"> a quote\\n\\n| col |\\n|---|\\n| val |\")"
+---
+[dim][italic][dim]│ [/intensity][dim][italic]a quote
+[/italic][/intensity]
+┌─────┐
+│ [bold]col[/intensity] │
+├─────┤
+│ val │
+└─────┘

@@ -1,0 +1,10 @@
+---
+source: tests/rendering.rs
+expression: "render(\"> > | a | b |\\n> > |--|--|\\n> > | 1 | 2 |\")"
+---
+[dim][italic][dim][italic][dim]│ │ [/intensity][dim][italic][dim][italic]┌───┬───┐
+[dim]│ │ [/intensity][dim][italic][dim][italic]│ [bold]a[/intensity] │ [bold]b[/intensity] │
+[dim]│ │ [/intensity][dim][italic][dim][italic]├───┼───┤
+[dim]│ │ [/intensity][dim][italic][dim][italic]│ 1 │ 2 │
+[dim]│ │ [/intensity][dim][italic][dim][italic]└───┴───┘
+[/italic][/intensity][/italic][/intensity]

@@ -219,17 +219,25 @@ impl<'w, W: Write> Renderer<'w, W> {
     fn render_table(&mut self, table: &markdown::mdast::Table) -> Result<()> {
         self.ensure_block_spacing()?;
 
-        // Build the indent string that the table module should prepend to
-        // each line. This mirrors write_indent but as a plain string.
-        let indent = NEST_INDENT.repeat(self.extra_indent);
-
-        crate::table::render_table(self.writer, table, &indent)?;
-
-        // The table module writes its own newlines; update our state to
-        // reflect that.
-        self.column = 0;
-        self.consecutive_newlines = 1;
-        self.at_start = false;
+        // The table module is pure: it lays out the table as a list of
+        // pre-formatted content lines (box-drawing characters, cell text,
+        // and any SGR escapes for bold headers) without any per-line
+        // prefix. We walk the lines here so that each one receives the
+        // renderer's normal line prefix — nesting indent *and* blockquote
+        // bars — via `write_indent`. This matches the pattern used by
+        // `render_code_block`.
+        for line in crate::table::layout_table(table) {
+            self.write_indent()?;
+            write!(self.writer, "{line}").context("write table line")?;
+            // Table rows occupy full content lines; once the line is
+            // emitted, the next call must treat us as if we're mid-line
+            // so `write_newline` can terminate the row cleanly. The
+            // subsequent `write_newline` resets `column` back to 0.
+            self.column = 0;
+            self.consecutive_newlines = 0;
+            self.at_start = false;
+            self.write_newline()?;
+        }
         Ok(())
     }
 

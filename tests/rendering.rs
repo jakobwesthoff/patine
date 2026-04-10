@@ -42,6 +42,31 @@ fn render_with_width(markdown: &str, width: usize) -> String {
         .replace("\x1b[29m", "[/strike]")
 }
 
+/// Strip the `[tag]` markers (e.g. `[bold]`, `[/underline]`) that `render`
+/// substitutes for ANSI escapes. Used to measure visible display width
+/// or to assert on the plain-text shape of a line. Only the exact set of
+/// style tags emitted by `render` is removed — this preserves literal
+/// brackets in rendered text such as `[image]` markers.
+fn strip_tags(s: &str) -> String {
+    let mut out = s.to_string();
+    for tag in [
+        "[bold]",
+        "[/intensity]",
+        "[dim]",
+        "[italic]",
+        "[/italic]",
+        "[underline]",
+        "[/underline]",
+        "[code]",
+        "[/color]",
+        "[strike]",
+        "[/strike]",
+    ] {
+        out = out.replace(tag, "");
+    }
+    out
+}
+
 // =========================================================
 // Empty / whitespace input
 // =========================================================
@@ -483,6 +508,77 @@ fn table_after_heading() {
     assert_snapshot!(render(
         "## Priority\n\n| Level | Items |\n|---|---|\n| High | Bugs |"
     ));
+}
+
+// =========================================================
+// Regression: tables inside blockquotes must carry blockquote bars
+// =========================================================
+
+#[test]
+fn table_in_blockquote_has_bars() {
+    // Every line of a table rendered inside a blockquote must start
+    // with the blockquote `│ ` bar. The table itself uses `│` for cell
+    // borders, so we must strip ANSI tags *and* check the line prefix
+    // — not just whether `│` appears anywhere.
+    let output = render("> | col1 | col2 |\n> |------|------|\n> | a    | b    |");
+    let table_line_markers = ["┌", "│ col1", "├", "│ a ", "└"];
+    for marker in table_line_markers {
+        let line = output
+            .lines()
+            .map(strip_tags)
+            .find(|l| l.contains(marker))
+            .unwrap_or_else(|| panic!("missing table line with {marker:?}\nfull:\n{output}"));
+        assert!(
+            line.starts_with("│ "),
+            "line containing {marker:?} must start with a blockquote bar:\nline: {line:?}\nfull:\n{output}"
+        );
+    }
+}
+
+#[test]
+fn table_in_nested_blockquote_has_double_bars() {
+    // Two levels of blockquote nesting should produce two bar prefixes
+    // on every table line.
+    let output = render("> > | a | b |\n> > |--|--|\n> > | 1 | 2 |");
+    let table_line_markers = ["┌", "│ a", "├", "│ 1", "└"];
+    for marker in table_line_markers {
+        let line = output
+            .lines()
+            .map(strip_tags)
+            .find(|l| l.contains(marker))
+            .unwrap_or_else(|| panic!("missing table line with {marker:?}\nfull:\n{output}"));
+        assert!(
+            line.starts_with("│ │ "),
+            "line containing {marker:?} must start with two blockquote bars:\nline: {line:?}\nfull:\n{output}"
+        );
+    }
+}
+
+#[test]
+fn table_after_blockquote_still_works() {
+    // A table immediately following a blockquote (not inside it) must
+    // render normally with no bars. This guards against the new
+    // per-line `write_indent` loop accidentally picking up stale state.
+    assert_snapshot!(render(
+        "> a quote\n\n| col |\n|---|\n| val |"
+    ));
+}
+
+#[test]
+fn table_in_blockquote_snapshot() {
+    // Full visual pin for a table inside a single-level blockquote.
+    // Complements the per-line bar assertions above by locking in the
+    // exact expected output shape (bar prefix, box drawing, bold header,
+    // data cells) so future refactors cannot silently change it.
+    assert_snapshot!(render(
+        "> | col1 | col2 |\n> |------|------|\n> | a    | b    |"
+    ));
+}
+
+#[test]
+fn table_in_nested_blockquote_snapshot() {
+    // Same, for two levels of blockquote nesting.
+    assert_snapshot!(render("> > | a | b |\n> > |--|--|\n> > | 1 | 2 |"));
 }
 
 // =========================================================
