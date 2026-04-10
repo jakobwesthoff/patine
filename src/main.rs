@@ -6,7 +6,7 @@ use std::io::{self, IsTerminal, Read, Write};
 use std::path::PathBuf;
 
 use anyhow::Context;
-use clap::Parser;
+use clap::{CommandFactory, Parser};
 
 /// Render Markdown beautifully in the terminal.
 #[derive(Parser)]
@@ -29,8 +29,8 @@ fn main() -> anyhow::Result<()> {
         }
         None => {
             if io::stdin().is_terminal() {
-                Cli::parse_from(["patine", "--help"]);
-                unreachable!();
+                Cli::command().print_help().context("print help")?;
+                return Ok(());
             }
             let mut buf = String::new();
             io::stdin().read_to_string(&mut buf).context("read stdin")?;

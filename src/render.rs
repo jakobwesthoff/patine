@@ -318,9 +318,9 @@ impl<'w, W: Write> Renderer<'w, W> {
     fn render_thematic_break(&mut self) -> Result<()> {
         self.ensure_block_spacing()?;
         self.write_indent()?;
-        let rule: String = "─".repeat(self.effective_width());
-        write!(self.writer, "{rule}").context("write thematic break")?;
-        self.column = self.effective_width();
+        let width = self.effective_width();
+        write!(self.writer, "{}", "─".repeat(width)).context("write thematic break")?;
+        self.column = width;
         self.consecutive_newlines = 0;
         self.at_start = false;
         self.write_newline()?;
