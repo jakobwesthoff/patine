@@ -1313,3 +1313,25 @@ fn empty_code_block_then_following_content_still_renders() {
         "content after empty code block must still render:\n{output}"
     );
 }
+
+// =========================================================
+// End-to-end showcase: a realistic document using every feature
+// =========================================================
+
+/// Fixture: a realistic document that exercises every Markdown feature
+/// patine supports — h1/h2/h3, paragraphs with soft breaks,
+/// bold/italic/bold+italic/strikethrough, inline code, fenced code
+/// blocks (with and without a language hint), ordered and unordered
+/// lists, nested lists, multi-paragraph list items, simple and nested
+/// blockquotes, tables, thematic breaks, inline links, autolinks,
+/// images, and hard breaks.
+///
+/// The snapshot locks in the full end-to-end visual shape. Any change
+/// that alters how ANY feature renders will show up here in a single
+/// diff, making regressions trivially visible during review.
+const SHOWCASE_MD: &str = include_str!("fixtures/showcase.md");
+
+#[test]
+fn showcase_document_renders() {
+    assert_snapshot!(render(SHOWCASE_MD));
+}

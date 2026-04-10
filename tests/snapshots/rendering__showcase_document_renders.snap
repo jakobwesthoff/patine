@@ -1,0 +1,105 @@
+---
+source: tests/rendering.rs
+expression: render(SHOWCASE_MD)
+---
+[italic][underline]Field Manual 42-B: Interdimensional Incident Response[/underline][/italic]
+
+[bold]Preamble[/intensity]
+
+This manual describes standard operating procedure for[bold] Class-III multiverse
+[bold]incursions[/intensity], as adopted by the[italic] Intergalactic Committee on Narrative Integrity[/italic]
+(ICNI). All personnel are required to read it twice, sign the waiver, and
+memorize Section 4 before their next shift.
+
+[dim][italic][dim]│ [/intensity][dim][italic]"The universe is not only stranger than we imagine, it is stranger than we can
+[dim]│ [/intensity][dim][italic][dim][italic]be reimbursed for."
+[dim]│ [/intensity][dim][italic]
+[dim]│ [/intensity][dim][italic]— Admiral Ackbar, 2387 budget hearing
+[dim]│ [/intensity][dim][italic]
+[dim][italic][dim]│ │ [/intensity][dim][italic][dim][italic]Accounting note: next time, please file form[italic][bold] W-42B[/intensity][dim][/italic] in triplicate.
+[/italic][/intensity][/italic][/intensity]
+────────────────────────────────────────────────────────────────────────────────
+
+[bold]Section 1 — Crossover Classification[/intensity]
+
+The following incursion types have been observed in the last[strike] fiscal quarter[/strike]
+epoch:
+
+┌───────┬──────────────────────────────────────┬──────────────┐
+│ [bold]Class[/intensity] │ [bold]              Example               [/intensity] │ [bold]Threat Level[/intensity] │
+├───────┼──────────────────────────────────────┼──────────────┤
+│ Alpha │ Gandalf at Comic-Con                 │ Low          │
+├───────┼──────────────────────────────────────┼──────────────┤
+│ Beta  │ Spock attending a quidditch match    │ Medium       │
+├───────┼──────────────────────────────────────┼──────────────┤
+│ Gamma │ A TARDIS inside a Death Star reactor │ CRITICAL     │
+└───────┴──────────────────────────────────────┴──────────────┘
+
+See [underline]the full classification taxonomy[/underline][dim] (https://example.invalid/icni/taxonomy)[/intensity] for
+additional detail, or browse the quick reference at [underline]
+[underline]https://example.invalid/icni/quick-ref[/underline][dim] (https://example.invalid/icni/quick-ref)[/intensity].
+
+[bold]Section 2 — Initial Response[/intensity]
+
+Upon detecting an incursion, operatives should:
+
+1. Confirm the breach using the[code] multiverse-scan --now[/color] command.
+2. Assess threat level per Section 1.
+3. Notify your local liaison.[bold] Do not[/intensity] attempt to resolve Alpha-class
+   incursions personally — they typically resolve themselves once coffee is
+   offered.
+4. File an incident report, even if the incident was "just a cat".
+
+[bold]Example Scan Output[/intensity]
+
+[code]  $ multiverse-scan --now
+  [ok] scanning timelines 1..2^64
+  [warn] anomaly at (42, 7, 1977)
+  [critical] The One Ring detected inside a replicator unit
+[/color]
+If the output looks garbled, try the unflagged variant:
+
+[code]  multiverse-scan
+[/color]
+[bold]Section 3 — Field Kit[/intensity]
+
+Operatives carry the following items at all times:
+
+• A[italic] sonic screwdriver[/italic] (standard issue)
+• One (1)[code] phaser[/color], set to stun
+• A small notebook labelled[bold] Don't Panic[/intensity]
+• Emergency rations, consisting of:
+  • Lembas bread
+  • Replicator chits
+  • A single chocolate frog, for morale
+
+    Morale is critical on extended assignments. Personnel who neglect their
+    chocolate frog ration have been observed to sulk, at which point rescue
+    teams report a measurable drop in[italic] snark throughput[/italic].
+
+[bold]Escalation Chain[/intensity]
+
+Incidents escalate in the following order:
+
+1. Field operative
+2. Shift supervisor
+3. Regional coordinator
+  1. First deputy
+  2. Second deputy (Tuesdays only)
+4. ICNI council
+
+[image: Official ICNI seal][dim] (https://example.invalid/icni/seal.png)[/intensity]
+
+────────────────────────────────────────────────────────────────────────────────
+
+[bold]Appendix A — Poetry Corner[/intensity]
+
+By long-standing tradition, every manual concludes with a verse. The following
+was composed by R2-D2 during his tenure as guest editor:
+
+Beep boop beep, the stars align,
+The Force and phasers intertwine,
+One does not simply walk to warp,
+So set your course, and mind the sharp.
+
+[italic]End of document.[/italic]
