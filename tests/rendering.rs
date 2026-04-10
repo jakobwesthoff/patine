@@ -292,6 +292,49 @@ fn link_text_is_underlined() {
     );
 }
 
+#[test]
+fn long_link_url_wraps_onto_new_line() {
+    // A URL that won't fit on the current line alongside the link text
+    // should move to its own line. The URL itself must never be broken
+    // mid-string (it may overflow on its own line — overflow is preferable
+    // to making a URL uncopyable).
+    let url = "https://example.com/some/very/long/path/that/exceeds";
+    let output = render_with_width(&format!("[link]({url})"), 40);
+    // The link text "link" should be on one line; the URL suffix "(url)"
+    // should begin a different line because it did not fit next to "link".
+    let link_line = output
+        .lines()
+        .find(|l| l.contains("link"))
+        .expect("must contain link text");
+    assert!(
+        !link_line.contains(url),
+        "URL must not follow link text on the same line when it doesn't fit:\nline: {link_line}\nfull:\n{output}"
+    );
+    // The URL must still appear intact on some line.
+    assert!(
+        output.contains(url),
+        "URL must not be broken mid-string:\n{output}"
+    );
+}
+
+#[test]
+fn long_image_url_wraps_onto_new_line() {
+    let url = "https://example.com/some/very/long/path/that/exceeds.png";
+    let output = render_with_width(&format!("![alt]({url})"), 40);
+    let alt_line = output
+        .lines()
+        .find(|l| l.contains("[image: alt]"))
+        .expect("must contain image alt marker");
+    assert!(
+        !alt_line.contains(url),
+        "URL must not follow image marker on the same line when it doesn't fit:\nline: {alt_line}\nfull:\n{output}"
+    );
+    assert!(
+        output.contains(url),
+        "URL must not be broken mid-string:\n{output}"
+    );
+}
+
 // =========================================================
 // Regression: code blocks must have extra 2-space indent
 // =========================================================

@@ -393,16 +393,7 @@ impl<'w, W: Write> Renderer<'w, W> {
             format!("[image: {}]", image.alt)
         };
         self.render_text(&marker)?;
-        self.pending_space = true;
-        self.push_style(Style::Dim)?;
-        self.write_word("(")?;
-        write!(self.writer, "{}", image.url).context("write image url")?;
-        self.column += UnicodeWidthStr::width(image.url.as_str());
-        self.consecutive_newlines = 0;
-        self.at_start = false;
-        write!(self.writer, ")").context("write closing paren")?;
-        self.column += 1;
-        self.pop_style()
+        self.write_dimmed_url_suffix(&image.url)
     }
 
     fn render_inline_code(&mut self, code: &str) -> Result<()> {
@@ -422,17 +413,43 @@ impl<'w, W: Write> Renderer<'w, W> {
         self.push_style(Style::Underline)?;
         self.render_children(&link.children)?;
         self.pop_style()?;
-        // Append the URL in parentheses, dimmed.
-        self.pending_space = true;
+        self.write_dimmed_url_suffix(&link.url)
+    }
+
+    /// Write a URL in dimmed parentheses as a suffix to the previous inline
+    /// content (link text or image marker). The `(url)` block is treated as
+    /// one atomic unit for wrapping purposes: if it doesn't fit on the
+    /// current line alongside the preceding content, it moves to a fresh
+    /// line. The URL itself is never broken mid-string — on a narrow
+    /// terminal it may overflow its own line, which is preferable to
+    /// rendering it uncopyable.
+    fn write_dimmed_url_suffix(&mut self, url: &str) -> Result<()> {
+        let url_width = UnicodeWidthStr::width(url);
+        let suffix_width = url_width + 2; // "(" + url + ")"
+
+        // If we are mid-line and the suffix (including a leading space)
+        // would push past the available width, wrap before writing so the
+        // suffix starts on a fresh line.
+        let mut need_space = self.column > 0;
+        if need_space && self.column + 1 + suffix_width > self.effective_width() {
+            self.wrap_line()?;
+            // After wrap_line we are at the start of the content area for
+            // the new line (column may still be > 0 due to continuation
+            // indent, but conceptually we're "at the start" and should not
+            // prefix another space).
+            need_space = false;
+        }
+        self.pending_space = false;
+
         self.push_style(Style::Dim)?;
-        self.write_word("(")?;
-        // Write URL directly after opening paren (no space).
-        write!(self.writer, "{}", link.url).context("write link url")?;
-        self.column += UnicodeWidthStr::width(link.url.as_str());
+        if need_space {
+            write!(self.writer, " ").context("write space before url")?;
+            self.column += 1;
+        }
+        write!(self.writer, "({url})").context("write url suffix")?;
+        self.column += suffix_width;
         self.consecutive_newlines = 0;
         self.at_start = false;
-        write!(self.writer, ")").context("write closing paren")?;
-        self.column += 1;
         self.pop_style()
     }
 
