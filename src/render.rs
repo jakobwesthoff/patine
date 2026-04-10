@@ -477,12 +477,14 @@ impl<'w, W: Write> Renderer<'w, W> {
     // =========================================================
 
     /// Content width available for text, accounting for global indent and any
-    /// extra nesting indent.
+    /// extra nesting indent. Always returns at least 1 to prevent degenerate
+    /// behavior (e.g. invisible thematic breaks, every word on its own line).
     fn effective_width(&self) -> usize {
         self.content_width
             .saturating_sub(self.extra_indent * NEST_INDENT_WIDTH)
             .saturating_sub(self.blockquote_depth * 2)
             .saturating_sub(self.continuation_indent)
+            .max(1)
     }
 
     fn write_newline(&mut self) -> Result<()> {

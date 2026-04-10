@@ -14,8 +14,13 @@ use insta::assert_snapshot;
 ///   \x1b[4m      → [underline]    \x1b[24m     → [/underline]
 ///   \x1b[38;5;3m → [code]         \x1b[39m     → [/color]
 fn render(markdown: &str) -> String {
+    render_with_width(markdown, 80)
+}
+
+/// Like [`render`], but with a custom terminal width.
+fn render_with_width(markdown: &str, width: usize) -> String {
     let mut buf: Vec<u8> = Vec::new();
-    patine::render(markdown, &mut buf, 80).expect("render should not fail");
+    patine::render(markdown, &mut buf, width).expect("render should not fail");
 
     String::from_utf8(buf)
         .expect("output should be valid utf-8")
@@ -734,4 +739,24 @@ fn trailing_newline() {
 #[test]
 fn heading_paragraph_heading_spacing() {
     assert_snapshot!(render("## First\n\nA paragraph.\n\n## Second"));
+}
+
+// =========================================================
+// Effective width floor
+// =========================================================
+
+#[test]
+fn effective_width_floored_thematic_break_not_empty() {
+    // With a very narrow terminal and deep nesting, effective_width() can
+    // reach 0 after subtracting indent widths. A thematic break rendered at
+    // effective_width=0 produces an empty (invisible) rule because
+    // "─".repeat(0) is "".
+    //
+    // Four levels of blockquote at width 8 consumes all 8 columns of indent
+    // (4 × 2 = 8), leaving effective_width = 0 without the floor.
+    let output = render_with_width("> > > > ---", 8);
+    assert!(
+        output.contains('─'),
+        "thematic break must not disappear at zero effective width:\n{output}"
+    );
 }
