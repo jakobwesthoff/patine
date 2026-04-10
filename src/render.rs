@@ -52,8 +52,13 @@ pub struct Renderer<'w, W: Write> {
     /// Derived from the terminal width at construction time.
     content_width: usize,
 
-    /// Current column position within the content area (0-based, does not
-    /// include the global indent).
+    /// Current column position within the content area, 0-based. Tracks
+    /// content position *after* the indent prefix (nesting indent +
+    /// blockquote bars). Wrapping decisions compare `column` against
+    /// [`effective_width()`](Self::effective_width), both of which exclude
+    /// indent width — this is why setting `column` to a line's display
+    /// width (e.g. in `render_code_block`) is correct despite the indent
+    /// having just been written.
     column: usize,
 
     /// Number of consecutive newlines written since the last non-newline
