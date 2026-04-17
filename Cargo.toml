@@ -1,6 +1,6 @@
 [package]
 name = "patine"
-version = "1.2.0"
+version = "1.3.0"
 edition = "2024"
 license = "MPL-2.0"
 description = "Render Markdown beautifully in the terminal"
