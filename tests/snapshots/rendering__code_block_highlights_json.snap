@@ -1,0 +1,5 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```json\\n{\\\"id\\\": 42, \\\"name\\\": \\\"alice\\\"}\\n```\")"
+---
+  {[fg4]"[/color][fg4]id[/color][fg4]"[/color]: [code]42[/color], [fg4]"[/color][fg4]name[/color][fg4]"[/color]: [fg2]"[/color][fg2]alice[/color][fg2]"[/color]}

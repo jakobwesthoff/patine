@@ -197,19 +197,42 @@ impl<'w, W: Write> Renderer<'w, W> {
         Ok(())
     }
 
-    /// Render a fenced or indented code block. The content is written
-    /// verbatim (no word wrapping) with each line individually indented.
-    /// The language hint from the fence is preserved internally but not
-    /// displayed — it will be used for syntax highlighting in a later
-    /// version.
+    /// Render a fenced or indented code block.
+    ///
+    /// When the fence carries a recognized language identifier
+    /// (e.g. `` ```rust ``), tokens are syntax-highlighted using the
+    /// bat-authored `Ansi` theme (ANSI palette indices 0–7) so that
+    /// colors resolve against the user's terminal theme. When the
+    /// language is missing or unknown, the block falls back to the
+    /// flat `CODE_COLOR` rendering path that predates highlighting.
+    /// In both cases, content is written verbatim with each line
+    /// indented one level and never word-wrapped.
     fn render_code_block(&mut self, code: &markdown::mdast::Code) -> Result<()> {
         self.ensure_block_spacing()?;
-        self.push_style(Style::ForegroundColor(CODE_COLOR))?;
 
-        // Code blocks get an extra 2-space indent beyond the global indent
-        // to visually separate them from surrounding prose.
+        // Code blocks get an extra 2-space indent beyond the global
+        // indent to visually separate them from surrounding prose.
+        // The indent is applied around whichever rendering branch
+        // runs, so the structural layout stays identical between
+        // highlighted and fallback modes.
         self.extra_indent += 1;
-        for line in code.value.lines() {
+
+        let syntax = crate::highlight::syntax_for(code.lang.as_deref());
+        let result = match syntax {
+            Some(syntax) => self.render_code_block_highlighted(&code.value, syntax),
+            None => self.render_code_block_plain(&code.value),
+        };
+
+        self.extra_indent -= 1;
+        result
+    }
+
+    /// Flat-color code block rendering used for fences without a
+    /// recognized language identifier. Produces byte-for-byte the
+    /// same output as the pre-highlighting implementation.
+    fn render_code_block_plain(&mut self, value: &str) -> Result<()> {
+        self.push_style(Style::ForegroundColor(CODE_COLOR))?;
+        for line in value.lines() {
             self.write_indent()?;
             write!(self.writer, "{line}").context("write code line")?;
             self.column = UnicodeWidthStr::width(line);
@@ -217,9 +240,62 @@ impl<'w, W: Write> Renderer<'w, W> {
             self.at_start = false;
             self.write_newline()?;
         }
-        self.extra_indent -= 1;
-
         self.pop_style()?;
+        Ok(())
+    }
+
+    /// Syntax-highlighted code block rendering. Uses a single
+    /// `HighlightLines` instance for the whole block so multi-line
+    /// lexer state (block comments, multi-line strings) is carried
+    /// across lines. Per-token styles are pushed and popped on the
+    /// renderer's style stack so that the existing reapply-after-
+    /// indent machinery (blockquote bars, nested contexts) keeps
+    /// working without further changes.
+    fn render_code_block_highlighted(
+        &mut self,
+        value: &str,
+        syntax: &syntect::parsing::SyntaxReference,
+    ) -> Result<()> {
+        let mut hl = crate::highlight::new_highlighter(syntax);
+        for line in value.lines() {
+            // `extra_newlines` grammars require each input line to
+            // terminate in `\n`; we strip it back off per-token in
+            // the highlight helper.
+            let line_nl = format!("{line}\n");
+            let tokens = crate::highlight::highlight_line(&mut hl, &line_nl)?;
+
+            self.write_indent()?;
+            let mut column: usize = 0;
+            for tok in tokens {
+                // Push whichever subset of styles applies to this
+                // token, emit the text, then unwind the same number
+                // of styles we pushed. The renderer's existing
+                // `pop_style` re-emits any outer foreground color
+                // automatically, so nested contexts are safe.
+                let mut pushed = 0usize;
+                if let Some(fg) = tok.fg {
+                    self.push_style(Style::ForegroundColor(fg))?;
+                    pushed += 1;
+                }
+                if tok.bold {
+                    self.push_style(Style::Bold)?;
+                    pushed += 1;
+                }
+                if tok.italic {
+                    self.push_style(Style::Italic)?;
+                    pushed += 1;
+                }
+                write!(self.writer, "{}", tok.text).context("write code token")?;
+                column += UnicodeWidthStr::width(tok.text);
+                for _ in 0..pushed {
+                    self.pop_style()?;
+                }
+            }
+            self.column = column;
+            self.consecutive_newlines = 0;
+            self.at_start = false;
+            self.write_newline()?;
+        }
         Ok(())
     }
 

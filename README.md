@@ -34,14 +34,14 @@ patine --width 100 README.md
 
 [glow](https://github.com/charmbracelet/glow) is an excellent and mature terminal Markdown renderer. patine exists because I wanted something different:
 
-- **Less color, more structure.** glow uses colored backgrounds for headings, syntax highlighting for code blocks, and colored text throughout. patine stays close to the terminal's default colors and relies on bold, italic, underline, and dim to convey structure. The result is quieter and — in my opinion — easier to read. This comes down to personal taste.
+- **Less color, more structure.** glow uses colored backgrounds for headings and truecolor themes throughout. patine stays close to the terminal's default colors, uses only the 8-color ANSI palette (so the user's terminal theme applies) when it does colorize — including syntax highlighting — and relies on bold, italic, underline, and dim elsewhere. The result is quieter and — in my opinion — easier to read. This comes down to personal taste.
 - **Focused scope.** glow includes a TUI file browser, stash functionality, and Glamour-based theming. patine is a single-purpose tool: pipe Markdown in, get styled text out. Nothing more.
 
 ## What It Renders
 
 - **Headings** — H1 italic + underlined, H2–H6 bold
 - **Inline formatting** — bold, italic, bold-italic, strikethrough, inline code
-- **Code blocks** — verbatim output in a distinct color, never wrapped
+- **Code blocks** — verbatim, never wrapped; syntax-highlighted with the terminal's ANSI palette when a language is specified on the fence
 - **Links** — underlined text, URL in dimmed parentheses
 - **Images** — `[image: alt text]` with the path/URL dimmed
 - **Lists** — ordered and unordered, with arbitrary nesting

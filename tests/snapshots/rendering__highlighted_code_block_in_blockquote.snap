@@ -1,0 +1,8 @@
+---
+source: tests/rendering.rs
+expression: "render(\"> Some intro text.\\n>\\n> ```rust\\n> let x = 1;\\n> ```\")"
+---
+[dim][italic][dim]│ [/intensity][dim][italic]Some intro text.
+[dim]│ [/intensity][dim][italic]
+  [dim]│ [/intensity][dim][italic][fg5]let[/color] x [fg5]=[/color] [code]1[/color];
+[/italic][/intensity]

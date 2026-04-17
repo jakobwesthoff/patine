@@ -12,7 +12,12 @@ use insta::assert_snapshot;
 ///   \x1b[2m      → [dim]
 ///   \x1b[3m      → [italic]       \x1b[23m     → [/italic]
 ///   \x1b[4m      → [underline]    \x1b[24m     → [/underline]
-///   \x1b[38;5;3m → [code]         \x1b[39m     → [/color]
+///   \x1b[38;5;<n>m → [fg<n>]      \x1b[39m     → [/color]
+///     Exception: index 3 keeps the semantic tag [code] because it
+///     doubles as the inline-code color used everywhere outside of
+///     highlighted blocks. Inside a highlighted block, a yellow
+///     token will also appear as [code] — that is the literal
+///     byte truth and acceptable for snapshot readability.
 fn render(markdown: &str) -> String {
     render_with_width(markdown, 80)
 }
@@ -26,7 +31,14 @@ fn render_with_width(markdown: &str, width: usize) -> String {
         .expect("output should be valid utf-8")
         // Order matters: longer sequences must be replaced before shorter
         // ones that share a prefix (e.g., \x1b[22m before \x1b[2m).
+        .replace("\x1b[38;5;0m", "[fg0]")
+        .replace("\x1b[38;5;1m", "[fg1]")
+        .replace("\x1b[38;5;2m", "[fg2]")
         .replace("\x1b[38;5;3m", "[code]")
+        .replace("\x1b[38;5;4m", "[fg4]")
+        .replace("\x1b[38;5;5m", "[fg5]")
+        .replace("\x1b[38;5;6m", "[fg6]")
+        .replace("\x1b[38;5;7m", "[fg7]")
         .replace("\x1b[39m", "[/color]")
         // NormalIntensity (SGR 22) is used to disable both Bold and Dim.
         // In the tag output it appears as [/intensity]. The context
@@ -60,7 +72,15 @@ fn strip_tags(s: &str) -> String {
         "[/italic]",
         "[underline]",
         "[/underline]",
+        "[double-underline]",
         "[code]",
+        "[fg0]",
+        "[fg1]",
+        "[fg2]",
+        "[fg4]",
+        "[fg5]",
+        "[fg6]",
+        "[fg7]",
         "[/color]",
         "[strike]",
         "[/strike]",
@@ -837,6 +857,189 @@ fn code_block_no_wrap() {
 #[test]
 fn code_block_between_paragraphs() {
     assert_snapshot!(render("Before.\n\n```\ncode\n```\n\nAfter."));
+}
+
+// ---------------------------------------------------------
+// Code blocks — syntax highlighting
+// ---------------------------------------------------------
+//
+// The snapshots below are the source of truth for which scopes in
+// the `Ansi` theme map to which palette indices. Regenerate them
+// deliberately (`cargo insta review`) if the upstream theme
+// definition in `two-face` changes.
+
+#[test]
+fn code_block_highlights_rust() {
+    assert_snapshot!(render(
+        "```rust\n// comment\nlet x: u32 = 42;\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_python() {
+    assert_snapshot!(render(
+        "```python\n# comment\ndef greet(name):\n    return f\"hi {name}\"\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_javascript() {
+    assert_snapshot!(render(
+        "```javascript\n// comment\nconst x = 42;\nlet s = \"hi\";\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_typescript() {
+    assert_snapshot!(render(
+        "```typescript\n// comment\nconst n: number = 42;\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_go() {
+    assert_snapshot!(render(
+        "```go\n// comment\nfunc greet(name string) string { return \"hi \" + name }\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_bash() {
+    assert_snapshot!(render(
+        "```bash\n# comment\nfor i in 1 2 3; do echo \"$i\"; done\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_json() {
+    assert_snapshot!(render(
+        "```json\n{\"id\": 42, \"name\": \"alice\"}\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_yaml() {
+    assert_snapshot!(render(
+        "```yaml\nname: alice\nid: 42\ntags:\n  - admin\n  - user\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_toml() {
+    assert_snapshot!(render(
+        "```toml\n[package]\nname = \"patine\"\nversion = \"1.0.0\"\n```"
+    ));
+}
+
+#[test]
+fn code_block_highlights_markdown() {
+    assert_snapshot!(render(
+        "```markdown\n# Heading\n\nSome *emphasis* and **strong** text.\n```"
+    ));
+}
+
+#[test]
+fn code_block_unknown_language_falls_back_to_code_color() {
+    // A nonsense language hint must render identically to no hint
+    // at all: the whole block in flat CODE_COLOR.
+    assert_snapshot!(render("```foobar\nsome text\n```"));
+}
+
+#[test]
+fn code_block_case_variation_recognizes_language() {
+    // `rust`, `Rust`, and `RUST` should all resolve to the same
+    // syntax. Output must match byte-for-byte.
+    let lower = render("```rust\nlet x = 1;\n```");
+    let title = render("```Rust\nlet x = 1;\n```");
+    let upper = render("```RUST\nlet x = 1;\n```");
+    assert_eq!(lower, title);
+    assert_eq!(lower, upper);
+}
+
+#[test]
+fn code_block_preserves_multiline_string_state() {
+    // A Rust string literal spanning multiple lines. The second
+    // line must still be highlighted as "inside a string" — which
+    // is only possible because we reuse one HighlightLines across
+    // all lines of the block.
+    assert_snapshot!(render(
+        "```rust\nlet s = \"first line\n  still inside string\";\n```"
+    ));
+}
+
+#[test]
+fn highlighted_code_block_in_blockquote() {
+    // Blockquote `│ ` bar prefix + per-token highlighting must
+    // coexist — the bars stay dim on every line and the tokens
+    // stay highlighted per-token.
+    assert_snapshot!(render(
+        "> Some intro text.\n>\n> ```rust\n> let x = 1;\n> ```"
+    ));
+}
+
+#[test]
+fn highlighted_code_block_in_list_item() {
+    assert_snapshot!(render(
+        "1. First step:\n\n   ```rust\n   let x = 1;\n   ```\n"
+    ));
+}
+
+#[test]
+fn highlighted_code_block_never_wraps() {
+    // A very long highlighted line in a narrow terminal must stay
+    // on a single output line; only the terminal emulator itself
+    // may soft-wrap it.
+    let long = format!("let x = {};", "1 + ".repeat(40));
+    let src = format!("```rust\n{long}\n```");
+    let mut buf: Vec<u8> = Vec::new();
+    patine::render(&src, &mut buf, 40).expect("render should not fail");
+    let output = String::from_utf8(buf).expect("valid utf-8");
+    // Strip all our tag-forms first so we can check the plain text
+    // shape. We do that by running the replacement helper then
+    // strip_tags.
+    let tagged = output
+        .replace("\x1b[38;5;0m", "[fg0]")
+        .replace("\x1b[38;5;1m", "[fg1]")
+        .replace("\x1b[38;5;2m", "[fg2]")
+        .replace("\x1b[38;5;3m", "[code]")
+        .replace("\x1b[38;5;4m", "[fg4]")
+        .replace("\x1b[38;5;5m", "[fg5]")
+        .replace("\x1b[38;5;6m", "[fg6]")
+        .replace("\x1b[38;5;7m", "[fg7]")
+        .replace("\x1b[39m", "[/color]")
+        .replace("\x1b[22m", "[/intensity]")
+        .replace("\x1b[23m", "[/italic]")
+        .replace("\x1b[24m", "[/underline]")
+        .replace("\x1b[1m", "[bold]")
+        .replace("\x1b[2m", "[dim]")
+        .replace("\x1b[3m", "[italic]");
+    let plain = strip_tags(&tagged);
+    assert!(
+        plain.lines().any(|l| l.contains(&long)),
+        "long highlighted line must appear intact on a single output line:\n{plain}"
+    );
+}
+
+#[test]
+fn highlighted_narrow_width_does_not_panic() {
+    // Width smaller than the rendered content must not panic,
+    // same guarantee as for the fallback path.
+    let mut buf: Vec<u8> = Vec::new();
+    patine::render("```rust\nlet x = 42;\n```", &mut buf, 6).expect("render should not fail");
+}
+
+#[test]
+fn highlighted_code_block_preserves_unicode() {
+    // Multi-byte characters (combining accent, emoji) inside a
+    // highlighted string literal must pass through verbatim and
+    // not confuse column tracking.
+    assert_snapshot!(render("```rust\nlet s = \"héllo 🎉\";\n```"));
+}
+
+#[test]
+fn highlighted_empty_code_block_does_not_panic() {
+    let mut buf: Vec<u8> = Vec::new();
+    patine::render("```rust\n```", &mut buf, 80).expect("render should not fail");
 }
 
 // =========================================================

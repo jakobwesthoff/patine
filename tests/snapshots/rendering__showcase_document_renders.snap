@@ -52,15 +52,24 @@ Upon detecting an incursion, operatives should:
 
 [bold]Example Scan Output[/intensity]
 
-[code]  $ multiverse-scan --now
+  $ multiverse-scan[fg6] --[/color][fg6]now[/color]
   [ok] scanning timelines 1..2^64
   [warn] anomaly at (42, 7, 1977)
   [critical] The One Ring detected inside a replicator unit
-[/color]
+
 If the output looks garbled, try the unflagged variant:
 
 [code]  multiverse-scan
 [/color]
+Operators with code access prefer the Python wrapper, which returns structured
+anomalies and mirrors the CLI flags:
+
+  [fg5]from[/color] multiverse [fg5]import[/color] scanner
+  
+  scan [fg5]=[/color] scanner.scan([fg6]now[/color][fg5]=[/color][code]True[/color], [fg6]depth[/color][fg5]=[/color][code]64[/color])
+  [fg5]for[/color] anomaly [fg5]in[/color] scan.anomalies:
+      [fg6]print[/color]([fg5]f[/color][fg2]"[/color][fg2][[/color]{anomaly.severity}[fg2]] [/color]{anomaly.description}[fg2]"[/color])
+
 [bold][underline]Section 3 — Field Kit[/underline][/intensity]
 
 Operatives carry the following items at all times:
@@ -76,6 +85,17 @@ Operatives carry the following items at all times:
     Morale is critical on extended assignments. Personnel who neglect their
     chocolate frog ration have been observed to sulk, at which point rescue
     teams report a measurable drop in[italic] snark throughput[/italic].
+
+The kit manifest is distributed as YAML so replicator units with only minimal
+parsing capability can still honor a request:
+
+  [fg1]kit[/color]:
+    [fg1]standard[/color]:
+      - [fg2]sonic screwdriver[/color]
+      - [fg2]phaser[/color]
+    [fg1]morale[/color]:
+      [fg1]chocolate_frog[/color]: [code]1[/color]
+      [fg1]notebook[/color]: [fg2]"[/color][fg2]Don't Panic[/color][fg2]"[/color]
 
 [bold]Escalation Chain[/intensity]
 

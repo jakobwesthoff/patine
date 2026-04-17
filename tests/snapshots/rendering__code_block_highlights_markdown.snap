@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```markdown\\n# Heading\\n\\nSome *emphasis* and **strong** text.\\n```\")"
+---
+  [fg4]#[/color] [fg4]Heading[/color]
+  
+  Some [fg5][italic]*[/italic][/color][fg5][italic]emphasis[/italic][/color][fg5][italic]*[/italic][/color] and [code][bold]**[/intensity][/color][code][bold]strong[/intensity][/color][code][bold]**[/intensity][/color] text.

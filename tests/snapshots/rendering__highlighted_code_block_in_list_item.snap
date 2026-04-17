@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"1. First step:\\n\\n   ```rust\\n   let x = 1;\\n   ```\\n\")"
+---
+1. First step:
+
+    [fg5]let[/color] x [fg5]=[/color] [code]1[/color];

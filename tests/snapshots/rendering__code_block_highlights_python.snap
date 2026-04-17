@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```python\\n# comment\\ndef greet(name):\\n    return f\\\"hi {name}\\\"\\n```\")"
+---
+  [fg2]#[/color][fg2] comment[/color]
+  [fg5]def[/color] [fg4]greet[/color]([fg6]name[/color]):
+      [fg5]return[/color] [fg5]f[/color][fg2]"[/color][fg2]hi [/color]{name}[fg2]"[/color]

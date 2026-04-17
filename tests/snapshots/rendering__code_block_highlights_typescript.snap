@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```typescript\\n// comment\\nconst n: number = 42;\\n```\")"
+---
+  [fg2]//[/color][fg2] comment[/color]
+  [fg5]const[/color] n[fg5]:[/color] number [fg5]=[/color] [code]42[/color];

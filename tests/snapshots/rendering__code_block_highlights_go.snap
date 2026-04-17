@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```go\\n// comment\\nfunc greet(name string) string { return \\\"hi \\\" + name }\\n```\")"
+---
+  [fg2]//[/color][fg2] comment[/color]
+  [fg5]func[/color] [fg4]greet[/color]([fg6]name[/color] [fg5]string[/color]) [fg5]string[/color] { [fg5]return[/color] [fg2]"[/color][fg2]hi [/color][fg2]"[/color] [fg5]+[/color] name }

@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```bash\\n# comment\\nfor i in 1 2 3; do echo \\\"$i\\\"; done\\n```\")"
+---
+  [fg2]#[/color][fg2] comment[/color]
+  [fg5]for[/color] i [fg5]in[/color] 1 2 3[fg5];[/color] [fg5]do[/color] [fg6]echo[/color] [fg2]"[/color][fg2]$[/color][fg2]i[/color][fg2]"[/color][fg5];[/color] [fg5]done[/color]

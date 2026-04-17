@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```toml\\n[package]\\nname = \\\"patine\\\"\\nversion = \\\"1.0.0\\\"\\n```\")"
+---
+  [[code]package[/color]]
+  [fg1]name[/color] = [fg2]"[/color][fg2]patine[/color][fg2]"[/color]
+  [fg1]version[/color] = [fg2]"[/color][fg2]1.0.0[/color][fg2]"[/color]

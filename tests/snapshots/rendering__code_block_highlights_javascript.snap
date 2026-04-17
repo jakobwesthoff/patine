@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```javascript\\n// comment\\nconst x = 42;\\nlet s = \\\"hi\\\";\\n```\")"
+---
+  [fg2]//[/color][fg2] comment[/color]
+  [fg5]const[/color] x [fg5]=[/color] [code]42[/color];
+  [fg5]let[/color] s [fg5]=[/color] [fg2]"[/color][fg2]hi[/color][fg2]"[/color];

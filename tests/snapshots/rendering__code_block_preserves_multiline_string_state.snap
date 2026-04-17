@@ -1,0 +1,6 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```rust\\nlet s = \\\"first line\\n  still inside string\\\";\\n```\")"
+---
+  [fg5]let[/color] s [fg5]=[/color] [fg2]"[/color][fg2]first line[/color]
+  [fg2]  still inside string[/color][fg2]"[/color];

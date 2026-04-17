@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"```yaml\\nname: alice\\nid: 42\\ntags:\\n  - admin\\n  - user\\n```\")"
+---
+  [fg1]name[/color]: [fg2]alice[/color]
+  [fg1]id[/color]: [code]42[/color]
+  [fg1]tags[/color]:
+    - [fg2]admin[/color]
+    - [fg2]user[/color]

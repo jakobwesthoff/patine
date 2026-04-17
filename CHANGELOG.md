@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Syntax highlighting for fenced code blocks. When a fence carries a
+  recognized language identifier (e.g. `` ```rust ``), tokens are
+  colorized using only the 8 standard ANSI palette colors, so the
+  user's configured terminal theme (Solarized, Gruvbox, base16, etc.)
+  drives the actual appearance. Highlighting is powered by `syntect`
+  with the grammar and theme collection from
+  [`two-face`](https://github.com/CosmicHorrorDev/two-face) (the bat
+  project's curated set). Fences with no language, or with an
+  unrecognized one, fall back to the existing flat code color.
+
 ## [1.2.0] - 2026-04-11
 
 ### Added

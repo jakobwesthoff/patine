@@ -207,9 +207,23 @@ text is rendered bold.
 ## Code Blocks (Fenced)
 
 Fenced code blocks are indented by one nesting level (2 spaces) to visually
-separate them from surrounding prose. Content is displayed in a distinct
-color (same color as inline code) and is never wrapped.
-The opening/closing fence markers (`` ``` ``) are stripped.
+separate them from surrounding prose. Content is never wrapped. The
+opening/closing fence markers (`` ``` ``) are stripped. The language
+identifier from the fence (e.g., `` ```rust ``) drives syntax highlighting
+but is not itself displayed.
+
+### Syntax highlighting
+
+When a recognized language identifier is present on the fence, tokens
+are colorized using **only the 8 standard ANSI colors** (palette
+indices 0–7). Colors are emitted as ANSI-indexed escape sequences,
+not truecolor RGB — so the colors visible in the rendered output
+are whatever the user's terminal has configured for those palette
+slots. The user's terminal theme (Solarized, Gruvbox, a custom
+`base16` scheme, plain defaults) flows through automatically with no
+configuration on patine's part. Highlighting also honors bold and
+italic where the theme specifies them, consistent with patine's
+typographic palette.
 
 ```
   fn main() {
@@ -217,12 +231,18 @@ The opening/closing fence markers (`` ``` ``) are stripped.
   }
 ```
 
-The language identifier from the fence (e.g., `` ```rust ``) is not displayed
-but is preserved internally to support syntax highlighting in a later version.
+When the fence has **no language identifier**, or the identifier is
+not recognized, the entire block falls back to a flat rendering in
+the same distinct color used for inline code. This is the same
+rendering that applied before syntax highlighting existed.
 
-> **Future:** Syntax highlighting will colorize tokens based on the language
-> identifier. The rendering architecture should accept a language hint per
-> code block and pass it through even if initially unused.
+Supported languages include the full set shipped by
+[`syntect`](https://docs.rs/syntect/) and
+[`two-face`](https://github.com/CosmicHorrorDev/two-face) (100+
+syntaxes — rust, python, js/ts, go, bash, json, yaml, toml,
+markdown, dockerfile, nix, and many more). Patine does not attempt
+to auto-detect languages from code content; an explicit fence
+identifier is required for highlighting.
 
 ## Blockquotes
 
@@ -294,7 +314,8 @@ restrained use of color and styling.
 | **Bold**            | Bold                               |
 | *Italic*            | Italic                             |
 | `inline code`       | Distinct color (one of few colored)|
-| Code blocks         | Distinct color (same as inline)    |
+| Code blocks (known lang) | Syntax-highlighted, ANSI 8-color palette |
+| Code blocks (unknown/no lang) | Distinct color (same as inline)    |
 | Link text           | Underlined                         |
 | Link URL            | Dimmed                             |
 | Blockquote text     | Dimmed, italic                     |

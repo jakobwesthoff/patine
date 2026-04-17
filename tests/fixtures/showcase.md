@@ -57,6 +57,17 @@ If the output looks garbled, try the unflagged variant:
 multiverse-scan
 ```
 
+Operators with code access prefer the Python wrapper, which returns
+structured anomalies and mirrors the CLI flags:
+
+```python
+from multiverse import scanner
+
+scan = scanner.scan(now=True, depth=64)
+for anomaly in scan.anomalies:
+    print(f"[{anomaly.severity}] {anomaly.description}")
+```
+
 ## Section 3 — Field Kit
 
 Operatives carry the following items at all times:
@@ -72,6 +83,19 @@ Operatives carry the following items at all times:
     Morale is critical on extended assignments. Personnel who neglect
     their chocolate frog ration have been observed to sulk, at which
     point rescue teams report a measurable drop in *snark throughput*.
+
+The kit manifest is distributed as YAML so replicator units with only
+minimal parsing capability can still honor a request:
+
+```yaml
+kit:
+  standard:
+    - sonic screwdriver
+    - phaser
+  morale:
+    chocolate_frog: 1
+    notebook: "Don't Panic"
+```
 
 ### Escalation Chain
 
