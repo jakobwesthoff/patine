@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   project's curated set). Fences with no language, or with an
   unrecognized one, fall back to the existing flat code color.
 
+### Changed
+
+- Release builds now enable full cross-crate LTO, a single codegen
+  unit, symbol stripping, and `panic = "abort"`. Distributed binaries
+  are noticeably smaller (~3 MB on macOS aarch64) and benefit from
+  whole-program optimization; release link time is correspondingly
+  longer.
+
 ## [1.2.0] - 2026-04-11
 
 ### Added
