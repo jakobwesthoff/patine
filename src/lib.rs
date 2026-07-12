@@ -14,7 +14,18 @@ use anyhow::{Context, Result};
 /// Parse and render a Markdown string as styled terminal output, wrapping
 /// text at `terminal_width` columns.
 pub fn render(input: &str, writer: &mut impl Write, terminal_width: usize) -> Result<()> {
-    let tree = markdown::to_mdast(input, &markdown::ParseOptions::gfm())
+    // GFM plus frontmatter: `Constructs::gfm()` does not enable the
+    // frontmatter construct, so a `---`/`+++` block at the document start
+    // would otherwise be parsed as ordinary markdown (setext heading,
+    // thematic break) and mangle the metadata.
+    let options = markdown::ParseOptions {
+        constructs: markdown::Constructs {
+            frontmatter: true,
+            ..markdown::Constructs::gfm()
+        },
+        ..markdown::ParseOptions::gfm()
+    };
+    let tree = markdown::to_mdast(input, &options)
         .map_err(|e| anyhow::anyhow!(e))
         .context("parse markdown")?;
 

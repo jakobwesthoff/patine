@@ -32,8 +32,11 @@ use two_face::theme::EmbeddedThemeName;
 
 static SYNTAXES: LazyLock<SyntaxSet> = LazyLock::new(two_face::syntax::extra_newlines);
 
-static THEME: LazyLock<Theme> =
-    LazyLock::new(|| two_face::theme::extra().get(EmbeddedThemeName::Ansi).clone());
+static THEME: LazyLock<Theme> = LazyLock::new(|| {
+    two_face::theme::extra()
+        .get(EmbeddedThemeName::Ansi)
+        .clone()
+});
 
 // ---------------------------------------------------------
 // Public token representation
@@ -148,7 +151,12 @@ mod tests {
     fn style_with(r: u8, a: u8) -> Style {
         Style {
             foreground: SyntectColor { r, g: 0, b: 0, a },
-            background: SyntectColor { r: 0, g: 0, b: 0, a: 0 },
+            background: SyntectColor {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: 0,
+            },
             font_style: FontStyle::empty(),
         }
     }
@@ -197,7 +205,22 @@ mod tests {
     #[test]
     fn syntax_for_common_aliases_resolve() {
         // Short forms widely used in fence hints.
-        for token in ["rust", "rs", "py", "python", "js", "ts", "sh", "bash", "json"] {
+        for token in [
+            "rust", "rs", "py", "python", "js", "ts", "sh", "bash", "json",
+        ] {
+            assert!(
+                syntax_for(Some(token)).is_some(),
+                "expected syntax for {token:?} to resolve"
+            );
+        }
+    }
+
+    #[test]
+    fn syntax_for_frontmatter_languages_resolve() {
+        // Frontmatter rendering routes YAML (`---`) and TOML (`+++`)
+        // blocks through the highlighter with these fixed hints; both
+        // grammars must be present in the embedded syntax set.
+        for token in ["yaml", "toml"] {
             assert!(
                 syntax_for(Some(token)).is_some(),
                 "expected syntax for {token:?} to resolve"

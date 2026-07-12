@@ -582,9 +582,7 @@ fn table_after_blockquote_still_works() {
     // A table immediately following a blockquote (not inside it) must
     // render normally with no bars. This guards against the new
     // per-line `write_indent` loop accidentally picking up stale state.
-    assert_snapshot!(render(
-        "> a quote\n\n| col |\n|---|\n| val |"
-    ));
+    assert_snapshot!(render("> a quote\n\n| col |\n|---|\n| val |"));
 }
 
 #[test]
@@ -627,7 +625,15 @@ fn table_wraps_long_cell_text() {
         );
     }
     for word in [
-        "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", "repeatedly",
+        "quick",
+        "brown",
+        "fox",
+        "jumps",
+        "over",
+        "the",
+        "lazy",
+        "dog",
+        "repeatedly",
     ] {
         assert!(
             output.contains(word),
@@ -766,9 +772,7 @@ fn table_in_blockquote_with_wrapping() {
         }
         // Identify lines that belong to the table by the box-drawing
         // characters; they must all start with the blockquote bar.
-        let is_table_line = ['┌', '├', '└', '│']
-            .iter()
-            .any(|c| visible.contains(*c));
+        let is_table_line = ['┌', '├', '└', '│'].iter().any(|c| visible.contains(*c));
         if is_table_line {
             assert!(
                 visible.starts_with("│ "),
@@ -870,9 +874,7 @@ fn code_block_between_paragraphs() {
 
 #[test]
 fn code_block_highlights_rust() {
-    assert_snapshot!(render(
-        "```rust\n// comment\nlet x: u32 = 42;\n```"
-    ));
+    assert_snapshot!(render("```rust\n// comment\nlet x: u32 = 42;\n```"));
 }
 
 #[test]
@@ -912,9 +914,7 @@ fn code_block_highlights_bash() {
 
 #[test]
 fn code_block_highlights_json() {
-    assert_snapshot!(render(
-        "```json\n{\"id\": 42, \"name\": \"alice\"}\n```"
-    ));
+    assert_snapshot!(render("```json\n{\"id\": 42, \"name\": \"alice\"}\n```"));
 }
 
 #[test]
@@ -1280,8 +1280,25 @@ fn horizontal_rule_width() {
 }
 
 // =========================================================
-// Block spacing
+// Frontmatter
 // =========================================================
+
+#[test]
+fn frontmatter_unclosed_fence_is_not_frontmatter() {
+    // An opening `---` without a closing fence is not frontmatter. The
+    // markdown parser falls back to normal parsing: `---` followed by
+    // text becomes a thematic break and a paragraph.
+    assert_snapshot!(render("---\ntitle: x"));
+}
+
+#[test]
+fn frontmatter_closed_fence_is_consumed() {
+    // Intermediate state: frontmatter parses into a Yaml node, which the
+    // renderer does not handle yet (leaf-node fallthrough renders
+    // nothing). The body renders normally. Rendering of the block itself
+    // lands in the next phase, which updates this pin.
+    assert_snapshot!(render("---\ntitle: x\n---\n\nBody"), @"Body");
+}
 
 #[test]
 fn no_leading_blank_line() {
@@ -1456,10 +1473,7 @@ fn list_item_with_multiple_paragraphs() {
         output.contains("second paragraph"),
         "missing second paragraph:\n{output}"
     );
-    assert!(
-        output.contains("next item"),
-        "missing next item:\n{output}"
-    );
+    assert!(output.contains("next item"), "missing next item:\n{output}");
     // The second paragraph must appear after the first and before
     // "next item" in the output.
     let first_pos = output.find("first paragraph").unwrap();
