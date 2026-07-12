@@ -1,0 +1,12 @@
+---
+source: tests/rendering.rs
+expression: "render(\"+++\\ntitle = \\\"x\\\"\\n\\n[owner]\\nname = \\\"jakob\\\"\\n+++\\n\\nBody\")"
+---
+  +++
+  [fg1]title[/color] = [fg2]"[/color][fg2]x[/color][fg2]"[/color]
+  
+  [[code]owner[/color]]
+  [fg1]name[/color] = [fg2]"[/color][fg2]jakob[/color][fg2]"[/color]
+  +++
+
+Body

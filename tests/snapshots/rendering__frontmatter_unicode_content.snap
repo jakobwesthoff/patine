@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"---\\ntitle: 日本語のタイトル 🚀\\n---\\n\\nBody\")"
+---
+  ---
+  [fg1]title[/color]: [fg2]日本語のタイトル 🚀[/color]
+  ---
+
+Body

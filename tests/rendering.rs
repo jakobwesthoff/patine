@@ -1292,13 +1292,83 @@ fn frontmatter_unclosed_fence_is_not_frontmatter() {
 }
 
 #[test]
-fn frontmatter_closed_fence_is_consumed() {
-    // Intermediate state: frontmatter parses into a Yaml node, which the
-    // renderer does not handle yet (leaf-node fallthrough renders
-    // nothing). The body renders normally. Rendering of the block itself
-    // lands in the next phase, which updates this pin.
-    assert_snapshot!(render("---\ntitle: x\n---\n\nBody"), @"Body");
+fn frontmatter_yaml_basic() {
+    // YAML frontmatter renders as a syntax-highlighted verbatim block,
+    // fence lines included, followed by the document body.
+    assert_snapshot!(render("---\ntitle: x\ntags: [a, b]\n---\n\n# Body"));
 }
+
+#[test]
+fn frontmatter_toml_basic() {
+    // TOML frontmatter (`+++` fences) gets the same treatment with the
+    // TOML grammar.
+    assert_snapshot!(render(
+        "+++\ntitle = \"x\"\n\n[owner]\nname = \"jakob\"\n+++\n\nBody"
+    ));
+}
+
+#[test]
+fn frontmatter_invalid_yaml_still_renders() {
+    // Highlighting is lexical, not parsing: syntactically broken YAML
+    // renders verbatim without any error.
+    assert_snapshot!(render("---\ntitle: [unclosed\n  ::: not yaml\n---\n\nBody"));
+}
+
+#[test]
+fn frontmatter_empty_renders_nothing() {
+    // Empty frontmatter carries no metadata: the output is identical to
+    // rendering the body alone.
+    assert_eq!(render("---\n---\n\nBody"), render("Body"));
+}
+
+#[test]
+fn frontmatter_whitespace_only_renders_nothing() {
+    assert_eq!(render("---\n   \n---\n\nBody"), render("Body"));
+}
+
+#[test]
+fn frontmatter_only_document() {
+    // A document that is nothing but frontmatter renders the block with
+    // exactly one trailing newline (the `finish` contract).
+    let output = render("---\ntitle: x\n---");
+    assert_snapshot!(&output);
+    assert!(output.ends_with('\n'), "output must end with a newline");
+    assert!(
+        !output.ends_with("\n\n"),
+        "output must not end with a blank line"
+    );
+}
+
+#[test]
+fn frontmatter_not_at_document_start_ignored() {
+    // Frontmatter is only recognized at the very start of the document.
+    // With a leading blank line, `---` pairs parse as ordinary markdown.
+    assert_snapshot!(render("\n---\ntitle: x\n---\n\nBody"));
+}
+
+#[test]
+fn frontmatter_long_lines_never_wrap() {
+    // Frontmatter shares the code-block contract: verbatim lines, never
+    // word-wrapped, even past the terminal width.
+    let md =
+        "---\ndescription: this value is far too long to fit into forty columns of output\n---";
+    let output = render_with_width(md, 40);
+    let stripped = strip_tags(&output);
+    assert!(
+        stripped.lines().any(|l| l.contains("forty columns")),
+        "long value must stay on one verbatim line.\nOutput: {stripped}"
+    );
+}
+
+#[test]
+fn frontmatter_unicode_content() {
+    // Non-ASCII content passes through verbatim.
+    assert_snapshot!(render("---\ntitle: 日本語のタイトル 🚀\n---\n\nBody"));
+}
+
+// =========================================================
+// Block spacing
+// =========================================================
 
 #[test]
 fn no_leading_blank_line() {

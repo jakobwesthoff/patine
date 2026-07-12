@@ -1,0 +1,9 @@
+---
+source: tests/rendering.rs
+expression: "render(\"\\n---\\ntitle: x\\n---\\n\\nBody\")"
+---
+────────────────────────────────────────────────────────────────────────────────
+
+[bold][underline]title: x[/underline][/intensity]
+
+Body

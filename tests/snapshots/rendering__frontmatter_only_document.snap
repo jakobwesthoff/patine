@@ -1,0 +1,7 @@
+---
+source: tests/rendering.rs
+expression: "&output"
+---
+  ---
+  [fg1]title[/color]: [fg2]x[/color]
+  ---

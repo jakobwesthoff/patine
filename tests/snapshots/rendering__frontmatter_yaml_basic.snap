@@ -1,0 +1,10 @@
+---
+source: tests/rendering.rs
+expression: "render(\"---\\ntitle: x\\ntags: [a, b]\\n---\\n\\n# Body\")"
+---
+  ---
+  [fg1]title[/color]: [fg2]x[/color]
+  [fg1]tags[/color]: [[fg2]a[/color], [fg2]b[/color]]
+  ---
+
+[bold][italic][double-underline]Body[/underline][/italic][/intensity]

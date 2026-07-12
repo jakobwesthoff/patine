@@ -146,7 +146,9 @@ impl<'w, W: Write> Renderer<'w, W> {
             Node::InlineCode(c) => self.render_inline_code(&c.value),
             Node::List(l) => self.render_list(l),
             Node::Blockquote(bq) => self.render_blockquote(&bq.children),
-            Node::Code(c) => self.render_code_block(c),
+            Node::Code(c) => self.render_fenced_text(&c.value, c.lang.as_deref()),
+            Node::Yaml(y) => self.render_frontmatter(&y.value, "---", "yaml"),
+            Node::Toml(t) => self.render_frontmatter(&t.value, "+++", "toml"),
             Node::Table(t) => self.render_table(t),
             Node::ThematicBreak(_) => self.render_thematic_break(),
             Node::Link(l) => self.render_link(l),
@@ -200,9 +202,10 @@ impl<'w, W: Write> Renderer<'w, W> {
         Ok(())
     }
 
-    /// Render a fenced or indented code block.
+    /// Render verbatim text as a code-block-shaped element. Serves both
+    /// fenced/indented code blocks and frontmatter blocks.
     ///
-    /// When the fence carries a recognized language identifier
+    /// When `lang` names a recognized language identifier
     /// (e.g. `` ```rust ``), tokens are syntax-highlighted using the
     /// bat-authored `Ansi` theme (ANSI palette indices 0–7) so that
     /// colors resolve against the user's terminal theme. When the
@@ -210,7 +213,7 @@ impl<'w, W: Write> Renderer<'w, W> {
     /// flat `CODE_COLOR` rendering path that predates highlighting.
     /// In both cases, content is written verbatim with each line
     /// indented one level and never word-wrapped.
-    fn render_code_block(&mut self, code: &markdown::mdast::Code) -> Result<()> {
+    fn render_fenced_text(&mut self, value: &str, lang: Option<&str>) -> Result<()> {
         self.ensure_block_spacing()?;
 
         // Code blocks get an extra 2-space indent beyond the global
@@ -220,14 +223,30 @@ impl<'w, W: Write> Renderer<'w, W> {
         // highlighted and fallback modes.
         self.extra_indent += 1;
 
-        let syntax = crate::highlight::syntax_for(code.lang.as_deref());
+        let syntax = crate::highlight::syntax_for(lang);
         let result = match syntax {
-            Some(syntax) => self.render_code_block_highlighted(&code.value, syntax),
-            None => self.render_code_block_plain(&code.value),
+            Some(syntax) => self.render_code_block_highlighted(value, syntax),
+            None => self.render_code_block_plain(value),
         };
 
         self.extra_indent -= 1;
         result
+    }
+
+    /// Render a YAML (`---`) or TOML (`+++`) frontmatter block as a
+    /// syntax-highlighted verbatim block, visually identical to a fenced
+    /// code block of that language.
+    ///
+    /// The mdast node value carries only the content between the fences;
+    /// the fence lines are reconstructed around it so the rendered block
+    /// mirrors the source document. Empty frontmatter carries no metadata
+    /// and renders nothing at all.
+    fn render_frontmatter(&mut self, value: &str, fence: &str, lang: &str) -> Result<()> {
+        if value.trim().is_empty() {
+            return Ok(());
+        }
+        let fenced = format!("{fence}\n{value}\n{fence}");
+        self.render_fenced_text(&fenced, Some(lang))
     }
 
     /// Flat-color code block rendering used for fences without a
