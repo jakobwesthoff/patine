@@ -39,6 +39,7 @@ patine --width 100 README.md
 
 ## What It Renders
 
+- **Frontmatter** — YAML (`---`) and TOML (`+++`) metadata at the document start, rendered verbatim as a syntax-highlighted block, fences included
 - **Headings** — H1 italic + underlined, H2–H6 bold
 - **Inline formatting** — bold, italic, bold-italic, strikethrough, inline code
 - **Code blocks** — verbatim, never wrapped; syntax-highlighted with the terminal's ANSI palette when a language is specified on the fence

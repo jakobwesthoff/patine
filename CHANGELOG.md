@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- YAML (`---`) and TOML (`+++`) frontmatter at the start of a document
+  is now recognized and rendered as a syntax-highlighted verbatim
+  block, fence lines included, styled exactly like a fenced code block
+  of that language. Empty frontmatter renders nothing. Previously such
+  blocks were parsed as ordinary markdown, which mangled the metadata
+  into a setext heading; documents relying on that accidental rendering
+  will look different now.
+
 ## [1.3.0] - 2026-04-17
 
 ### Added

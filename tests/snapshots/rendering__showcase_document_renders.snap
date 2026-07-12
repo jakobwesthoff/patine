@@ -2,6 +2,14 @@
 source: tests/rendering.rs
 expression: render(SHOWCASE_MD)
 ---
+  ---
+  [fg1]title[/color]: [fg2]Field Manual 42-B[/color]
+  [fg1]committee[/color]: [fg2]ICNI[/color]
+  [fg1]revision[/color]: [code]7[/color]
+  [fg1]classified[/color]: [code]false[/color]
+  [fg1]tags[/color]: [[fg2]multiverse[/color], [fg2]incident-response[/color], [fg2]narrative-integrity[/color]]
+  ---
+
 [bold][italic][double-underline]Field Manual 42-B: Interdimensional Incident Response[/underline][/italic][/intensity]
 
 [bold][underline]Preamble[/underline][/intensity]

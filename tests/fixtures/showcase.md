@@ -1,3 +1,11 @@
+---
+title: Field Manual 42-B
+committee: ICNI
+revision: 7
+classified: false
+tags: [multiverse, incident-response, narrative-integrity]
+---
+
 # Field Manual 42-B: Interdimensional Incident Response
 
 ## Preamble
