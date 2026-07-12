@@ -148,20 +148,14 @@ mod tests {
         // Each CJK character has display width 2. "日本語" is 6 columns
         // wide but 9 bytes. At width 4 it does not fit with another
         // token alongside it.
-        assert_eq!(
-            wrap_text("日本語 ok", 4),
-            vec!["日本語", "ok"],
-        );
+        assert_eq!(wrap_text("日本語 ok", 4), vec!["日本語", "ok"],);
     }
 
     #[test]
     fn wrap_zero_width_is_floored_and_does_not_panic() {
         // A defensive call with width = 0 should behave like width = 1:
         // every token ends up on its own line but nothing panics.
-        assert_eq!(
-            wrap_text("a bb ccc", 0),
-            vec!["a", "bb", "ccc"],
-        );
+        assert_eq!(wrap_text("a bb ccc", 0), vec!["a", "bb", "ccc"],);
     }
 
     // ── widest_word ──────────────────────────────────────────────────────

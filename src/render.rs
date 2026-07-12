@@ -20,7 +20,10 @@ const NEST_INDENT: &str = "  ";
 /// The compile-time assertion below ensures the indent stays ASCII, where
 /// byte count and display width are identical.
 const NEST_INDENT_WIDTH: usize = NEST_INDENT.len();
-const _: () = assert!(NEST_INDENT.is_ascii(), "NEST_INDENT must be ASCII so that len() equals display width");
+const _: () = assert!(
+    NEST_INDENT.is_ascii(),
+    "NEST_INDENT must be ASCII so that len() equals display width"
+);
 
 /// Foreground color used for inline code and code blocks.
 const CODE_COLOR: Color = Color::DarkYellow;

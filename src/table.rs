@@ -309,10 +309,7 @@ fn row_line(
         line.push_str(VERTICAL);
         line.push(' ');
 
-        let cell_line: &str = wrapped[col]
-            .get(line_idx)
-            .map(String::as_str)
-            .unwrap_or("");
+        let cell_line: &str = wrapped[col].get(line_idx).map(String::as_str).unwrap_or("");
         let cell_width = UnicodeWidthStr::width(cell_line);
         // If a token overflowed its allotted width during wrapping,
         // `cell_width` may be greater than `width`. In that case we
@@ -377,7 +374,10 @@ mod tests {
         let natural = vec![5, 10, 15];
         let minimum = vec![1, 1, 1];
         let budget = 30;
-        assert_eq!(distribute_widths(&natural, &minimum, budget), vec![5, 10, 15]);
+        assert_eq!(
+            distribute_widths(&natural, &minimum, budget),
+            vec![5, 10, 15]
+        );
     }
 
     #[test]
@@ -385,7 +385,10 @@ mod tests {
         let natural = vec![10, 20, 30];
         let minimum = vec![5, 8, 12];
         let budget = 20; // < sum(minimum) = 25
-        assert_eq!(distribute_widths(&natural, &minimum, budget), vec![5, 8, 12]);
+        assert_eq!(
+            distribute_widths(&natural, &minimum, budget),
+            vec![5, 8, 12]
+        );
     }
 
     #[test]
