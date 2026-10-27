@@ -46,6 +46,7 @@
 #![warn(missing_docs)]
 
 mod ansi;
+mod ascii;
 mod highlight;
 mod line_endings;
 mod options;
@@ -81,7 +82,7 @@ pub use crate::styled::{AnsiColor, StyledLine, StyledSpan, TextStyle, Underline}
 /// # Ok::<(), anyhow::Error>(())
 /// ```
 pub fn render(input: &str, writer: &mut impl Write, terminal_width: usize) -> Result<()> {
-    render_with(input, writer, terminal_width, &RenderOptions::default())
+	render_with(input, writer, terminal_width, &RenderOptions::default())
 }
 
 /// Like [`render`], with [`RenderOptions`] that change how soft line
@@ -104,13 +105,8 @@ pub fn render(input: &str, writer: &mut impl Write, terminal_width: usize) -> Re
 /// assert_eq!(output, b"one\ntwo\n");
 /// # Ok::<(), anyhow::Error>(())
 /// ```
-pub fn render_with(
-    input: &str,
-    writer: &mut impl Write,
-    terminal_width: usize,
-    options: &RenderOptions,
-) -> Result<()> {
-    ansi::write_lines(&render_lines_with(input, terminal_width, options), writer)
+pub fn render_with(input: &str, writer: &mut impl Write, terminal_width: usize, options: &RenderOptions) -> Result<()> {
+	ansi::write_lines(&render_lines_with(input, terminal_width, options), writer)
 }
 
 /// Parse a Markdown string (CommonMark with GitHub extensions and YAML or
@@ -145,7 +141,7 @@ pub fn render_with(
 /// assert!(lines[1].spans.is_empty());
 /// ```
 pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
-    render_lines_with(input, width, &RenderOptions::default())
+	render_lines_with(input, width, &RenderOptions::default())
 }
 
 /// Like [`render_lines`], with [`RenderOptions`] that change how soft
@@ -166,25 +162,27 @@ pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
 /// assert_eq!(lines[1].to_string(), "See below.");
 /// ```
 pub fn render_lines_with(input: &str, width: usize, options: &RenderOptions) -> Vec<StyledLine> {
-    // GFM plus frontmatter: `Constructs::gfm()` does not enable the
-    // frontmatter construct, so a `---`/`+++` block at the document start
-    // would otherwise be parsed as ordinary markdown (setext heading,
-    // thematic break) and mangle the metadata.
-    let parse_options = markdown::ParseOptions {
-        constructs: markdown::Constructs {
-            frontmatter: true,
-            ..markdown::Constructs::gfm()
-        },
-        ..markdown::ParseOptions::gfm()
-    };
-    // markdown-rs reports syntax errors only for MDX constructs, which
-    // these options leave disabled.
-    let tree = markdown::to_mdast(input, &parse_options)
-        .expect("Markdown without MDX has no syntax errors");
+	// GFM plus frontmatter: `Constructs::gfm()` does not enable the
+	// frontmatter construct, so a `---`/`+++` block at the document start
+	// would otherwise be parsed as ordinary markdown (setext heading,
+	// thematic break) and mangle the metadata.
+	let parse_options = markdown::ParseOptions {
+		constructs: markdown::Constructs { frontmatter: true, ..markdown::Constructs::gfm() },
+		..markdown::ParseOptions::gfm()
+	};
+	// markdown-rs reports syntax errors only for MDX constructs, which
+	// these options leave disabled.
+	let tree = markdown::to_mdast(input, &parse_options).expect("Markdown without MDX has no syntax errors");
 
-    let mut renderer = render::Renderer::new(width, *options);
-    renderer.render_node(&tree);
-    renderer.finish()
+	let mut renderer = render::Renderer::new(width, *options);
+	renderer.render_node(&tree);
+	let mut lines = renderer.finish();
+	if options.ascii {
+		for line in &mut lines {
+			ascii::asciify_line(line);
+		}
+	}
+	lines
 }
 
 /// Syntax-highlight source code the way patine highlights fenced code
@@ -213,13 +211,13 @@ pub fn render_lines_with(input: &str, width: usize, options: &RenderOptions) -> 
 /// assert_eq!(plain[0].spans[0].style, patine::TextStyle::default());
 /// ```
 pub fn highlight(code: &str, language: Option<&str>) -> Vec<StyledLine> {
-    highlight::try_highlight(code, language).unwrap_or_else(|| {
-        line_endings::verbatim_lines(code)
-            .map(|line| {
-                let mut styled = StyledLine::default();
-                styled.push_str(line, TextStyle::default());
-                styled
-            })
-            .collect()
-    })
+	highlight::try_highlight(code, language).unwrap_or_else(|| {
+		line_endings::verbatim_lines(code)
+			.map(|line| {
+				let mut styled = StyledLine::default();
+				styled.push_str(line, TextStyle::default());
+				styled
+			})
+			.collect()
+	})
 }

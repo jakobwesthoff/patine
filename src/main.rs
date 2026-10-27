@@ -12,41 +12,43 @@ use clap::{CommandFactory, Parser};
 #[derive(Parser)]
 #[command(version)]
 struct Cli {
-    /// Markdown file to render. Reads from stdin if omitted.
-    file: Option<PathBuf>,
+	/// Markdown file to render. Reads from stdin if omitted.
+	file: Option<PathBuf>,
 
-    /// Override the output width in columns. Defaults to the terminal width.
-    #[arg(short, long)]
-    width: Option<usize>,
+	/// Override the output width in columns. Defaults to the terminal width.
+	#[arg(short, long)]
+	width: Option<usize>,
+
+	/// Force ASCII-only output: transliterate accented letters to their
+	/// base form, map common symbols to ASCII, and replace anything
+	/// without an ASCII equivalent with `?`.
+	#[arg(short, long)]
+	ascii: bool,
 }
 
 fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+	let cli = Cli::parse();
 
-    let markdown = match cli.file {
-        Some(path) => {
-            std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?
-        }
-        None => {
-            if io::stdin().is_terminal() {
-                Cli::command().print_help().context("print help")?;
-                return Ok(());
-            }
-            let mut buf = String::new();
-            io::stdin().read_to_string(&mut buf).context("read stdin")?;
-            buf
-        }
-    };
+	let markdown = match cli.file {
+		Some(path) => std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?,
+		None => {
+			if io::stdin().is_terminal() {
+				Cli::command().print_help().context("print help")?;
+				return Ok(());
+			}
+			let mut buf = String::new();
+			io::stdin().read_to_string(&mut buf).context("read stdin")?;
+			buf
+		}
+	};
 
-    let terminal_width = cli.width.unwrap_or_else(|| {
-        crossterm::terminal::size()
-            .map(|(cols, _)| cols as usize)
-            .unwrap_or(80)
-    });
+	let terminal_width = cli.width.unwrap_or_else(|| crossterm::terminal::size().map(|(cols, _)| cols as usize).unwrap_or(80));
 
-    let mut stdout = io::stdout().lock();
-    patine::render(&markdown, &mut stdout, terminal_width)?;
-    stdout.flush().context("flush stdout")?;
+	let options = patine::RenderOptions::new().with_ascii(cli.ascii);
 
-    Ok(())
+	let mut stdout = io::stdout().lock();
+	patine::render_with(&markdown, &mut stdout, terminal_width, &options)?;
+	stdout.flush().context("flush stdout")?;
+
+	Ok(())
 }

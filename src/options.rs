@@ -37,44 +37,53 @@ use crate::styled::AnsiColor;
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub struct RenderOptions {
-    /// What a single newline inside running text does.
-    pub soft_breaks: SoftBreaks,
-    /// What happens to raw HTML.
-    pub html: Html,
-    /// How blockquotes look.
-    pub quote_style: QuoteStyle,
+	/// What a single newline inside running text does.
+	pub soft_breaks: SoftBreaks,
+	/// What happens to raw HTML.
+	pub html: Html,
+	/// How blockquotes look.
+	pub quote_style: QuoteStyle,
+	/// Force ASCII-only output: accented letters are transliterated to
+	/// their base form (`é` → `e`, `ß` → `ss`), common symbols map to
+	/// ASCII (`…` → `.`, `—` → `-`), and anything without an ASCII
+	/// equivalent becomes `?`. The `patine` binary exposes this as
+	/// `--ascii`.
+	pub ascii: bool,
 }
 
 impl RenderOptions {
-    /// The default options, usable in a `const`.
-    pub const fn new() -> Self {
-        Self {
-            soft_breaks: SoftBreaks::Join,
-            html: Html::Drop,
-            quote_style: QuoteStyle::DEFAULT,
-        }
-    }
+	/// The default options, usable in a `const`.
+	pub const fn new() -> Self {
+		Self { soft_breaks: SoftBreaks::Join, html: Html::Drop, quote_style: QuoteStyle::DEFAULT, ascii: false }
+	}
 
-    /// These options with `soft_breaks` replaced.
-    #[must_use]
-    pub const fn with_soft_breaks(mut self, soft_breaks: SoftBreaks) -> Self {
-        self.soft_breaks = soft_breaks;
-        self
-    }
+	/// These options with `ascii` replaced.
+	#[must_use]
+	pub const fn with_ascii(mut self, ascii: bool) -> Self {
+		self.ascii = ascii;
+		self
+	}
 
-    /// These options with `html` replaced.
-    #[must_use]
-    pub const fn with_html(mut self, html: Html) -> Self {
-        self.html = html;
-        self
-    }
+	/// These options with `soft_breaks` replaced.
+	#[must_use]
+	pub const fn with_soft_breaks(mut self, soft_breaks: SoftBreaks) -> Self {
+		self.soft_breaks = soft_breaks;
+		self
+	}
 
-    /// These options with `quote_style` replaced.
-    #[must_use]
-    pub const fn with_quote_style(mut self, quote_style: QuoteStyle) -> Self {
-        self.quote_style = quote_style;
-        self
-    }
+	/// These options with `html` replaced.
+	#[must_use]
+	pub const fn with_html(mut self, html: Html) -> Self {
+		self.html = html;
+		self
+	}
+
+	/// These options with `quote_style` replaced.
+	#[must_use]
+	pub const fn with_quote_style(mut self, quote_style: QuoteStyle) -> Self {
+		self.quote_style = quote_style;
+		self
+	}
 }
 
 /// What a single newline inside running text does: a soft line ending in
@@ -102,14 +111,14 @@ impl RenderOptions {
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum SoftBreaks {
-    /// The lines join into one, separated by a space, and wrap as one
-    /// paragraph. This is CommonMark's behavior.
-    #[default]
-    Join,
-    /// The line breaks exactly where a hard break would break it: the next
-    /// line starts under the text above, past any list bullet, inside any
-    /// blockquote bars. GitHub renders comments this way.
-    Break,
+	/// The lines join into one, separated by a space, and wrap as one
+	/// paragraph. This is CommonMark's behavior.
+	#[default]
+	Join,
+	/// The line breaks exactly where a hard break would break it: the next
+	/// line starts under the text above, past any list bullet, inside any
+	/// blockquote bars. GitHub renders comments this way.
+	Break,
 }
 
 /// What happens to raw HTML in the source.
@@ -132,16 +141,16 @@ pub enum SoftBreaks {
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum Html {
-    /// HTML is left out: inline HTML disappears from its line, and an
-    /// HTML block renders nothing.
-    #[default]
-    Drop,
-    /// HTML shows as its source text, comments included. Inline HTML is
-    /// drawn in the style around it and wraps like words; a line ending
-    /// inside it follows [`SoftBreaks`]. An HTML block keeps its source
-    /// lines verbatim and unwrapped, unstyled apart from its context,
-    /// without the extra indent of a code block.
-    Literal,
+	/// HTML is left out: inline HTML disappears from its line, and an
+	/// HTML block renders nothing.
+	#[default]
+	Drop,
+	/// HTML shows as its source text, comments included. Inline HTML is
+	/// drawn in the style around it and wraps like words; a line ending
+	/// inside it follows [`SoftBreaks`]. An HTML block keeps its source
+	/// lines verbatim and unwrapped, unstyled apart from its context,
+	/// without the extra indent of a code block.
+	Literal,
 }
 
 /// How a blockquote looks: its `│ ` bars and the text inside it.
@@ -162,36 +171,33 @@ pub enum Html {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum QuoteStyle {
-    /// The bars in this palette color and no other attribute. The
-    /// default is `Bar(AnsiColor::Cyan)`.
-    Bar(AnsiColor),
-    /// The bars dim and without a color, for a front end that shows no
-    /// colors.
-    DimBar,
+	/// The bars in this palette color and no other attribute. The
+	/// default is `Bar(AnsiColor::Cyan)`.
+	Bar(AnsiColor),
+	/// The bars dim and without a color, for a front end that shows no
+	/// colors.
+	DimBar,
 }
 
 impl QuoteStyle {
-    /// The default, usable in a `const` such as [`RenderOptions::new`].
-    const DEFAULT: Self = Self::Bar(AnsiColor::Cyan);
+	/// The default, usable in a `const` such as [`RenderOptions::new`].
+	const DEFAULT: Self = Self::Bar(AnsiColor::Cyan);
 }
 
 impl Default for QuoteStyle {
-    /// Cyan bars.
-    fn default() -> Self {
-        Self::DEFAULT
-    }
+	/// Cyan bars.
+	fn default() -> Self {
+		Self::DEFAULT
+	}
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+	use super::*;
 
-    #[test]
-    fn new_and_default_options_are_the_same() {
-        assert_eq!(RenderOptions::new(), RenderOptions::default());
-        assert_eq!(
-            RenderOptions::new().quote_style,
-            QuoteStyle::Bar(AnsiColor::Cyan)
-        );
-    }
+	#[test]
+	fn new_and_default_options_are_the_same() {
+		assert_eq!(RenderOptions::new(), RenderOptions::default());
+		assert_eq!(RenderOptions::new().quote_style, QuoteStyle::Bar(AnsiColor::Cyan));
+	}
 }
