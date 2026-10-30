@@ -2,6 +2,9 @@
 name = "patine"
 version = "1.9.0"
 edition = "2024"
+# `time` 0.3.47, which syntect pulls in through plist, needs 1.88, and so
+# does a let chain in src/highlight.rs.
+rust-version = "1.88"
 license = "MPL-2.0"
 description = "Render Markdown beautifully in the terminal"
 authors = ["Jakob Westhoff <jakob@westhoffswelt.de>"]
@@ -9,6 +12,9 @@ homepage = "https://westhoffswelt.de"
 repository = "https://github.com/jakobwesthoff/patine"
 keywords = ["markdown", "terminal", "ansi", "renderer", "syntax-highlighting"]
 categories = ["command-line-utilities", "text-processing"]
+# The ADRs, todos and CI files are not needed to build patine. The tests
+# stay, as they read their fixtures from tests/.
+exclude = ["docs/", "todos/", ".github/", ".adr-dir"]
 
 [features]
 default = ["cli"]
