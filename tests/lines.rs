@@ -168,6 +168,7 @@ fn default_options_follow_commonmark_and_drop_html() {
     let options = RenderOptions::default();
     assert_eq!(options.soft_breaks, SoftBreaks::Join);
     assert_eq!(options.html, Html::Drop);
+    assert_eq!(options.first_line_width, None);
     assert_eq!(RenderOptions::new(), options);
     assert_eq!(SoftBreaks::default(), SoftBreaks::Join);
     assert_eq!(Html::default(), Html::Drop);
@@ -185,6 +186,11 @@ fn builders_set_one_option_each() {
 
     assert_eq!(FIELD_OPTIONS.soft_breaks, SoftBreaks::Break);
     assert_eq!(FIELD_OPTIONS.html, Html::Literal);
+
+    let first = FIELD_OPTIONS.with_first_line_width(20);
+    assert_eq!(first.first_line_width, Some(20));
+    assert_eq!(first.soft_breaks, SoftBreaks::Break);
+    assert_eq!(first.html, Html::Literal);
 }
 
 #[test]

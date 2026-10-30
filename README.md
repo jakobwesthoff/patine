@@ -87,11 +87,12 @@ for line in &lines {
 }
 ```
 
-`patine::render_lines_with` and `patine::render_with` take `RenderOptions`. Two of them suit text that is not a Markdown document, such as a description a program wrote into a JSON string, and one suits a program with colors of its own:
+`patine::render_lines_with` and `patine::render_with` take `RenderOptions`. Two of them suit text that is not a Markdown document, such as a description a program wrote into a JSON string, one suits a program with colors of its own, and one suits a program that draws something at the end of the first line:
 
 - `soft_breaks`: with `SoftBreaks::Join` (the default), a single newline inside running text joins the lines into one paragraph, as CommonMark specifies. With `SoftBreaks::Break`, it breaks the line the way a trailing backslash does, as GitHub comments show it. Code blocks, inline code and frontmatter are not affected.
 - `html`: with `Html::Drop` (the default), raw HTML is left out, so `Vec<String>` renders as `Vec`. With `Html::Literal`, it shows as written: inline HTML in the style of the text around it, an HTML block line by line and unwrapped. Autolinks such as `<https://example.com>` are links either way.
 - `quote_style`: with `QuoteStyle::Bar(AnsiColor::Cyan)` (the default), the `│` bar of a quote is drawn in that palette color. `QuoteStyle::DimBar` draws it dim without a color, for an interface that shows no colors. The quoted text keeps its normal style either way.
+- `first_line_width`: with `None` (the default), every line takes the full width. `with_first_line_width(n)` lays out the first line of the output at most `n` columns wide and every later line at the full width, so a marker or label fits at the end of the first line. A table that starts the output is laid out once, for `n` columns, on all its rows; code blocks are never wrapped, and a word wider than `n` overflows the first line.
 
 ```rust
 use patine::{Html, RenderOptions, SoftBreaks};

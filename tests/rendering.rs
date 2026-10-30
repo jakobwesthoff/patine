@@ -3289,3 +3289,121 @@ fn glued_run_in_a_list_item_wraps_under_the_item_text() {
         ["• aaaa", "  foobar", "  baz"]
     );
 }
+
+// =========================================================
+// First line width
+// =========================================================
+
+/// `count` words of three characters, `a01 a02 ...`.
+fn words(count: usize) -> String {
+    (1..=count)
+        .map(|n| format!("a{n:02}"))
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+/// The text of each line of `markdown` rendered `width` columns wide with
+/// its first line at most `first` columns wide.
+fn first_line_lines(markdown: &str, width: usize, first: usize) -> Vec<String> {
+    let options = RenderOptions::new().with_first_line_width(first);
+    render_lines_with(markdown, width, &options)
+        .iter()
+        .map(ToString::to_string)
+        .collect()
+}
+
+#[test]
+fn a_first_line_width_narrows_only_the_first_line_of_a_paragraph() {
+    assert_eq!(
+        first_line_lines(&words(12), 31, 20),
+        ["a01 a02 a03 a04 a05", "a06 a07 a08 a09 a10 a11 a12"]
+    );
+}
+
+#[test]
+fn a_first_line_width_keeps_a_list_item_s_continuation_under_its_text() {
+    assert_eq!(
+        first_line_lines(&format!("- {}", words(12)), 31, 20),
+        [
+            "• a01 a02 a03 a04",
+            "  a05 a06 a07 a08 a09 a10 a11",
+            "  a12"
+        ]
+    );
+}
+
+#[test]
+fn a_first_line_width_keeps_the_bars_of_a_quote() {
+    assert_eq!(
+        first_line_lines(&format!("> {}", words(12)), 31, 20),
+        [
+            "│ a01 a02 a03 a04",
+            "│ a05 a06 a07 a08 a09 a10 a11",
+            "│ a12"
+        ]
+    );
+}
+
+#[test]
+fn a_first_word_wider_than_the_first_width_overflows_the_first_line() {
+    assert_eq!(
+        first_line_lines("abcdefghijklmnop rest", 31, 10),
+        ["abcdefghijklmnop", "rest"]
+    );
+}
+
+#[test]
+fn a_thematic_break_on_the_first_line_is_as_long_as_the_first_line_width() {
+    let lines = first_line_lines("***\n\ntext\n\n***", 40, 20);
+
+    assert_eq!(lines[0], "─".repeat(20));
+    assert_eq!(lines[4], "─".repeat(40), "a later break");
+}
+
+/// A table whose two columns lay out differently at 30 and 60 columns.
+const TWO_COLUMNS: &str =
+    "| a | b |\n|---|---|\n| one two three four | five six seven eight nine |";
+
+#[test]
+fn a_table_at_the_start_takes_the_first_line_width_on_every_row() {
+    assert_ne!(
+        plain_lines(TWO_COLUMNS, 60),
+        plain_lines(TWO_COLUMNS, 30),
+        "the table differs between the widths"
+    );
+    assert_eq!(
+        first_line_lines(TWO_COLUMNS, 60, 30),
+        plain_lines(TWO_COLUMNS, 30)
+    );
+}
+
+#[test]
+fn a_table_further_down_takes_the_full_width() {
+    // The first cell is wider on one line than the first line width, and
+    // the full width has room for it.
+    let table = "| h | i |\n|---|---|\n| aaa bbb ccc ddd | kkk |";
+    let lines = first_line_lines(&format!("Intro.\n\n{table}"), 60, 10);
+
+    assert_eq!(lines[..2], ["Intro.", ""]);
+    assert_eq!(lines[2..], plain_lines(table, 60));
+}
+
+#[test]
+fn a_first_line_width_leaves_table_cells_alone() {
+    // Both columns want more than their minimum, and the first cell is
+    // wider on one line than the first line width: a cell that saw the
+    // option would be measured narrower and share out the room otherwise.
+    let table =
+        "| h | i |\n|---|---|\n| aaa bbb ccc ddd eee fff ggg hhh iii jjj | kkk lll mmm nnn |";
+
+    assert_eq!(first_line_lines(table, 80, 30), plain_lines(table, 30));
+}
+
+/// Guard: a first line width the full width already keeps changes nothing.
+#[test]
+fn a_first_line_width_wider_than_the_width_changes_nothing() {
+    assert_eq!(
+        first_line_lines(&words(12), 20, 40),
+        plain_lines(&words(12), 20)
+    );
+}

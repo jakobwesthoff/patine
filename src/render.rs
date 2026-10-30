@@ -93,6 +93,16 @@ pub(crate) fn render_inline_lines(
     options: RenderOptions,
     long_words: LongWords,
 ) -> Vec<StyledLine> {
+    // A cell is laid out at the width its column gets, and its first line
+    // is not the first line of the output. Its renderer starts without a
+    // finished line, so a first line width passed on would narrow every
+    // cell's first line, also where the table measures a cell on one line.
+    // Only a cell breaks words, so this also keeps the option away from
+    // `place_broken_word`.
+    let options = RenderOptions {
+        first_line_width: None,
+        ..options
+    };
     let mut renderer = Renderer::new(width, options);
     renderer.long_words = long_words;
     renderer.render_inline_content(children);
@@ -883,6 +893,15 @@ impl Renderer {
     /// not subtracted, since `column` already counts them. Always returns
     /// at least 1 to prevent degenerate behavior (e.g. invisible thematic
     /// breaks, every word on its own line).
+    ///
+    /// Until the first line of the output is finished, the width is at most
+    /// [`RenderOptions::first_line_width`]. Running text, a list item's
+    /// bullet and a quote's bars, a table's layout and a thematic break all
+    /// take their width from here, so they all see the narrower first
+    /// line. [`place_broken_word`](Self::place_broken_word) reads its limit
+    /// once, before it breaks lines, which holds because only a table cell
+    /// breaks words, and a cell never sees the option (see
+    /// [`render_inline_lines`]).
     fn effective_width(&self) -> usize {
         let prefix_width: usize = self
             .prefix
@@ -893,7 +912,11 @@ impl Renderer {
                 Segment::Item { .. } => 0,
             })
             .sum();
-        self.content_width.saturating_sub(prefix_width).max(1)
+        let content_width = match self.options.first_line_width {
+            Some(first) if self.lines.is_empty() => first.min(self.content_width),
+            _ => self.content_width,
+        };
+        content_width.saturating_sub(prefix_width).max(1)
     }
 
     /// Render with `segment` added to the line prefix, and remove it again

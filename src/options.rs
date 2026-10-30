@@ -6,10 +6,12 @@
 //! some of it looks. The defaults render Markdown documents. The soft
 //! break and HTML alternatives suit short text fields whose author means
 //! every newline and every `<`; the quote style suits a front end with a
-//! color scheme of its own, for documents and text fields alike.
-//! Design rationale lives in
-//! `docs/adr/0007-render-options-for-soft-breaks-and-html.md` and
-//! `docs/adr/0010-quote-style-option.md`.
+//! color scheme of its own, for documents and text fields alike; the
+//! first line width suits a front end that draws something at the end of
+//! the first line. Design rationale lives in
+//! `docs/adr/0007-render-options-for-soft-breaks-and-html.md`,
+//! `docs/adr/0010-quote-style-option.md` and
+//! `docs/adr/0015-first-line-width-option.md`.
 
 use crate::styled::AnsiColor;
 
@@ -43,6 +45,11 @@ pub struct RenderOptions {
     pub html: Html,
     /// How blockquotes look.
     pub quote_style: QuoteStyle,
+    /// The most columns the first line of the output takes, where that is
+    /// fewer than the width; every later line takes the full width. `None`
+    /// lays out every line at the full width. See
+    /// [`with_first_line_width`](Self::with_first_line_width).
+    pub first_line_width: Option<usize>,
 }
 
 impl RenderOptions {
@@ -52,6 +59,7 @@ impl RenderOptions {
             soft_breaks: SoftBreaks::Join,
             html: Html::Drop,
             quote_style: QuoteStyle::DEFAULT,
+            first_line_width: None,
         }
     }
 
@@ -73,6 +81,36 @@ impl RenderOptions {
     #[must_use]
     pub const fn with_quote_style(mut self, quote_style: QuoteStyle) -> Self {
         self.quote_style = quote_style;
+        self
+    }
+
+    /// These options with the first line of the output at most `width`
+    /// columns wide, for a front end that draws something at the end of
+    /// that line. Every later line takes the full width.
+    ///
+    /// Running text wraps its first line there, and a list item's bullet
+    /// and a quote's bars count against it. A thematic break on the first
+    /// line is as long. A table is laid out once, so a table that starts
+    /// the output keeps the first line width on all its rows. Code blocks,
+    /// frontmatter and literal HTML blocks are never wrapped, so their
+    /// first line may be wider, as any of their lines may be wider than
+    /// the width. A word wider than the first line width overflows the
+    /// first line, as a word wider than the width overflows any line. A
+    /// first line width at or above the width changes nothing.
+    ///
+    /// ```
+    /// use patine::{RenderOptions, render_lines_with};
+    ///
+    /// let text = "one two three four five six seven";
+    /// let options = RenderOptions::new().with_first_line_width(10);
+    /// let lines = render_lines_with(text, 20, &options);
+    /// assert_eq!(lines[0].to_string(), "one two");
+    /// assert_eq!(lines[1].to_string(), "three four five six");
+    /// assert_eq!(lines[2].to_string(), "seven");
+    /// ```
+    #[must_use]
+    pub const fn with_first_line_width(mut self, width: usize) -> Self {
+        self.first_line_width = Some(width);
         self
     }
 }

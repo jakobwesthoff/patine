@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `RenderOptions::with_first_line_width` lays out the first line of the
+  output at most that many columns wide and every later line at the
+  full width, for a program that draws something at the end of the
+  first line. A list item's later lines stay under its text and a
+  quote's behind its bars. A table that starts the output is laid out
+  for the first line width on all its rows; code blocks are never
+  wrapped, and a word wider than the first line width overflows it.
+
 ## [1.8.0] - 2026-10-22
 
 ### Changed

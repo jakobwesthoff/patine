@@ -12,6 +12,8 @@ Amended by [8. Glued inline elements wrap as one word](0008-glued-inline-element
 
 Amended by [10. Quote style option](0010-quote-style-option.md)
 
+Amended by [15. First line width option](0015-first-line-width-option.md)
+
 ## Context
 
 asqr renders the intro, the question texts and the option descriptions

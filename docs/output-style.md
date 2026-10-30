@@ -8,7 +8,10 @@ All examples show the visual output, not the Markdown source.
 - Content starts at the left terminal edge (no global indent).
 - Blank lines separate block-level elements (headings, paragraphs, lists,
   tables, code blocks, horizontal rules).
-- Long lines wrap at the terminal width.
+- Long lines wrap at the terminal width. With
+  `RenderOptions::first_line_width`, the first line of the output wraps
+  at that width instead, and a table that starts the output is laid out
+  for it.
 - Widths count grapheme by grapheme, as terminals and ratatui draw
   text: the letters of a Lam-Alef `لا` take a column each, and a
   halfwidth sound mark, `ﾞ` or `ﾟ`, takes one column. Control

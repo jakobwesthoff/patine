@@ -149,7 +149,8 @@ pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
 }
 
 /// Like [`render_lines`], with [`RenderOptions`] that change how soft
-/// line breaks and raw HTML render.
+/// line breaks, raw HTML and quotes render, and how wide the first line
+/// may be.
 ///
 /// The defaults suit Markdown documents. Short text fields, such as text
 /// a program writes into a JSON string, often mean a newline as a line
