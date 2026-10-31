@@ -1,0 +1,411 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A post with front matter[]
+
+The block above is metadata. It renders as a highlighted block, fences included,
+and the body follows after a blank line.
+
+Another paragraph with [yellow]code[], [bold]bold[] and a [underline]link[][dim] (https://example.com)[].
+
+────────────────────────────────────────────────────────────────────────────────
+
+A thematic break sits above this line, not front matter.
+=== width 40
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A post with front matter[]
+
+The block above is metadata. It renders
+as a highlighted block, fences included,
+and the body follows after a blank line.
+
+Another paragraph with [yellow]code[], [bold]bold[] and a
+[underline]link[][dim] (https://example.com)[].
+
+────────────────────────────────────────
+
+A thematic break sits above this line,
+not front matter.
+=== width 20
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A post with front[]
+[bold,italic,double-underline]matter[]
+
+The block above is
+metadata. It renders
+as a highlighted
+block, fences
+included, and the
+body follows after a
+blank line.
+
+Another paragraph
+with [yellow]code[], [bold]bold[] and
+a [underline]link[]
+[dim](https://example.com)[].
+
+────────────────────
+
+A thematic break
+sits above this
+line, not front
+matter.
+=== width 12
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A post with[]
+[bold,italic,double-underline]front matter[]
+
+The block
+above is
+metadata. It
+renders as a
+highlighted
+block,
+fences
+included,
+and the body
+follows
+after a
+blank line.
+
+Another
+paragraph
+with [yellow]code[],
+[bold]bold[] and a
+[underline]link[]
+[dim](https://example.com)[].
+
+────────────
+
+A thematic
+break sits
+above this
+line, not
+front
+matter.
+=== width 8
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+block
+above is
+metadata.
+It
+renders
+as a
+highlighted
+block,
+fences
+included,
+and the
+body
+follows
+after a
+blank
+line.
+
+Another
+paragraph
+with
+[yellow]code[],
+[bold]bold[] and
+a [underline]link[]
+[dim](https://example.com)[].
+
+────────
+
+A
+thematic
+break
+sits
+above
+this
+line,
+not
+front
+matter.
+=== width 5
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+block
+above
+is
+metadata.
+It
+renders
+as a
+highlighted
+block,
+fences
+included,
+and
+the
+body
+follows
+after
+a
+blank
+line.
+
+Another
+paragraph
+with
+[yellow]code[],
+[bold]bold[]
+and a
+[underline]link[]
+[dim](https://example.com)[].
+
+─────
+
+A
+thematic
+break
+sits
+above
+this
+line,
+not
+front
+matter.
+=== width 3
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+block
+above
+is
+metadata.
+It
+renders
+as
+a
+highlighted
+block,
+fences
+included,
+and
+the
+body
+follows
+after
+a
+blank
+line.
+
+Another
+paragraph
+with
+[yellow]code[],
+[bold]bold[]
+and
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+───
+
+A
+thematic
+break
+sits
+above
+this
+line,
+not
+front
+matter.
+=== width 1
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+block
+above
+is
+metadata.
+It
+renders
+as
+a
+highlighted
+block,
+fences
+included,
+and
+the
+body
+follows
+after
+a
+blank
+line.
+
+Another
+paragraph
+with
+[yellow]code[],
+[bold]bold[]
+and
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+─
+
+A
+thematic
+break
+sits
+above
+this
+line,
+not
+front
+matter.
+=== width 0
+  ---
+  [red]title[]: [green]A post with front matter[]
+  [red]tags[]: [[green]rust[], [green]terminal[], [green]"markdown"[]]
+  [red]draft[]: [yellow]false[]
+  [red]author[]:
+    [red]name[]: [green]Ada[]
+    [red]email[]: [green]ada@example.com[]
+  ---
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+block
+above
+is
+metadata.
+It
+renders
+as
+a
+highlighted
+block,
+fences
+included,
+and
+the
+body
+follows
+after
+a
+blank
+line.
+
+Another
+paragraph
+with
+[yellow]code[],
+[bold]bold[]
+and
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+─
+
+A
+thematic
+break
+sits
+above
+this
+line,
+not
+front
+matter.

@@ -1,0 +1,985 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]Nesting[]
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence that needs to wrap when the terminal is
+      narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    [cyan]│ []A quote inside an ordered item that spans two lines
+  3. Last
+
+[cyan]│ []A quote with a list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested in quote
+[cyan]│ []
+[cyan]│ │ []And a quote in a quote
+[cyan]│ │ []
+[cyan]│ │ │ []and one more level
+[cyan]│ │ []
+[cyan]│ │ []back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ [bold]a[] │ [bold]b[] │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+[dim]☑ done task[]
+☐ open task
+  [dim]☑ done subtask[]
+  ☐ open subtask
+
+[dim]1. ☑ numbered done[]
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== width 40
+[bold,italic,double-underline]Nesting[]
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence
+      that needs to wrap when the
+      terminal is narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    [cyan]│ []A quote inside an ordered item
+    [cyan]│ []that spans two lines
+  3. Last
+
+[cyan]│ []A quote with a list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested in quote
+[cyan]│ []
+[cyan]│ │ []And a quote in a quote
+[cyan]│ │ []
+[cyan]│ │ │ []and one more level
+[cyan]│ │ []
+[cyan]│ │ []back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ [bold]a[] │ [bold]b[] │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+[dim]☑ done task[]
+☐ open task
+  [dim]☑ done subtask[]
+  ☐ open subtask
+
+[dim]1. ☑ numbered done[]
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== width 20
+[bold,italic,double-underline]Nesting[]
+
+• Level one, item
+  one
+  • Level two, item
+    one
+    • Level three
+      with a long
+      sentence that
+      needs to wrap
+      when the
+      terminal is
+      narrow enough
+    • Level three
+      again
+  • Level two, item
+    two
+
+    A second
+    paragraph inside
+    the item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level one, item
+  two
+  1. Ordered inside
+     bullet
+  2. Another one
+
+    [cyan]│ []A quote inside
+    [cyan]│ []an ordered
+    [cyan]│ []item that
+    [cyan]│ []spans two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A quote with a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And a quote in a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and one more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ [bold]a[] │ [bold]b[] │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+[dim]☑ done task[]
+☐ open task
+  [dim]☑ done subtask[]
+  ☐ open subtask
+
+[dim]1. ☑ numbered done[]
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== width 12
+[bold,italic,double-underline]Nesting[]
+
+• Level one,
+  item one
+  • Level
+    two,
+    item one
+    • Level
+      three
+      with a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item two
+
+    A second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level one,
+  item two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A quote
+[cyan]│ []with a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And a
+[cyan]│ │ []quote in
+[cyan]│ │ []a quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  ┌───┬───┐
+  │ [bold]a[] │ [bold]b[] │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+[dim]☑ done task[]
+☐ open task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== width 8
+[bold,italic,double-underline]Nesting[]
+
+• Level
+  one,
+  item
+  one
+  • Level
+    two,
+    item
+    one
+    • Level
+      three
+      with
+      a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item
+    two
+
+    A
+    second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level
+  one,
+  item
+  two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A
+[cyan]│ []quote
+[cyan]│ []with a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []in a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back
+[cyan]│ │ []out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  [bold,dim]a[]  1
+  [bold,dim]b[]  2
+3. Third
+
+[dim]☑ done[]
+  [dim]task[]
+☐ open
+  task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts
+   at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== width 5
+[bold,italic,double-underline]Nesting[]
+
+• Level
+  one,
+  item
+  one
+  • Level
+    two,
+    item
+    one
+    • Level
+      three
+      with
+      a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item
+    two
+
+    A
+    second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level
+  one,
+  item
+  two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []in
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back
+[cyan]│ │ []out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  [bold,dim]a[]
+    1
+  [bold,dim]b[]
+    2
+3. Third
+
+[dim]☑ done[]
+  [dim]task[]
+☐ open
+  task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts
+   at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== width 3
+[bold,italic,double-underline]Nesting[]
+
+• Level
+  one,
+  item
+  one
+  • Level
+    two,
+    item
+    one
+    • Level
+      three
+      with
+      a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item
+    two
+
+    A
+    second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level
+  one,
+  item
+  two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []in
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back
+[cyan]│ │ []out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  [bold,dim]a[]
+  1
+  [bold,dim]b[]
+  2
+3. Third
+
+[dim]☑ done[]
+  [dim]task[]
+☐ open
+  task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts
+   at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== width 1
+[bold,italic,double-underline]Nesting[]
+
+• Level
+  one,
+  item
+  one
+  • Level
+    two,
+    item
+    one
+    • Level
+      three
+      with
+      a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item
+    two
+
+    A
+    second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level
+  one,
+  item
+  two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []in
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back
+[cyan]│ │ []out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  [bold,dim]a[]
+  1
+  [bold,dim]b[]
+  2
+3. Third
+
+[dim]☑ done[]
+  [dim]task[]
+☐ open
+  task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts
+   at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== width 0
+[bold,italic,double-underline]Nesting[]
+
+• Level
+  one,
+  item
+  one
+  • Level
+    two,
+    item
+    one
+    • Level
+      three
+      with
+      a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item
+    two
+
+    A
+    second
+    paragraph
+    inside
+    the
+    item.
+
+      [magenta]def[] [blue]greet[]([cyan]name[]):
+          [magenta]return[] [magenta]f[][green]"hello []{name}[green]"[]
+• Level
+  one,
+  item
+  two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    [cyan]│ []A
+    [cyan]│ []quote
+    [cyan]│ []inside
+    [cyan]│ []an
+    [cyan]│ []ordered
+    [cyan]│ []item
+    [cyan]│ []that
+    [cyan]│ []spans
+    [cyan]│ []two
+    [cyan]│ []lines
+  3. Last
+
+[cyan]│ []A
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []a
+[cyan]│ []list:
+[cyan]│ []
+[cyan]│ []• first
+[cyan]│ []• second
+[cyan]│ []  • nested
+[cyan]│ []    in
+[cyan]│ []    quote
+[cyan]│ []
+[cyan]│ │ []And
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []in
+[cyan]│ │ []a
+[cyan]│ │ []quote
+[cyan]│ │ []
+[cyan]│ │ │ []and
+[cyan]│ │ │ []one
+[cyan]│ │ │ []more
+[cyan]│ │ │ []level
+[cyan]│ │ []
+[cyan]│ │ []back
+[cyan]│ │ []out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  [bold,dim]a[]
+  1
+  [bold,dim]b[]
+  2
+3. Third
+
+[dim]☑ done[]
+  [dim]task[]
+☐ open
+  task
+  [dim]☑ done[]
+    [dim]subtask[]
+  ☐ open
+    subtask
+
+[dim]1. ☑ numbered[]
+     [dim]done[]
+2. ☐ numbered
+     open
+3. Starts
+   at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet

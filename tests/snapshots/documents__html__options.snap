@@ -1,0 +1,473 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+HTML in Markdown
+
+A paragraph with inline
+bold tags and a line
+break tag, then a span
+and an entity & more.
+
+After the comment.
+
+• list item with inline
+  html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a
+blank line.
+
+Last line with a lone <
+sign and Vec generic.
+=== width 24, Join, Drop, first line Some(9)
+HTML in
+Markdown
+
+A paragraph with inline
+bold tags and a line
+break tag, then a span
+and an entity & more.
+
+After the comment.
+
+• list item with inline
+  html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a
+blank line.
+
+Last line with a lone <
+sign and Vec generic.
+=== width 24, Join, Literal, first line None
+HTML in Markdown
+
+A paragraph with
+<b>inline bold tags</b>
+and a <br/> line break
+tag, then <span
+class="x">a span</span>
+and an entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with
+  <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with
+│ <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a
+blank line.
+
+</details>
+
+Last line with a lone <
+sign and Vec<String>
+generic.
+=== width 24, Join, Literal, first line Some(9)
+HTML in
+Markdown
+
+A paragraph with
+<b>inline bold tags</b>
+and a <br/> line break
+tag, then <span
+class="x">a span</span>
+and an entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with
+  <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with
+│ <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a
+blank line.
+
+</details>
+
+Last line with a lone <
+sign and Vec<String>
+generic.
+=== width 24, Break, Drop, first line None
+HTML in Markdown
+
+A paragraph with inline
+bold tags and a line
+break tag, then
+a span and an entity &
+more.
+
+After the comment.
+
+• list item with inline
+  html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a
+blank line.
+
+Last line with a lone <
+sign and Vec generic.
+=== width 24, Break, Drop, first line Some(9)
+HTML in
+Markdown
+
+A paragraph with inline
+bold tags and a line
+break tag, then
+a span and an entity &
+more.
+
+After the comment.
+
+• list item with inline
+  html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a
+blank line.
+
+Last line with a lone <
+sign and Vec generic.
+=== width 24, Break, Literal, first line None
+HTML in Markdown
+
+A paragraph with
+<b>inline bold tags</b>
+and a <br/> line break
+tag, then
+<span class="x">a
+span</span> and an
+entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with
+  <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with
+│ <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a
+blank line.
+
+</details>
+
+Last line with a lone <
+sign and Vec<String>
+generic.
+=== width 24, Break, Literal, first line Some(9)
+HTML in
+Markdown
+
+A paragraph with
+<b>inline bold tags</b>
+and a <br/> line break
+tag, then
+<span class="x">a
+span</span> and an
+entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with
+  <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with
+│ <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a
+blank line.
+
+</details>
+
+Last line with a lone <
+sign and Vec<String>
+generic.
+=== width 24, Join, Drop, DimBar
+HTML in Markdown
+
+A paragraph with inline
+bold tags and a line
+break tag, then a span
+and an entity & more.
+
+After the comment.
+
+• list item with inline
+  html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a
+blank line.
+
+Last line with a lone <
+sign and Vec generic.
+=== width 24, Break, Literal, DimBar
+HTML in Markdown
+
+A paragraph with
+<b>inline bold tags</b>
+and a <br/> line break
+tag, then
+<span class="x">a
+span</span> and an
+entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with
+  <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with
+│ <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a
+blank line.
+
+</details>
+
+Last line with a lone <
+sign and Vec<String>
+generic.
+=== width 80, Join, Drop
+HTML in Markdown
+
+A paragraph with inline bold tags and a line break tag, then a span and an
+entity & more.
+
+After the comment.
+
+• list item with inline html
+• second item
+
+│ quote with html
+
+┌──────┬────────┐
+│ name │ markup │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner markdown after a blank line.
+
+Last line with a lone < sign and Vec generic.
+=== width 80, Break, Literal
+HTML in Markdown
+
+A paragraph with <b>inline bold tags</b> and a <br/> line break tag, then
+<span class="x">a span</span> and an entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+│ quote with <em>html</em>
+│ 
+│ <p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ name │  markup  │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner markdown after a blank line.
+
+</details>
+
+Last line with a lone < sign and Vec<String> generic.

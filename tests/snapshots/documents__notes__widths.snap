@@ -1,0 +1,1464 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]Meeting notes, week 42[]
+
+Attendees: Ada, Grace, Linus. Notes by Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship the parser change behind a flag first.
+2. Move the nightly build to [bold]03:00[] UTC.
+3. Drop support for the [yellow]legacy[] backend after the next release.
+
+[bold,underline]Numbers[]
+
+┌───────────────────┬───────────┬───────────┬────────┐
+│ [bold]Metric           [] │ [bold]Last week[] │ [bold]This week[] │ [bold]Change[] │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Build time (s)    │       412 │       388 │  -6%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Test failures     │        17 │         9 │  -47%  │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Open bugs         │        63 │        58 │  -8%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Median review (h) │       5.5 │       4.0 │  -27%  │
+└───────────────────┴───────────┴───────────┴────────┘
+
+[bold,underline]Snippets we looked at[]
+
+The slow path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And the shell one-liner that finds the culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open questions[]
+
+• Who owns the flaky [yellow]integration::upload[] test?
+• Is the [yellow]~~old~~[] benchmark data still valid?
+• Do we need a [italic]second[] staging cluster?
+
+[bold,underline]Next week[]
+
+Review the draft at [underline]https://example.com/draft[] and add comments by Friday.
+=== width 40
+[bold,italic,double-underline]Meeting notes, week 42[]
+
+Attendees: Ada, Grace, Linus. Notes by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship the parser change behind a flag
+   first.
+2. Move the nightly build to [bold]03:00[] UTC.
+3. Drop support for the [yellow]legacy[] backend
+   after the next release.
+
+[bold,underline]Numbers[]
+
+┌─────────────┬───────┬───────┬────────┐
+│ [bold]Metric     [] │ [bold] Last[] │ [bold] This[] │ [bold]Change[] │
+│ [bold]           [] │ [bold] week[] │ [bold] week[] │ [bold]      [] │
+├─────────────┼───────┼───────┼────────┤
+│ Build time  │   412 │   388 │  -6%   │
+│ (s)         │       │       │        │
+├─────────────┼───────┼───────┼────────┤
+│ Test        │    17 │     9 │  -47%  │
+│ failures    │       │       │        │
+├─────────────┼───────┼───────┼────────┤
+│ Open bugs   │    63 │    58 │  -8%   │
+├─────────────┼───────┼───────┼────────┤
+│ Median      │   5.5 │   4.0 │  -27%  │
+│ review (h)  │       │       │        │
+└─────────────┴───────┴───────┴────────┘
+
+[bold,underline]Snippets we looked at[]
+
+The slow path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And the shell one-liner that finds the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open questions[]
+
+• Who owns the flaky [yellow]integration::upload[]
+  test?
+• Is the [yellow]~~old~~[] benchmark data still
+  valid?
+• Do we need a [italic]second[] staging cluster?
+
+[bold,underline]Next week[]
+
+Review the draft at
+[underline]https://example.com/draft[] and add
+comments by Friday.
+=== width 20
+[bold,italic,double-underline]Meeting notes, week[]
+[bold,italic,double-underline]42[]
+
+Attendees: Ada,
+Grace, Linus. Notes
+by Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship the parser
+   change behind a
+   flag first.
+2. Move the nightly
+   build to [bold]03:00[]
+   UTC.
+3. Drop support for
+   the [yellow]legacy[]
+   backend after the
+   next release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]Metric[]     Build
+           time (s)
+[bold,dim]Last week[]  412
+[bold,dim]This week[]  388
+[bold,dim]Change[]     -6%
+────────────────────
+[bold,dim]Metric[]     Test
+           failures
+[bold,dim]Last week[]  17
+[bold,dim]This week[]  9
+[bold,dim]Change[]     -47%
+────────────────────
+[bold,dim]Metric[]     Open bugs
+[bold,dim]Last week[]  63
+[bold,dim]This week[]  58
+[bold,dim]Change[]     -8%
+────────────────────
+[bold,dim]Metric[]     Median
+           review
+           (h)
+[bold,dim]Last week[]  5.5
+[bold,dim]This week[]  4.0
+[bold,dim]Change[]     -27%
+
+[bold,underline]Snippets we looked[]
+[bold,underline]at[]
+
+The slow path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And the shell
+one-liner that finds
+the culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open questions[]
+
+• Who owns the flaky
+  [yellow]integration::upload[]
+  test?
+• Is the [yellow]~~old~~[]
+  benchmark data
+  still valid?
+• Do we need a
+  [italic]second[] staging
+  cluster?
+
+[bold,underline]Next week[]
+
+Review the draft at
+[underline]https://example.com/draft[]
+and add comments by
+Friday.
+=== width 12
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes, week[]
+[bold,italic,double-underline]42[]
+
+Attendees:
+Ada, Grace,
+Linus. Notes
+by Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship the
+   parser
+   change
+   behind a
+   flag
+   first.
+2. Move the
+   nightly
+   build to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for the
+   [yellow]legacy[]
+   backend
+   after the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]Metric[]
+  Build time
+  (s)
+[bold,dim]Last week[]
+  412
+[bold,dim]This week[]
+  388
+[bold,dim]Change[]
+  -6%
+────────────
+[bold,dim]Metric[]
+  Test
+  failures
+[bold,dim]Last week[]
+  17
+[bold,dim]This week[]
+  9
+[bold,dim]Change[]
+  -47%
+────────────
+[bold,dim]Metric[]
+  Open bugs
+[bold,dim]Last week[]
+  63
+[bold,dim]This week[]
+  58
+[bold,dim]Change[]
+  -8%
+────────────
+[bold,dim]Metric[]
+  Median
+  review (h)
+[bold,dim]Last week[]
+  5.5
+[bold,dim]This week[]
+  4.0
+[bold,dim]Change[]
+  -27%
+
+[bold,underline]Snippets we[]
+[bold,underline]looked at[]
+
+The slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And the
+shell
+one-liner
+that finds
+the culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who owns
+  the flaky
+  [yellow]integration::upload[]
+  test?
+• Is the
+  [yellow]~~old~~[]
+  benchmark
+  data still
+  valid?
+• Do we need
+  a [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next week[]
+
+Review the
+draft at
+[underline]https://example.com/draft[]
+and add
+comments by
+Friday.
+=== width 8
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes,[]
+[bold,italic,double-underline]week 42[]
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a
+   flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for
+   the
+   [yellow]legacy[]
+   backend
+   after
+   the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]Metric[]
+  Build
+  time
+  (s)
+[bold,dim]Last[]
+[bold,dim]week[]
+  412
+[bold,dim]This[]
+[bold,dim]week[]
+  388
+[bold,dim]Change[]
+  -6%
+────────
+[bold,dim]Metric[]
+  Test
+  failur
+  es
+[bold,dim]Last[]
+[bold,dim]week[]
+  17
+[bold,dim]This[]
+[bold,dim]week[]
+  9
+[bold,dim]Change[]
+  -47%
+────────
+[bold,dim]Metric[]
+  Open
+  bugs
+[bold,dim]Last[]
+[bold,dim]week[]
+  63
+[bold,dim]This[]
+[bold,dim]week[]
+  58
+[bold,dim]Change[]
+  -8%
+────────
+[bold,dim]Metric[]
+  Median
+  review
+  (h)
+[bold,dim]Last[]
+[bold,dim]week[]
+  5.5
+[bold,dim]This[]
+[bold,dim]week[]
+  4.0
+[bold,dim]Change[]
+  -27%
+
+[bold,underline]Snippets[]
+[bold,underline]we[]
+[bold,underline]looked[]
+[bold,underline]at[]
+
+The slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And the
+shell
+one-liner
+that
+finds
+the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who
+  owns
+  the
+  flaky
+  [yellow]integration::upload[]
+  test?
+• Is the
+  [yellow]~~old~~[]
+  benchmark
+  data
+  still
+  valid?
+• Do we
+  need a
+  [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next[]
+[bold,underline]week[]
+
+Review
+the
+draft at
+[underline]https://example.com/draft[]
+and add
+comments
+by
+Friday.
+=== width 5
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes,[]
+[bold,italic,double-underline]week[]
+[bold,italic,double-underline]42[]
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes
+by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a
+   flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for
+   the
+   [yellow]legacy[]
+   backend
+   after
+   the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]Metri[]
+[bold,dim]c[]
+  Bui
+  ld
+  tim
+  e
+  (s)
+[bold,dim]Last[]
+[bold,dim]week[]
+  412
+[bold,dim]This[]
+[bold,dim]week[]
+  388
+[bold,dim]Chang[]
+[bold,dim]e[]
+  -6%
+─────
+[bold,dim]Metri[]
+[bold,dim]c[]
+  Tes
+  t
+  fai
+  lur
+  es
+[bold,dim]Last[]
+[bold,dim]week[]
+  17
+[bold,dim]This[]
+[bold,dim]week[]
+  9
+[bold,dim]Chang[]
+[bold,dim]e[]
+  -47
+  %
+─────
+[bold,dim]Metri[]
+[bold,dim]c[]
+  Ope
+  n
+  bug
+  s
+[bold,dim]Last[]
+[bold,dim]week[]
+  63
+[bold,dim]This[]
+[bold,dim]week[]
+  58
+[bold,dim]Chang[]
+[bold,dim]e[]
+  -8%
+─────
+[bold,dim]Metri[]
+[bold,dim]c[]
+  Med
+  ian
+  rev
+  iew
+  (h)
+[bold,dim]Last[]
+[bold,dim]week[]
+  5.5
+[bold,dim]This[]
+[bold,dim]week[]
+  4.0
+[bold,dim]Chang[]
+[bold,dim]e[]
+  -27
+  %
+
+[bold,underline]Snippets[]
+[bold,underline]we[]
+[bold,underline]looked[]
+[bold,underline]at[]
+
+The
+slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And
+the
+shell
+one-liner
+that
+finds
+the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who
+  owns
+  the
+  flaky
+  [yellow]integration::upload[]
+  test?
+• Is
+  the
+  [yellow]~~old~~[]
+  benchmark
+  data
+  still
+  valid?
+• Do
+  we
+  need
+  a
+  [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next[]
+[bold,underline]week[]
+
+Review
+the
+draft
+at
+[underline]https://example.com/draft[]
+and
+add
+comments
+by
+Friday.
+=== width 3
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes,[]
+[bold,italic,double-underline]week[]
+[bold,italic,double-underline]42[]
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes
+by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a
+   flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for
+   the
+   [yellow]legacy[]
+   backend
+   after
+   the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]Met[]
+[bold,dim]ric[]
+  B
+  u
+  i
+  l
+  d
+  t
+  i
+  m
+  e
+  (
+  s
+  )
+[bold,dim]Las[]
+[bold,dim]t[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  4
+  1
+  2
+[bold,dim]Thi[]
+[bold,dim]s[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  3
+  8
+  8
+[bold,dim]Cha[]
+[bold,dim]nge[]
+  -
+  6
+  %
+───
+[bold,dim]Met[]
+[bold,dim]ric[]
+  T
+  e
+  s
+  t
+  f
+  a
+  i
+  l
+  u
+  r
+  e
+  s
+[bold,dim]Las[]
+[bold,dim]t[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  1
+  7
+[bold,dim]Thi[]
+[bold,dim]s[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  9
+[bold,dim]Cha[]
+[bold,dim]nge[]
+  -
+  4
+  7
+  %
+───
+[bold,dim]Met[]
+[bold,dim]ric[]
+  O
+  p
+  e
+  n
+  b
+  u
+  g
+  s
+[bold,dim]Las[]
+[bold,dim]t[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  6
+  3
+[bold,dim]Thi[]
+[bold,dim]s[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  5
+  8
+[bold,dim]Cha[]
+[bold,dim]nge[]
+  -
+  8
+  %
+───
+[bold,dim]Met[]
+[bold,dim]ric[]
+  M
+  e
+  d
+  i
+  a
+  n
+  r
+  e
+  v
+  i
+  e
+  w
+  (
+  h
+  )
+[bold,dim]Las[]
+[bold,dim]t[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  5
+  .
+  5
+[bold,dim]Thi[]
+[bold,dim]s[]
+[bold,dim]wee[]
+[bold,dim]k[]
+  4
+  .
+  0
+[bold,dim]Cha[]
+[bold,dim]nge[]
+  -
+  2
+  7
+  %
+
+[bold,underline]Snippets[]
+[bold,underline]we[]
+[bold,underline]looked[]
+[bold,underline]at[]
+
+The
+slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And
+the
+shell
+one-liner
+that
+finds
+the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who
+  owns
+  the
+  flaky
+  [yellow]integration::upload[]
+  test?
+• Is
+  the
+  [yellow]~~old~~[]
+  benchmark
+  data
+  still
+  valid?
+• Do
+  we
+  need
+  a
+  [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next[]
+[bold,underline]week[]
+
+Review
+the
+draft
+at
+[underline]https://example.com/draft[]
+and
+add
+comments
+by
+Friday.
+=== width 1
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes,[]
+[bold,italic,double-underline]week[]
+[bold,italic,double-underline]42[]
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes
+by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a
+   flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for
+   the
+   [yellow]legacy[]
+   backend
+   after
+   the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+B
+u
+i
+l
+d
+t
+i
+m
+e
+(
+s
+)
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+4
+1
+2
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+3
+8
+8
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+6
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+T
+e
+s
+t
+f
+a
+i
+l
+u
+r
+e
+s
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+1
+7
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+9
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+4
+7
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+O
+p
+e
+n
+b
+u
+g
+s
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+6
+3
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+5
+8
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+8
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+M
+e
+d
+i
+a
+n
+r
+e
+v
+i
+e
+w
+(
+h
+)
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+5
+.
+5
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+4
+.
+0
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+2
+7
+%
+
+[bold,underline]Snippets[]
+[bold,underline]we[]
+[bold,underline]looked[]
+[bold,underline]at[]
+
+The
+slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And
+the
+shell
+one-liner
+that
+finds
+the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who
+  owns
+  the
+  flaky
+  [yellow]integration::upload[]
+  test?
+• Is
+  the
+  [yellow]~~old~~[]
+  benchmark
+  data
+  still
+  valid?
+• Do
+  we
+  need
+  a
+  [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next[]
+[bold,underline]week[]
+
+Review
+the
+draft
+at
+[underline]https://example.com/draft[]
+and
+add
+comments
+by
+Friday.
+=== width 0
+[bold,italic,double-underline]Meeting[]
+[bold,italic,double-underline]notes,[]
+[bold,italic,double-underline]week[]
+[bold,italic,double-underline]42[]
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes
+by
+Ada.
+
+[bold,underline]Decisions[]
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a
+   flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   [bold]03:00[]
+   UTC.
+3. Drop
+   support
+   for
+   the
+   [yellow]legacy[]
+   backend
+   after
+   the
+   next
+   release.
+
+[bold,underline]Numbers[]
+
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+B
+u
+i
+l
+d
+t
+i
+m
+e
+(
+s
+)
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+4
+1
+2
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+3
+8
+8
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+6
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+T
+e
+s
+t
+f
+a
+i
+l
+u
+r
+e
+s
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+1
+7
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+9
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+4
+7
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+O
+p
+e
+n
+b
+u
+g
+s
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+6
+3
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+5
+8
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+8
+%
+─
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]t[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]c[]
+M
+e
+d
+i
+a
+n
+r
+e
+v
+i
+e
+w
+(
+h
+)
+[bold,dim]L[]
+[bold,dim]a[]
+[bold,dim]s[]
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+5
+.
+5
+[bold,dim]T[]
+[bold,dim]h[]
+[bold,dim]i[]
+[bold,dim]s[]
+[bold,dim]w[]
+[bold,dim]e[]
+[bold,dim]e[]
+[bold,dim]k[]
+4
+.
+0
+[bold,dim]C[]
+[bold,dim]h[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]g[]
+[bold,dim]e[]
+-
+2
+7
+%
+
+[bold,underline]Snippets[]
+[bold,underline]we[]
+[bold,underline]looked[]
+[bold,underline]at[]
+
+The
+slow
+path:
+
+  [magenta]fn[] [blue]lookup[]([cyan]map[]: [magenta]&[]HashMap<String, Vec<[magenta]u32[]>>, [cyan]key[]: [magenta]&str[]) -> [magenta]usize[] {
+      map.[cyan]get[](key).[cyan]map[](|[cyan]ids[]| ids.[cyan]len[]()).[cyan]unwrap_or_default[]()
+  }
+
+And
+the
+shell
+one-liner
+that
+finds
+the
+culprit:
+
+  git log[cyan] --since[][magenta]=[]1.week[cyan] --format[][magenta]=[][green]'%h %s'[][magenta] --[] src/parser [magenta]|[] head[cyan] -20[]
+
+[bold,underline]Open[]
+[bold,underline]questions[]
+
+• Who
+  owns
+  the
+  flaky
+  [yellow]integration::upload[]
+  test?
+• Is
+  the
+  [yellow]~~old~~[]
+  benchmark
+  data
+  still
+  valid?
+• Do
+  we
+  need
+  a
+  [italic]second[]
+  staging
+  cluster?
+
+[bold,underline]Next[]
+[bold,underline]week[]
+
+Review
+the
+draft
+at
+[underline]https://example.com/draft[]
+and
+add
+comments
+by
+Friday.

@@ -1,0 +1,354 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2mMeeting notes, week 42\e[24m\e[23m\e[22m
+
+Attendees: Ada, Grace, Linus. Notes by Ada.
+
+\e[1m\e[4mDecisions\e[24m\e[22m
+
+1. Ship the parser change behind a flag first.
+2. Move the nightly build to \e[1m03:00\e[22m UTC.
+3. Drop support for the \e[38;5;3mlegacy\e[39m backend after the next release.
+
+\e[1m\e[4mNumbers\e[24m\e[22m
+
+┌───────────────────┬───────────┬───────────┬────────┐
+│ \e[1mMetric           \e[22m │ \e[1mLast week\e[22m │ \e[1mThis week\e[22m │ \e[1mChange\e[22m │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Build time (s)    │       412 │       388 │  -6%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Test failures     │        17 │         9 │  -47%  │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Open bugs         │        63 │        58 │  -8%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Median review (h) │       5.5 │       4.0 │  -27%  │
+└───────────────────┴───────────┴───────────┴────────┘
+
+\e[1m\e[4mSnippets we looked at\e[24m\e[22m
+
+The slow path:
+
+  \e[38;5;5mfn\e[39m \e[38;5;4mlookup\e[39m(\e[38;5;6mmap\e[39m: \e[38;5;5m&\e[39mHashMap<String, Vec<\e[38;5;5mu32\e[39m>>, \e[38;5;6mkey\e[39m: \e[38;5;5m&str\e[39m) -> \e[38;5;5musize\e[39m {
+      map.\e[38;5;6mget\e[39m(key).\e[38;5;6mmap\e[39m(|\e[38;5;6mids\e[39m| ids.\e[38;5;6mlen\e[39m()).\e[38;5;6munwrap_or_default\e[39m()
+  }
+
+And the shell one-liner that finds the culprit:
+
+  git log\e[38;5;6m --since\e[39m\e[38;5;5m=\e[39m1.week\e[38;5;6m --format\e[39m\e[38;5;5m=\e[39m\e[38;5;2m'%h %s'\e[39m\e[38;5;5m --\e[39m src/parser \e[38;5;5m|\e[39m head\e[38;5;6m -20\e[39m
+
+\e[1m\e[4mOpen questions\e[24m\e[22m
+
+• Who owns the flaky \e[38;5;3mintegration::upload\e[39m test?
+• Is the \e[38;5;3m~~old~~\e[39m benchmark data still valid?
+• Do we need a \e[3msecond\e[23m staging cluster?
+
+\e[1m\e[4mNext week\e[24m\e[22m
+
+Review the draft at \e[4mhttps://example.com/draft\e[24m and add comments by Friday.
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2mMeeting notes, week 42\e[24m\e[23m\e[22m
+
+Attendees: Ada, Grace, Linus. Notes by Ada.
+
+\e[1m\e[4mDecisions\e[24m\e[22m
+
+1. Ship the parser change behind a flag first.
+2. Move the nightly build to \e[1m03:00\e[22m UTC.
+3. Drop support for the \e[38;5;3mlegacy\e[39m backend after the next release.
+
+\e[1m\e[4mNumbers\e[24m\e[22m
+
+┌───────────────────┬───────────┬───────────┬────────┐
+│ \e[1mMetric           \e[22m │ \e[1mLast week\e[22m │ \e[1mThis week\e[22m │ \e[1mChange\e[22m │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Build time (s)    │       412 │       388 │  -6%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Test failures     │        17 │         9 │  -47%  │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Open bugs         │        63 │        58 │  -8%   │
+├───────────────────┼───────────┼───────────┼────────┤
+│ Median review (h) │       5.5 │       4.0 │  -27%  │
+└───────────────────┴───────────┴───────────┴────────┘
+
+\e[1m\e[4mSnippets we looked at\e[24m\e[22m
+
+The slow path:
+
+  \e[38;5;5mfn\e[39m \e[38;5;4mlookup\e[39m(\e[38;5;6mmap\e[39m: \e[38;5;5m&\e[39mHashMap<String, Vec<\e[38;5;5mu32\e[39m>>, \e[38;5;6mkey\e[39m: \e[38;5;5m&str\e[39m) -> \e[38;5;5musize\e[39m {
+      map.\e[38;5;6mget\e[39m(key).\e[38;5;6mmap\e[39m(|\e[38;5;6mids\e[39m| ids.\e[38;5;6mlen\e[39m()).\e[38;5;6munwrap_or_default\e[39m()
+  }
+
+And the shell one-liner that finds the culprit:
+
+  git log\e[38;5;6m --since\e[39m\e[38;5;5m=\e[39m1.week\e[38;5;6m --format\e[39m\e[38;5;5m=\e[39m\e[38;5;2m'%h %s'\e[39m\e[38;5;5m --\e[39m src/parser \e[38;5;5m|\e[39m head\e[38;5;6m -20\e[39m
+
+\e[1m\e[4mOpen questions\e[24m\e[22m
+
+• Who owns the flaky \e[38;5;3mintegration::upload\e[39m test?
+• Is the \e[38;5;3m~~old~~\e[39m benchmark data still valid?
+• Do we need a \e[3msecond\e[23m staging cluster?
+
+\e[1m\e[4mNext week\e[24m\e[22m
+
+Review the draft at \e[4mhttps://example.com/draft\e[24m and add comments by Friday.
+=== width 10, default
+\e[1m\e[3m\e[4:2mMeeting\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mnotes,\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mweek 42\e[24m\e[23m\e[22m
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes by
+Ada.
+
+\e[1m\e[4mDecisions\e[24m\e[22m
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   \e[1m03:00\e[22m
+   UTC.
+3. Drop
+   support
+   for the
+   \e[38;5;3mlegacy\e[39m
+   backend
+   after
+   the
+   next
+   release.
+
+\e[1m\e[4mNumbers\e[24m\e[22m
+
+\e[1m\e[2mMetric\e[22m
+  Build
+  time (s)
+\e[1m\e[2mLast week\e[22m
+  412
+\e[1m\e[2mThis week\e[22m
+  388
+\e[1m\e[2mChange\e[22m
+  -6%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Test
+  failures
+\e[1m\e[2mLast week\e[22m
+  17
+\e[1m\e[2mThis week\e[22m
+  9
+\e[1m\e[2mChange\e[22m
+  -47%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Open
+  bugs
+\e[1m\e[2mLast week\e[22m
+  63
+\e[1m\e[2mThis week\e[22m
+  58
+\e[1m\e[2mChange\e[22m
+  -8%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Median
+  review
+  (h)
+\e[1m\e[2mLast week\e[22m
+  5.5
+\e[1m\e[2mThis week\e[22m
+  4.0
+\e[1m\e[2mChange\e[22m
+  -27%
+
+\e[1m\e[4mSnippets\e[24m\e[22m
+\e[1m\e[4mwe looked\e[24m\e[22m
+\e[1m\e[4mat\e[24m\e[22m
+
+The slow
+path:
+
+  \e[38;5;5mfn\e[39m \e[38;5;4mlookup\e[39m(\e[38;5;6mmap\e[39m: \e[38;5;5m&\e[39mHashMap<String, Vec<\e[38;5;5mu32\e[39m>>, \e[38;5;6mkey\e[39m: \e[38;5;5m&str\e[39m) -> \e[38;5;5musize\e[39m {
+      map.\e[38;5;6mget\e[39m(key).\e[38;5;6mmap\e[39m(|\e[38;5;6mids\e[39m| ids.\e[38;5;6mlen\e[39m()).\e[38;5;6munwrap_or_default\e[39m()
+  }
+
+And the
+shell
+one-liner
+that finds
+the
+culprit:
+
+  git log\e[38;5;6m --since\e[39m\e[38;5;5m=\e[39m1.week\e[38;5;6m --format\e[39m\e[38;5;5m=\e[39m\e[38;5;2m'%h %s'\e[39m\e[38;5;5m --\e[39m src/parser \e[38;5;5m|\e[39m head\e[38;5;6m -20\e[39m
+
+\e[1m\e[4mOpen\e[24m\e[22m
+\e[1m\e[4mquestions\e[24m\e[22m
+
+• Who owns
+  the
+  flaky
+  \e[38;5;3mintegration::upload\e[39m
+  test?
+• Is the
+  \e[38;5;3m~~old~~\e[39m
+  benchmark
+  data
+  still
+  valid?
+• Do we
+  need a
+  \e[3msecond\e[23m
+  staging
+  cluster?
+
+\e[1m\e[4mNext week\e[24m\e[22m
+
+Review the
+draft at
+\e[4mhttps://example.com/draft\e[24m
+and add
+comments
+by Friday.
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2mMeeting\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mnotes,\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mweek 42\e[24m\e[23m\e[22m
+
+Attendees:
+Ada,
+Grace,
+Linus.
+Notes by
+Ada.
+
+\e[1m\e[4mDecisions\e[24m\e[22m
+
+1. Ship
+   the
+   parser
+   change
+   behind
+   a flag
+   first.
+2. Move
+   the
+   nightly
+   build
+   to
+   \e[1m03:00\e[22m
+   UTC.
+3. Drop
+   support
+   for the
+   \e[38;5;3mlegacy\e[39m
+   backend
+   after
+   the
+   next
+   release.
+
+\e[1m\e[4mNumbers\e[24m\e[22m
+
+\e[1m\e[2mMetric\e[22m
+  Build
+  time (s)
+\e[1m\e[2mLast week\e[22m
+  412
+\e[1m\e[2mThis week\e[22m
+  388
+\e[1m\e[2mChange\e[22m
+  -6%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Test
+  failures
+\e[1m\e[2mLast week\e[22m
+  17
+\e[1m\e[2mThis week\e[22m
+  9
+\e[1m\e[2mChange\e[22m
+  -47%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Open
+  bugs
+\e[1m\e[2mLast week\e[22m
+  63
+\e[1m\e[2mThis week\e[22m
+  58
+\e[1m\e[2mChange\e[22m
+  -8%
+──────────
+\e[1m\e[2mMetric\e[22m
+  Median
+  review
+  (h)
+\e[1m\e[2mLast week\e[22m
+  5.5
+\e[1m\e[2mThis week\e[22m
+  4.0
+\e[1m\e[2mChange\e[22m
+  -27%
+
+\e[1m\e[4mSnippets\e[24m\e[22m
+\e[1m\e[4mwe looked\e[24m\e[22m
+\e[1m\e[4mat\e[24m\e[22m
+
+The slow
+path:
+
+  \e[38;5;5mfn\e[39m \e[38;5;4mlookup\e[39m(\e[38;5;6mmap\e[39m: \e[38;5;5m&\e[39mHashMap<String, Vec<\e[38;5;5mu32\e[39m>>, \e[38;5;6mkey\e[39m: \e[38;5;5m&str\e[39m) -> \e[38;5;5musize\e[39m {
+      map.\e[38;5;6mget\e[39m(key).\e[38;5;6mmap\e[39m(|\e[38;5;6mids\e[39m| ids.\e[38;5;6mlen\e[39m()).\e[38;5;6munwrap_or_default\e[39m()
+  }
+
+And the
+shell
+one-liner
+that finds
+the
+culprit:
+
+  git log\e[38;5;6m --since\e[39m\e[38;5;5m=\e[39m1.week\e[38;5;6m --format\e[39m\e[38;5;5m=\e[39m\e[38;5;2m'%h %s'\e[39m\e[38;5;5m --\e[39m src/parser \e[38;5;5m|\e[39m head\e[38;5;6m -20\e[39m
+
+\e[1m\e[4mOpen\e[24m\e[22m
+\e[1m\e[4mquestions\e[24m\e[22m
+
+• Who owns
+  the
+  flaky
+  \e[38;5;3mintegration::upload\e[39m
+  test?
+• Is the
+  \e[38;5;3m~~old~~\e[39m
+  benchmark
+  data
+  still
+  valid?
+• Do we
+  need a
+  \e[3msecond\e[23m
+  staging
+  cluster?
+
+\e[1m\e[4mNext week\e[24m\e[22m
+
+Review the
+draft at
+\e[4mhttps://example.com/draft\e[24m
+and add
+comments
+by Friday.

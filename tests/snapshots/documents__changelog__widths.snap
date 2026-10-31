@@ -1,0 +1,951 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]Changelog[]
+
+All notable changes are documented here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A [yellow]--dry-run[] flag that shows what would change without touching a file.
+• Support for [yellow]~/.config/frobnicate/frobnicate.toml[], read before the project's
+  own file.
+
+[bold]Fixed[]
+
+• A crash when a file name contained a combining character, such as [yellow]é[].
+• The progress bar overwrote the last line of the output on narrow terminals; it
+  now stays within the terminal width.
+
+[bold,underline][2.1.0] - 2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs default to the number of CPU cores, up to [yellow]8[].
+• Error messages name the file first, then the reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[], which will go away in 3.0. Use [yellow]--format=plain[].
+
+[bold,underline][2.0.0] - 2026-05-02[]
+
+[bold]Removed[]
+
+• The [yellow]--old-syntax[] flag and the [yellow].frobrc[] file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[] the exit code for partial failure is [yellow]1[], no longer [yellow]3[].
+=== width 40
+[bold,italic,double-underline]Changelog[]
+
+All notable changes are documented here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A [yellow]--dry-run[] flag that shows what would
+  change without touching a file.
+• Support for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read before the project's own file.
+
+[bold]Fixed[]
+
+• A crash when a file name contained a
+  combining character, such as [yellow]é[].
+• The progress bar overwrote the last
+  line of the output on narrow
+  terminals; it now stays within the
+  terminal width.
+
+[bold,underline][2.1.0] - 2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs default to the number of CPU
+  cores, up to [yellow]8[].
+• Error messages name the file first,
+  then the reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[], which will go away in
+  3.0. Use [yellow]--format=plain[].
+
+[bold,underline][2.0.0] - 2026-05-02[]
+
+[bold]Removed[]
+
+• The [yellow]--old-syntax[] flag and the [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[] the exit code for partial
+  failure is [yellow]1[], no longer [yellow]3[].
+=== width 20
+[bold,italic,double-underline]Changelog[]
+
+All notable changes
+are documented here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A [yellow]--dry-run[] flag
+  that shows what
+  would change
+  without touching a
+  file.
+• Support for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read before the
+  project's own
+  file.
+
+[bold]Fixed[]
+
+• A crash when a
+  file name
+  contained a
+  combining
+  character, such as
+  [yellow]é[].
+• The progress bar
+  overwrote the last
+  line of the output
+  on narrow
+  terminals; it now
+  stays within the
+  terminal width.
+
+[bold,underline][2.1.0] - 2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs default to
+  the number of CPU
+  cores, up to [yellow]8[].
+• Error messages
+  name the file
+  first, then the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which will go away
+  in 3.0. Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0] - 2026-05-02[]
+
+[bold]Removed[]
+
+• The [yellow]--old-syntax[]
+  flag and the
+  [yellow].frobrc[] file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[] the exit
+  code for partial
+  failure is [yellow]1[], no
+  longer [yellow]3[].
+=== width 12
+[bold,italic,double-underline]Changelog[]
+
+All notable
+changes are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag that
+  shows what
+  would
+  change
+  without
+  touching a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before the
+  project's
+  own file.
+
+[bold]Fixed[]
+
+• A crash
+  when a
+  file name
+  contained
+  a
+  combining
+  character,
+  such as [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the output
+  on narrow
+  terminals;
+  it now
+  stays
+  within the
+  terminal
+  width.
+
+[bold,underline][2.1.0] -[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default to
+  the number
+  of CPU
+  cores, up
+  to [yellow]8[].
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which will
+  go away in
+  3.0. Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0] -[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the exit
+  code for
+  partial
+  failure is
+  [yellow]1[], no
+  longer [yellow]3[].
+=== width 8
+[bold,italic,double-underline]Changelog[]
+
+All
+notable
+changes
+are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+[bold]Fixed[]
+
+• A
+  crash
+  when a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such
+  as [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the
+  last
+  line
+  of the
+  output
+  on
+  narrow
+  terminals;
+  it now
+  stays
+  within
+  the
+  terminal
+  width.
+
+[bold,underline][2.1.0][]
+[bold,underline]-[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default
+  to the
+  number
+  of CPU
+  cores,
+  up to
+  [yellow]8[].
+• Error
+  messages
+  name
+  the
+  file
+  first,
+  then
+  the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which
+  will
+  go
+  away
+  in
+  3.0.
+  Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0][]
+[bold,underline]-[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag
+  and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the
+  exit
+  code
+  for
+  partial
+  failure
+  is [yellow]1[],
+  no
+  longer
+  [yellow]3[].
+=== width 5
+[bold,italic,double-underline]Changelog[]
+
+All
+notable
+changes
+are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+[bold]Fixed[]
+
+• A
+  crash
+  when
+  a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such
+  as
+  [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the
+  last
+  line
+  of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it
+  now
+  stays
+  within
+  the
+  terminal
+  width.
+
+[bold,underline][2.1.0][]
+[bold,underline]-[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default
+  to
+  the
+  number
+  of
+  CPU
+  cores,
+  up
+  to
+  [yellow]8[].
+• Error
+  messages
+  name
+  the
+  file
+  first,
+  then
+  the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which
+  will
+  go
+  away
+  in
+  3.0.
+  Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0][]
+[bold,underline]-[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag
+  and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the
+  exit
+  code
+  for
+  partial
+  failure
+  is
+  [yellow]1[],
+  no
+  longer
+  [yellow]3[].
+=== width 3
+[bold,italic,double-underline]Changelog[]
+
+All
+notable
+changes
+are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+[bold]Fixed[]
+
+• A
+  crash
+  when
+  a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such
+  as
+  [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the
+  last
+  line
+  of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it
+  now
+  stays
+  within
+  the
+  terminal
+  width.
+
+[bold,underline][2.1.0][]
+[bold,underline]-[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default
+  to
+  the
+  number
+  of
+  CPU
+  cores,
+  up
+  to
+  [yellow]8[].
+• Error
+  messages
+  name
+  the
+  file
+  first,
+  then
+  the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which
+  will
+  go
+  away
+  in
+  3.0.
+  Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0][]
+[bold,underline]-[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag
+  and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the
+  exit
+  code
+  for
+  partial
+  failure
+  is
+  [yellow]1[],
+  no
+  longer
+  [yellow]3[].
+=== width 1
+[bold,italic,double-underline]Changelog[]
+
+All
+notable
+changes
+are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+[bold]Fixed[]
+
+• A
+  crash
+  when
+  a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such
+  as
+  [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the
+  last
+  line
+  of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it
+  now
+  stays
+  within
+  the
+  terminal
+  width.
+
+[bold,underline][2.1.0][]
+[bold,underline]-[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default
+  to
+  the
+  number
+  of
+  CPU
+  cores,
+  up
+  to
+  [yellow]8[].
+• Error
+  messages
+  name
+  the
+  file
+  first,
+  then
+  the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which
+  will
+  go
+  away
+  in
+  3.0.
+  Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0][]
+[bold,underline]-[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag
+  and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the
+  exit
+  code
+  for
+  partial
+  failure
+  is
+  [yellow]1[],
+  no
+  longer
+  [yellow]3[].
+=== width 0
+[bold,italic,double-underline]Changelog[]
+
+All
+notable
+changes
+are
+documented
+here.
+
+[bold,underline][Unreleased][]
+
+[bold]Added[]
+
+• A
+  [yellow]--dry-run[]
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a
+  file.
+• Support
+  for
+  [yellow]~/.config/frobnicate/frobnicate.toml[],
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+[bold]Fixed[]
+
+• A
+  crash
+  when
+  a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such
+  as
+  [yellow]é[].
+• The
+  progress
+  bar
+  overwrote
+  the
+  last
+  line
+  of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it
+  now
+  stays
+  within
+  the
+  terminal
+  width.
+
+[bold,underline][2.1.0][]
+[bold,underline]-[]
+[bold,underline]2026-09-12[]
+
+[bold]Changed[]
+
+• Jobs
+  default
+  to
+  the
+  number
+  of
+  CPU
+  cores,
+  up
+  to
+  [yellow]8[].
+• Error
+  messages
+  name
+  the
+  file
+  first,
+  then
+  the
+  reason.
+
+[bold]Deprecated[]
+
+• [yellow]--legacy-output[],
+  which
+  will
+  go
+  away
+  in
+  3.0.
+  Use
+  [yellow]--format=plain[].
+
+[bold,underline][2.0.0][]
+[bold,underline]-[]
+[bold,underline]2026-05-02[]
+
+[bold]Removed[]
+
+• The
+  [yellow]--old-syntax[]
+  flag
+  and
+  the
+  [yellow].frobrc[]
+  file.
+
+[bold]Changed[]
+
+• [bold]Breaking:[]
+  the
+  exit
+  code
+  for
+  partial
+  failure
+  is
+  [yellow]1[],
+  no
+  longer
+  [yellow]3[].

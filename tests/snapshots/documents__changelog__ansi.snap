@@ -1,0 +1,314 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2mChangelog\e[24m\e[23m\e[22m
+
+All notable changes are documented here.
+
+\e[1m\e[4m[Unreleased]\e[24m\e[22m
+
+\e[1mAdded\e[22m
+
+• A \e[38;5;3m--dry-run\e[39m flag that shows what would change without touching a file.
+• Support for \e[38;5;3m~/.config/frobnicate/frobnicate.toml\e[39m, read before the project's
+  own file.
+
+\e[1mFixed\e[22m
+
+• A crash when a file name contained a combining character, such as \e[38;5;3mé\e[39m.
+• The progress bar overwrote the last line of the output on narrow terminals; it
+  now stays within the terminal width.
+
+\e[1m\e[4m[2.1.0] - 2026-09-12\e[24m\e[22m
+
+\e[1mChanged\e[22m
+
+• Jobs default to the number of CPU cores, up to \e[38;5;3m8\e[39m.
+• Error messages name the file first, then the reason.
+
+\e[1mDeprecated\e[22m
+
+• \e[38;5;3m--legacy-output\e[39m, which will go away in 3.0. Use \e[38;5;3m--format=plain\e[39m.
+
+\e[1m\e[4m[2.0.0] - 2026-05-02\e[24m\e[22m
+
+\e[1mRemoved\e[22m
+
+• The \e[38;5;3m--old-syntax\e[39m flag and the \e[38;5;3m.frobrc\e[39m file.
+
+\e[1mChanged\e[22m
+
+• \e[1mBreaking:\e[22m the exit code for partial failure is \e[38;5;3m1\e[39m, no longer \e[38;5;3m3\e[39m.
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2mChangelog\e[24m\e[23m\e[22m
+
+All notable changes are documented here.
+
+\e[1m\e[4m[Unreleased]\e[24m\e[22m
+
+\e[1mAdded\e[22m
+
+• A \e[38;5;3m--dry-run\e[39m flag that shows what would change without touching a file.
+• Support for \e[38;5;3m~/.config/frobnicate/frobnicate.toml\e[39m, read before the
+  project's own file.
+
+\e[1mFixed\e[22m
+
+• A crash when a file name contained a combining character, such as \e[38;5;3mé\e[39m.
+• The progress bar overwrote the last line of the output on narrow
+  terminals; it now stays within the terminal width.
+
+\e[1m\e[4m[2.1.0] - 2026-09-12\e[24m\e[22m
+
+\e[1mChanged\e[22m
+
+• Jobs default to the number of CPU cores, up to \e[38;5;3m8\e[39m.
+• Error messages name the file first, then the reason.
+
+\e[1mDeprecated\e[22m
+
+• \e[38;5;3m--legacy-output\e[39m, which will go away in 3.0. Use \e[38;5;3m--format=plain\e[39m.
+
+\e[1m\e[4m[2.0.0] - 2026-05-02\e[24m\e[22m
+
+\e[1mRemoved\e[22m
+
+• The \e[38;5;3m--old-syntax\e[39m flag and the \e[38;5;3m.frobrc\e[39m file.
+
+\e[1mChanged\e[22m
+
+• \e[1mBreaking:\e[22m the exit code for partial failure is \e[38;5;3m1\e[39m, no longer \e[38;5;3m3\e[39m.
+=== width 10, default
+\e[1m\e[3m\e[4:2mChangelog\e[24m\e[23m\e[22m
+
+All
+notable
+changes
+are
+documented
+here.
+
+\e[1m\e[4m[Unreleased]\e[24m\e[22m
+
+\e[1mAdded\e[22m
+
+• A
+  \e[38;5;3m--dry-run\e[39m
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a file.
+• Support
+  for
+  \e[38;5;3m~/.config/frobnicate/frobnicate.toml\e[39m,
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+\e[1mFixed\e[22m
+
+• A crash
+  when a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such as
+  \e[38;5;3mé\e[39m.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it now
+  stays
+  within
+  the
+  terminal
+  width.
+
+\e[1m\e[4m[2.1.0] -\e[24m\e[22m
+\e[1m\e[4m2026-09-12\e[24m\e[22m
+
+\e[1mChanged\e[22m
+
+• Jobs
+  default
+  to the
+  number
+  of CPU
+  cores,
+  up to \e[38;5;3m8\e[39m.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+\e[1mDeprecated\e[22m
+
+• \e[38;5;3m--legacy-output\e[39m,
+  which
+  will go
+  away in
+  3.0. Use
+  \e[38;5;3m--format=plain\e[39m.
+
+\e[1m\e[4m[2.0.0] -\e[24m\e[22m
+\e[1m\e[4m2026-05-02\e[24m\e[22m
+
+\e[1mRemoved\e[22m
+
+• The
+  \e[38;5;3m--old-syntax\e[39m
+  flag and
+  the
+  \e[38;5;3m.frobrc\e[39m
+  file.
+
+\e[1mChanged\e[22m
+
+• \e[1mBreaking:\e[22m
+  the exit
+  code for
+  partial
+  failure
+  is \e[38;5;3m1\e[39m, no
+  longer
+  \e[38;5;3m3\e[39m.
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2mChangelog\e[24m\e[23m\e[22m
+
+All
+notable
+changes
+are
+documented
+here.
+
+\e[1m\e[4m[Unreleased]\e[24m\e[22m
+
+\e[1mAdded\e[22m
+
+• A
+  \e[38;5;3m--dry-run\e[39m
+  flag
+  that
+  shows
+  what
+  would
+  change
+  without
+  touching
+  a file.
+• Support
+  for
+  \e[38;5;3m~/.config/frobnicate/frobnicate.toml\e[39m,
+  read
+  before
+  the
+  project's
+  own
+  file.
+
+\e[1mFixed\e[22m
+
+• A crash
+  when a
+  file
+  name
+  contained
+  a
+  combining
+  character,
+  such as
+  \e[38;5;3mé\e[39m.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the
+  output
+  on
+  narrow
+  terminals;
+  it now
+  stays
+  within
+  the
+  terminal
+  width.
+
+\e[1m\e[4m[2.1.0] -\e[24m\e[22m
+\e[1m\e[4m2026-09-12\e[24m\e[22m
+
+\e[1mChanged\e[22m
+
+• Jobs
+  default
+  to the
+  number
+  of CPU
+  cores,
+  up to \e[38;5;3m8\e[39m.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+\e[1mDeprecated\e[22m
+
+• \e[38;5;3m--legacy-output\e[39m,
+  which
+  will go
+  away in
+  3.0. Use
+  \e[38;5;3m--format=plain\e[39m.
+
+\e[1m\e[4m[2.0.0] -\e[24m\e[22m
+\e[1m\e[4m2026-05-02\e[24m\e[22m
+
+\e[1mRemoved\e[22m
+
+• The
+  \e[38;5;3m--old-syntax\e[39m
+  flag and
+  the
+  \e[38;5;3m.frobrc\e[39m
+  file.
+
+\e[1mChanged\e[22m
+
+• \e[1mBreaking:\e[22m
+  the exit
+  code for
+  partial
+  failure
+  is \e[38;5;3m1\e[39m, no
+  longer
+  \e[38;5;3m3\e[39m.

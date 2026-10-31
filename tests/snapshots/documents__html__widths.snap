@@ -1,0 +1,531 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]HTML in Markdown[]
+
+A paragraph with inline bold tags and a line break tag, then a span and an
+entity & more.
+
+After the comment.
+
+• list item with inline html
+• second item
+
+[cyan]│ []quote with html
+
+┌──────┬────────┐
+│ [bold]name[] │ [bold]markup[] │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner [bold]markdown[] after a blank line.
+
+Last line with a lone < sign and Vec generic.
+=== width 40
+[bold,italic,double-underline]HTML in Markdown[]
+
+A paragraph with inline bold tags and a
+line break tag, then a span and an
+entity & more.
+
+After the comment.
+
+• list item with inline html
+• second item
+
+[cyan]│ []quote with html
+
+┌──────┬────────┐
+│ [bold]name[] │ [bold]markup[] │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner [bold]markdown[] after a blank line.
+
+Last line with a lone < sign and Vec
+generic.
+=== width 20
+[bold,italic,double-underline]HTML in Markdown[]
+
+A paragraph with
+inline bold tags and
+a line break tag,
+then a span and an
+entity & more.
+
+After the comment.
+
+• list item with
+  inline html
+• second item
+
+[cyan]│ []quote with html
+
+┌──────┬────────┐
+│ [bold]name[] │ [bold]markup[] │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner [bold]markdown[] after
+a blank line.
+
+Last line with a
+lone < sign and Vec
+generic.
+=== width 12
+[bold,italic,double-underline]HTML in[]
+[bold,italic,double-underline]Markdown[]
+
+A paragraph
+with inline
+bold tags
+and a line
+break tag,
+then a span
+and an
+entity &
+more.
+
+After the
+comment.
+
+• list item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote with
+[cyan]│ []html
+
+[bold,dim]name[]
+  bold
+[bold,dim]markup[]
+  x
+────────────
+[bold,dim]name[]
+  none
+[bold,dim]markup[]
+  plain
+
+Inner
+[bold]markdown[]
+after a
+blank line.
+
+Last line
+with a lone
+< sign and
+Vec generic.
+=== width 8
+[bold,italic,double-underline]HTML in[]
+[bold,italic,double-underline]Markdown[]
+
+A
+paragraph
+with
+inline
+bold
+tags and
+a line
+break
+tag,
+then a
+span and
+an
+entity &
+more.
+
+After
+the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []html
+
+[bold,dim]name[]
+  bold
+[bold,dim]markup[]
+  x
+────────
+[bold,dim]name[]
+  none
+[bold,dim]markup[]
+  plain
+
+Inner
+[bold]markdown[]
+after a
+blank
+line.
+
+Last
+line
+with a
+lone <
+sign and
+Vec
+generic.
+=== width 5
+[bold,italic,double-underline]HTML[]
+[bold,italic,double-underline]in[]
+[bold,italic,double-underline]Markdown[]
+
+A
+paragraph
+with
+inline
+bold
+tags
+and a
+line
+break
+tag,
+then
+a
+span
+and
+an
+entity
+&
+more.
+
+After
+the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []html
+
+[bold,dim]name[]
+  bol
+  d
+[bold,dim]marku[]
+[bold,dim]p[]
+  x
+─────
+[bold,dim]name[]
+  non
+  e
+[bold,dim]marku[]
+[bold,dim]p[]
+  pla
+  in
+
+Inner
+[bold]markdown[]
+after
+a
+blank
+line.
+
+Last
+line
+with
+a
+lone
+<
+sign
+and
+Vec
+generic.
+=== width 3
+[bold,italic,double-underline]HTML[]
+[bold,italic,double-underline]in[]
+[bold,italic,double-underline]Markdown[]
+
+A
+paragraph
+with
+inline
+bold
+tags
+and
+a
+line
+break
+tag,
+then
+a
+span
+and
+an
+entity
+&
+more.
+
+After
+the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []html
+
+[bold,dim]nam[]
+[bold,dim]e[]
+  b
+  o
+  l
+  d
+[bold,dim]mar[]
+[bold,dim]kup[]
+  x
+───
+[bold,dim]nam[]
+[bold,dim]e[]
+  n
+  o
+  n
+  e
+[bold,dim]mar[]
+[bold,dim]kup[]
+  p
+  l
+  a
+  i
+  n
+
+Inner
+[bold]markdown[]
+after
+a
+blank
+line.
+
+Last
+line
+with
+a
+lone
+<
+sign
+and
+Vec
+generic.
+=== width 1
+[bold,italic,double-underline]HTML[]
+[bold,italic,double-underline]in[]
+[bold,italic,double-underline]Markdown[]
+
+A
+paragraph
+with
+inline
+bold
+tags
+and
+a
+line
+break
+tag,
+then
+a
+span
+and
+an
+entity
+&
+more.
+
+After
+the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []html
+
+[bold,dim]n[]
+[bold,dim]a[]
+[bold,dim]m[]
+[bold,dim]e[]
+b
+o
+l
+d
+[bold,dim]m[]
+[bold,dim]a[]
+[bold,dim]r[]
+[bold,dim]k[]
+[bold,dim]u[]
+[bold,dim]p[]
+x
+─
+[bold,dim]n[]
+[bold,dim]a[]
+[bold,dim]m[]
+[bold,dim]e[]
+n
+o
+n
+e
+[bold,dim]m[]
+[bold,dim]a[]
+[bold,dim]r[]
+[bold,dim]k[]
+[bold,dim]u[]
+[bold,dim]p[]
+p
+l
+a
+i
+n
+
+Inner
+[bold]markdown[]
+after
+a
+blank
+line.
+
+Last
+line
+with
+a
+lone
+<
+sign
+and
+Vec
+generic.
+=== width 0
+[bold,italic,double-underline]HTML[]
+[bold,italic,double-underline]in[]
+[bold,italic,double-underline]Markdown[]
+
+A
+paragraph
+with
+inline
+bold
+tags
+and
+a
+line
+break
+tag,
+then
+a
+span
+and
+an
+entity
+&
+more.
+
+After
+the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+[cyan]│ []quote
+[cyan]│ []with
+[cyan]│ []html
+
+[bold,dim]n[]
+[bold,dim]a[]
+[bold,dim]m[]
+[bold,dim]e[]
+b
+o
+l
+d
+[bold,dim]m[]
+[bold,dim]a[]
+[bold,dim]r[]
+[bold,dim]k[]
+[bold,dim]u[]
+[bold,dim]p[]
+x
+─
+[bold,dim]n[]
+[bold,dim]a[]
+[bold,dim]m[]
+[bold,dim]e[]
+n
+o
+n
+e
+[bold,dim]m[]
+[bold,dim]a[]
+[bold,dim]r[]
+[bold,dim]k[]
+[bold,dim]u[]
+[bold,dim]p[]
+p
+l
+a
+i
+n
+
+Inner
+[bold]markdown[]
+after
+a
+blank
+line.
+
+Last
+line
+with
+a
+lone
+<
+sign
+and
+Vec
+generic.

@@ -1,0 +1,634 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote in item
+  [cyan]│ []
+  [cyan]│ []• list in quote in item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading in a quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term : not a definition list
+
+[not a link]
+
+[image][dim] (empty-alt.png)[] [image: only alt][dim] ()[] [underline]empty[][dim] ()[]
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 40
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote in item
+  [cyan]│ []
+  [cyan]│ []• list in quote in item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading in a quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term : not a definition list
+
+[not a link]
+
+[image][dim] (empty-alt.png)[] [image: only
+alt][dim] ()[] [underline]empty[][dim] ()[]
+
+A very long line without any spaces to
+force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 20
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote in item
+  [cyan]│ []
+  [cyan]│ []• list in quote
+  [cyan]│ []  in item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading in a quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term : not a
+definition list
+
+[not a link]
+
+[image]
+[dim](empty-alt.png)[]
+[image: only alt][dim] ()[]
+[underline]empty[][dim] ()[]
+
+A very long line
+without any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 12
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading in[]
+[cyan]│ [][bold,italic,double-underline]a quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term : not a
+definition
+list
+
+[not a link]
+
+[image]
+[dim](empty-alt.png)[]
+[image: only
+alt][dim] ()[]
+[underline]empty[][dim] ()[]
+
+A very long
+line without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 8
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote
+  [cyan]│ []in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading[]
+[cyan]│ [][bold,italic,double-underline]in a[]
+[cyan]│ [][bold,italic,double-underline]quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term :
+not a
+definition
+list
+
+[not a
+link]
+
+[image]
+[dim](empty-alt.png)[]
+[image:
+only
+alt][dim] ()[]
+[underline]empty[][dim] ()[]
+
+A very
+long
+line
+without
+any
+spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 5
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote
+  [cyan]│ []in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading[]
+[cyan]│ [][bold,italic,double-underline]in[]
+[cyan]│ [][bold,italic,double-underline]a[]
+[cyan]│ [][bold,italic,double-underline]quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term
+: not
+a
+definition
+list
+
+[not
+a
+link]
+
+[image]
+[dim](empty-alt.png)[]
+[image:
+only
+alt]
+[dim]()[]
+[underline]empty[]
+[dim]()[]
+
+A
+very
+long
+line
+without
+any
+spaces
+to
+force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 3
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote
+  [cyan]│ []in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading[]
+[cyan]│ [][bold,italic,double-underline]in[]
+[cyan]│ [][bold,italic,double-underline]a[]
+[cyan]│ [][bold,italic,double-underline]quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term
+:
+not
+a
+definition
+list
+
+[not
+a
+link]
+
+[image]
+[dim](empty-alt.png)[]
+[image:
+only
+alt]
+[dim]()[]
+[underline]empty[]
+[dim]()[]
+
+A
+very
+long
+line
+without
+any
+spaces
+to
+force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 1
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote
+  [cyan]│ []in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading[]
+[cyan]│ [][bold,italic,double-underline]in[]
+[cyan]│ [][bold,italic,double-underline]a[]
+[cyan]│ [][bold,italic,double-underline]quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term
+:
+not
+a
+definition
+list
+
+[not
+a
+link]
+
+[image]
+[dim](empty-alt.png)[]
+[image:
+only
+alt]
+[dim]()[]
+[underline]empty[]
+[dim]()[]
+
+A
+very
+long
+line
+without
+any
+spaces
+to
+force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 0
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    [yellow]indented code in item[]
+• item
+
+  [cyan]│ []quote
+  [cyan]│ []in
+  [cyan]│ []item
+  [cyan]│ []
+  [cyan]│ []• list
+  [cyan]│ []  in
+  [cyan]│ []  quote
+  [cyan]│ []  in
+  [cyan]│ []  item
+• a
+
+  b
+
+  c
+
+[cyan]│ [][bold,italic,double-underline]Heading[]
+[cyan]│ [][bold,italic,double-underline]in[]
+[cyan]│ [][bold,italic,double-underline]a[]
+[cyan]│ [][bold,italic,double-underline]quote[]
+[cyan]│ []
+[cyan]│ []text
+[cyan]│ []
+[cyan]│ []  [yellow]code in quote[]
+[cyan]│ []
+[cyan]│ []  [yellow]fenced in quote[]
+
+Term
+:
+not
+a
+definition
+list
+
+[not
+a
+link]
+
+[image]
+[dim](empty-alt.png)[]
+[image:
+only
+alt]
+[dim]()[]
+[underline]empty[]
+[dim]()[]
+
+A
+very
+long
+line
+without
+any
+spaces
+to
+force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.

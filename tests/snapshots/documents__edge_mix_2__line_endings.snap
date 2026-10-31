@@ -1,0 +1,466 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• 
+
+continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== crlf, width 80, break and literal
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• 
+
+continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== crlf, width 12, default
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• 
+
+continuation
+after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in
+  │ item
+  │ 
+  │ • list
+  │   in
+  │   quote
+  │   in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in
+│ a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a
+definition
+list
+
+[not a link]
+
+[image]
+(empty-alt.png)
+[image: only
+alt] ()
+empty ()
+
+A very long
+line without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== crlf, width 12, break and literal
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• 
+
+continuation
+after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in
+  │ item
+  │ 
+  │ • list
+  │   in
+  │   quote
+  │   in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in
+│ a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a
+definition
+list
+
+[not a link]
+
+[image]
+(empty-alt.png)
+[image: only
+alt] ()
+empty ()
+
+A very long
+line without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== cr, width 80, default
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== cr, width 80, break and literal
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== cr, width 12, default
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in
+  │ item
+  │ 
+  │ • list
+  │   in
+  │   quote
+  │   in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in
+│ a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a
+definition
+list
+
+[not a link]
+
+[image]
+(empty-alt.png)
+[image: only
+alt] ()
+empty ()
+
+A very long
+line without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== cr, width 12, break and literal
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in
+  │ item
+  │ 
+  │ • list
+  │   in
+  │   quote
+  │   in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in
+│ a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a
+definition
+list
+
+[not a link]
+
+[image]
+(empty-alt.png)
+[image: only
+alt] ()
+empty ()
+
+A very long
+line without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.

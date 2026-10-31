@@ -1,0 +1,398 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+日本語のタイトル 🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。 Mixed
+text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ. Arabic ligature: لا and a
+word مرحبا بالعالم with right to left text. Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth
+ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ 名前 │     説明      │ 値 │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a bold animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+│ 引用文: 日本語の引用ブロックです。 二行目は 強調 を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== crlf, width 80, break and literal
+日本語のタイトル 🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ.
+Arabic ligature: لا and a word مرحبا بالعالم with right to left text.
+Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ 名前 │     説明      │ 値 │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a bold animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+│ 引用文: 日本語の引用ブロックです。
+│ 二行目は 強調 を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== crlf, width 12, default
+日本語のタイトル
+🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text:
+ASCII and
+全角文字 and
+emoji 👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é is
+written as é
+here, and ñ,
+and ǻ.
+Arabic
+ligature: لا
+and a word
+مرحبا
+بالعالم with
+right to
+left text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide digits
+１２３.
+
+名前
+  猫
+説明
+  小さな動物
+値
+  🐱
+────────────
+名前
+  Dog
+説明
+  a bold
+  animal
+値
+  🐶
+────────────
+名前
+  🇩🇪
+説明
+  Flagge
+値
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning
+  sign with
+  variation
+  selector
+• ✅ done,
+  ❤️ heart,
+  👍🏽 thumbs
+  with a
+  skin tone
+
+│ 引用文:
+│ 日本語の引用ブロックです。
+│ 二行目は
+│ 強調
+│ を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== crlf, width 12, break and literal
+日本語のタイトル
+🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text:
+ASCII and
+全角文字 and
+emoji 👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é is
+written as é
+here, and ñ,
+and ǻ.
+Arabic
+ligature: لا
+and a word
+مرحبا
+بالعالم with
+right to
+left text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide digits
+１２３.
+
+名前
+  猫
+説明
+  小さな動物
+値
+  🐱
+────────────
+名前
+  Dog
+説明
+  a bold
+  animal
+値
+  🐶
+────────────
+名前
+  🇩🇪
+説明
+  Flagge
+値
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning
+  sign with
+  variation
+  selector
+• ✅ done,
+  ❤️ heart,
+  👍🏽 thumbs
+  with a
+  skin tone
+
+│ 引用文:
+│ 日本語の引用ブロックです。
+│ 二行目は
+│ 強調
+│ を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== cr, width 80, default
+日本語のタイトル 🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。 Mixed
+text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ. Arabic ligature: لا and a
+word مرحبا بالعالم with right to left text. Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth
+ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ 名前 │     説明      │ 値 │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a bold animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+│ 引用文: 日本語の引用ブロックです。 二行目は 強調 を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== cr, width 80, break and literal
+日本語のタイトル 🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ.
+Arabic ligature: لا and a word مرحبا بالعالم with right to left text.
+Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ 名前 │     説明      │ 値 │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a bold animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+│ 引用文: 日本語の引用ブロックです。
+│ 二行目は 強調 を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== cr, width 12, default
+日本語のタイトル
+🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text:
+ASCII and
+全角文字 and
+emoji 👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é is
+written as é
+here, and ñ,
+and ǻ.
+Arabic
+ligature: لا
+and a word
+مرحبا
+بالعالم with
+right to
+left text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide digits
+１２３.
+
+名前
+  猫
+説明
+  小さな動物
+値
+  🐱
+────────────
+名前
+  Dog
+説明
+  a bold
+  animal
+値
+  🐶
+────────────
+名前
+  🇩🇪
+説明
+  Flagge
+値
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning
+  sign with
+  variation
+  selector
+• ✅ done,
+  ❤️ heart,
+  👍🏽 thumbs
+  with a
+  skin tone
+
+│ 引用文:
+│ 日本語の引用ブロックです。
+│ 二行目は
+│ 強調
+│ を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です
+=== cr, width 12, break and literal
+日本語のタイトル
+🚀
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text:
+ASCII and
+全角文字 and
+emoji 👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é is
+written as é
+here, and ñ,
+and ǻ.
+Arabic
+ligature: لا
+and a word
+مرحبا
+بالعالم with
+right to
+left text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide digits
+１２３.
+
+名前
+  猫
+説明
+  小さな動物
+値
+  🐱
+────────────
+名前
+  Dog
+説明
+  a bold
+  animal
+値
+  🐶
+────────────
+名前
+  🇩🇪
+説明
+  Flagge
+値
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning
+  sign with
+  variation
+  selector
+• ✅ done,
+  ❤️ heart,
+  👍🏽 thumbs
+  with a
+  skin tone
+
+│ 引用文:
+│ 日本語の引用ブロックです。
+│ 二行目は
+│ 強調
+│ を含みます。
+
+  コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です

@@ -1,0 +1,460 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+Glued runs: foobar and foobar and acodeb and xyz and link (u)s. Wrap-sensitive:
+aaaa foobar baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > ! Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft break right here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: https://example.com/auto mailto:a@example.com a@example.com and bare
+https://example.com/bare, http://example.com. and www.example.com/x
+(http://www.example.com/x).
+
+Emphasis edge cases: ab, _a_b, ab, snake_case_word, 234, a, both, mix. Inline
+code: a ` b and padded and a\ and ``.
+=== crlf, width 80, break and literal
+Glued runs: foobar and foobar and acodeb and xyz and link (u)s.
+Wrap-sensitive: aaaa foobar baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > !
+Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft
+break right here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code
+  tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: https://example.com/auto mailto:a@example.com a@example.com
+and bare https://example.com/bare, http://example.com. and www.example.com/x
+(http://www.example.com/x).
+
+Emphasis edge cases: ab, _a_b, ab, snake_case_word, 234, a, both, mix.
+Inline code: a ` b and padded and a\ and ``.
+=== crlf, width 12, default
+Glued runs:
+foobar and
+foobar and
+acodeb and
+xyz and link
+(u)s.
+Wrap-sensitive:
+aaaa foobar
+baz qux quux
+corge grault
+garply waldo
+fred plugh.
+
+Escapes:
+*star*
+_under_ \ #
+[x] ` < > !
+Entities: &
+< > " # A ©
+| &unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break right
+here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a
+heading
+
+Tabs: a b c
+
+• tab after
+  bullet
+
+  indented
+  code tab
+  indented
+  code
+
+────────────
+
+────────────
+
+Autolinks:
+https://example.com/auto
+mailto:a@example.com
+a@example.com
+and bare
+https://example.com/bare,
+http://example.com.
+and
+www.example.com/x
+(http://www.example.com/x).
+
+Emphasis
+edge cases:
+ab, _a_b,
+ab,
+snake_case_word,
+234, a,
+both, mix.
+Inline code:
+a ` b and
+padded and
+a\ and ``.
+=== crlf, width 12, break and literal
+Glued runs:
+foobar and
+foobar and
+acodeb and
+xyz and link
+(u)s.
+Wrap-sensitive:
+aaaa foobar
+baz qux quux
+corge grault
+garply waldo
+fred plugh.
+
+Escapes:
+*star*
+_under_ \ #
+[x] ` < > !
+Entities: &
+< > " # A ©
+| &unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break right
+here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a
+heading
+
+Tabs: a b c
+
+• tab after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+────────────
+
+────────────
+
+Autolinks:
+https://example.com/auto
+mailto:a@example.com
+a@example.com
+and bare
+https://example.com/bare,
+http://example.com.
+and
+www.example.com/x
+(http://www.example.com/x).
+
+Emphasis
+edge cases:
+ab, _a_b,
+ab,
+snake_case_word,
+234, a,
+both, mix.
+Inline code:
+a ` b and
+padded and
+a\ and ``.
+=== cr, width 80, default
+Glued runs: foobar and foobar and acodeb and xyz and link (u)s. Wrap-sensitive:
+aaaa foobar baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > ! Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft break right here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: https://example.com/auto mailto:a@example.com a@example.com and bare
+https://example.com/bare, http://example.com. and www.example.com/x
+(http://www.example.com/x).
+
+Emphasis edge cases: ab, _a_b, ab, snake_case_word, 234, a, both, mix. Inline
+code: a ` b and padded and a\ and ``.
+=== cr, width 80, break and literal
+Glued runs: foobar and foobar and acodeb and xyz and link (u)s.
+Wrap-sensitive: aaaa foobar baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > !
+Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft
+break right here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code
+  tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: https://example.com/auto mailto:a@example.com a@example.com
+and bare https://example.com/bare, http://example.com. and www.example.com/x
+(http://www.example.com/x).
+
+Emphasis edge cases: ab, _a_b, ab, snake_case_word, 234, a, both, mix.
+Inline code: a ` b and padded and a\ and ``.
+=== cr, width 12, default
+Glued runs:
+foobar and
+foobar and
+acodeb and
+xyz and link
+(u)s.
+Wrap-sensitive:
+aaaa foobar
+baz qux quux
+corge grault
+garply waldo
+fred plugh.
+
+Escapes:
+*star*
+_under_ \ #
+[x] ` < > !
+Entities: &
+< > " # A ©
+| &unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break right
+here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a
+heading
+
+Tabs: a b c
+
+• tab after
+  bullet
+
+  indented
+  code tab
+  indented
+  code
+
+────────────
+
+────────────
+
+Autolinks:
+https://example.com/auto
+mailto:a@example.com
+a@example.com
+and bare
+https://example.com/bare,
+http://example.com.
+and
+www.example.com/x
+(http://www.example.com/x).
+
+Emphasis
+edge cases:
+ab, _a_b,
+ab,
+snake_case_word,
+234, a,
+both, mix.
+Inline code:
+a ` b and
+padded and
+a\ and ``.
+=== cr, width 12, break and literal
+Glued runs:
+foobar and
+foobar and
+acodeb and
+xyz and link
+(u)s.
+Wrap-sensitive:
+aaaa foobar
+baz qux quux
+corge grault
+garply waldo
+fred plugh.
+
+Escapes:
+*star*
+_under_ \ #
+[x] ` < > !
+Entities: &
+< > " # A ©
+| &unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break right
+here.
+
+Setext One
+
+Setext Two
+
+Six hashes
+
+#Not a
+heading
+
+Tabs: a b c
+
+• tab after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+────────────
+
+────────────
+
+Autolinks:
+https://example.com/auto
+mailto:a@example.com
+a@example.com
+and bare
+https://example.com/bare,
+http://example.com.
+and
+www.example.com/x
+(http://www.example.com/x).
+
+Emphasis
+edge cases:
+ab, _a_b,
+ab,
+snake_case_word,
+234, a,
+both, mix.
+Inline code:
+a ` b and
+padded and
+a\ and ``.

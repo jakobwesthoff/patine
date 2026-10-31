@@ -1,0 +1,568 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+Changelog
+
+All notable changes are documented here.
+
+[Unreleased]
+
+Added
+
+• A --dry-run flag that shows what would change without touching a file.
+• Support for ~/.config/frobnicate/frobnicate.toml, read before the project's
+  own file.
+
+Fixed
+
+• A crash when a file name contained a combining character, such as é.
+• The progress bar overwrote the last line of the output on narrow terminals; it
+  now stays within the terminal width.
+
+[2.1.0] - 2026-09-12
+
+Changed
+
+• Jobs default to the number of CPU cores, up to 8.
+• Error messages name the file first, then the reason.
+
+Deprecated
+
+• --legacy-output, which will go away in 3.0. Use --format=plain.
+
+[2.0.0] - 2026-05-02
+
+Removed
+
+• The --old-syntax flag and the .frobrc file.
+
+Changed
+
+• Breaking: the exit code for partial failure is 1, no longer 3.
+=== crlf, width 80, break and literal
+Changelog
+
+All notable changes are documented here.
+
+[Unreleased]
+
+Added
+
+• A --dry-run flag that shows what would change without touching a file.
+• Support for ~/.config/frobnicate/frobnicate.toml, read before the
+  project's own file.
+
+Fixed
+
+• A crash when a file name contained a combining character, such as é.
+• The progress bar overwrote the last line of the output on narrow
+  terminals; it now stays within the terminal width.
+
+[2.1.0] - 2026-09-12
+
+Changed
+
+• Jobs default to the number of CPU cores, up to 8.
+• Error messages name the file first, then the reason.
+
+Deprecated
+
+• --legacy-output, which will go away in 3.0. Use --format=plain.
+
+[2.0.0] - 2026-05-02
+
+Removed
+
+• The --old-syntax flag and the .frobrc file.
+
+Changed
+
+• Breaking: the exit code for partial failure is 1, no longer 3.
+=== crlf, width 12, default
+Changelog
+
+All notable
+changes are
+documented
+here.
+
+[Unreleased]
+
+Added
+
+• A
+  --dry-run
+  flag that
+  shows what
+  would
+  change
+  without
+  touching a
+  file.
+• Support
+  for
+  ~/.config/frobnicate/frobnicate.toml,
+  read
+  before the
+  project's
+  own file.
+
+Fixed
+
+• A crash
+  when a
+  file name
+  contained
+  a
+  combining
+  character,
+  such as é.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the output
+  on narrow
+  terminals;
+  it now
+  stays
+  within the
+  terminal
+  width.
+
+[2.1.0] -
+2026-09-12
+
+Changed
+
+• Jobs
+  default to
+  the number
+  of CPU
+  cores, up
+  to 8.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+Deprecated
+
+• --legacy-output,
+  which will
+  go away in
+  3.0. Use
+  --format=plain.
+
+[2.0.0] -
+2026-05-02
+
+Removed
+
+• The
+  --old-syntax
+  flag and
+  the
+  .frobrc
+  file.
+
+Changed
+
+• Breaking:
+  the exit
+  code for
+  partial
+  failure is
+  1, no
+  longer 3.
+=== crlf, width 12, break and literal
+Changelog
+
+All notable
+changes are
+documented
+here.
+
+[Unreleased]
+
+Added
+
+• A
+  --dry-run
+  flag that
+  shows what
+  would
+  change
+  without
+  touching a
+  file.
+• Support
+  for
+  ~/.config/frobnicate/frobnicate.toml,
+  read
+  before the
+  project's
+  own file.
+
+Fixed
+
+• A crash
+  when a
+  file name
+  contained
+  a
+  combining
+  character,
+  such as é.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the output
+  on narrow
+  terminals;
+  it now
+  stays
+  within the
+  terminal
+  width.
+
+[2.1.0] -
+2026-09-12
+
+Changed
+
+• Jobs
+  default to
+  the number
+  of CPU
+  cores, up
+  to 8.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+Deprecated
+
+• --legacy-output,
+  which will
+  go away in
+  3.0. Use
+  --format=plain.
+
+[2.0.0] -
+2026-05-02
+
+Removed
+
+• The
+  --old-syntax
+  flag and
+  the
+  .frobrc
+  file.
+
+Changed
+
+• Breaking:
+  the exit
+  code for
+  partial
+  failure is
+  1, no
+  longer 3.
+=== cr, width 80, default
+Changelog
+
+All notable changes are documented here.
+
+[Unreleased]
+
+Added
+
+• A --dry-run flag that shows what would change without touching a file.
+• Support for ~/.config/frobnicate/frobnicate.toml, read before the project's
+  own file.
+
+Fixed
+
+• A crash when a file name contained a combining character, such as é.
+• The progress bar overwrote the last line of the output on narrow terminals; it
+  now stays within the terminal width.
+
+[2.1.0] - 2026-09-12
+
+Changed
+
+• Jobs default to the number of CPU cores, up to 8.
+• Error messages name the file first, then the reason.
+
+Deprecated
+
+• --legacy-output, which will go away in 3.0. Use --format=plain.
+
+[2.0.0] - 2026-05-02
+
+Removed
+
+• The --old-syntax flag and the .frobrc file.
+
+Changed
+
+• Breaking: the exit code for partial failure is 1, no longer 3.
+=== cr, width 80, break and literal
+Changelog
+
+All notable changes are documented here.
+
+[Unreleased]
+
+Added
+
+• A --dry-run flag that shows what would change without touching a file.
+• Support for ~/.config/frobnicate/frobnicate.toml, read before the
+  project's own file.
+
+Fixed
+
+• A crash when a file name contained a combining character, such as é.
+• The progress bar overwrote the last line of the output on narrow
+  terminals; it now stays within the terminal width.
+
+[2.1.0] - 2026-09-12
+
+Changed
+
+• Jobs default to the number of CPU cores, up to 8.
+• Error messages name the file first, then the reason.
+
+Deprecated
+
+• --legacy-output, which will go away in 3.0. Use --format=plain.
+
+[2.0.0] - 2026-05-02
+
+Removed
+
+• The --old-syntax flag and the .frobrc file.
+
+Changed
+
+• Breaking: the exit code for partial failure is 1, no longer 3.
+=== cr, width 12, default
+Changelog
+
+All notable
+changes are
+documented
+here.
+
+[Unreleased]
+
+Added
+
+• A
+  --dry-run
+  flag that
+  shows what
+  would
+  change
+  without
+  touching a
+  file.
+• Support
+  for
+  ~/.config/frobnicate/frobnicate.toml,
+  read
+  before the
+  project's
+  own file.
+
+Fixed
+
+• A crash
+  when a
+  file name
+  contained
+  a
+  combining
+  character,
+  such as é.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the output
+  on narrow
+  terminals;
+  it now
+  stays
+  within the
+  terminal
+  width.
+
+[2.1.0] -
+2026-09-12
+
+Changed
+
+• Jobs
+  default to
+  the number
+  of CPU
+  cores, up
+  to 8.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+Deprecated
+
+• --legacy-output,
+  which will
+  go away in
+  3.0. Use
+  --format=plain.
+
+[2.0.0] -
+2026-05-02
+
+Removed
+
+• The
+  --old-syntax
+  flag and
+  the
+  .frobrc
+  file.
+
+Changed
+
+• Breaking:
+  the exit
+  code for
+  partial
+  failure is
+  1, no
+  longer 3.
+=== cr, width 12, break and literal
+Changelog
+
+All notable
+changes are
+documented
+here.
+
+[Unreleased]
+
+Added
+
+• A
+  --dry-run
+  flag that
+  shows what
+  would
+  change
+  without
+  touching a
+  file.
+• Support
+  for
+  ~/.config/frobnicate/frobnicate.toml,
+  read
+  before the
+  project's
+  own file.
+
+Fixed
+
+• A crash
+  when a
+  file name
+  contained
+  a
+  combining
+  character,
+  such as é.
+• The
+  progress
+  bar
+  overwrote
+  the last
+  line of
+  the output
+  on narrow
+  terminals;
+  it now
+  stays
+  within the
+  terminal
+  width.
+
+[2.1.0] -
+2026-09-12
+
+Changed
+
+• Jobs
+  default to
+  the number
+  of CPU
+  cores, up
+  to 8.
+• Error
+  messages
+  name the
+  file
+  first,
+  then the
+  reason.
+
+Deprecated
+
+• --legacy-output,
+  which will
+  go away in
+  3.0. Use
+  --format=plain.
+
+[2.0.0] -
+2026-05-02
+
+Removed
+
+• The
+  --old-syntax
+  flag and
+  the
+  .frobrc
+  file.
+
+Changed
+
+• Breaking:
+  the exit
+  code for
+  partial
+  failure is
+  1, no
+  longer 3.

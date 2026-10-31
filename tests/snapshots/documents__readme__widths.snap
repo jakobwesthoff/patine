@@ -1,0 +1,1783 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]frobnicate[]
+
+A small command line tool that [bold]frobnicates[] files, [italic]quickly[] and with [yellow]zero[]
+configuration. See [underline]https://example.com/frobnicate[] for the full manual, or ask in
+the chat.
+
+[bold,underline]Installation[]
+
+Install from source with a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt binaries are available for these platforms:
+
+• Linux, x86_64 and aarch64
+• macOS, Apple silicon and Intel
+• Windows, x86_64 only
+  • requires the Visual C++ runtime
+  • no ARM build yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+┌─────────────┬────────────────────────────────────────┬─────────┐
+│ [bold]  Option   [] │ [bold]               Meaning                [] │ [bold]Default[] │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ [yellow]-q[], [yellow]--quiet[] │ Print nothing except errors            │   off   │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ [yellow]-j[], [yellow]--jobs[]  │ Number of parallel jobs                │    [yellow]4[]    │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ [yellow]--dry-run[]   │ Show what would change, change nothing │   off   │
+└─────────────┴────────────────────────────────────────┴─────────┘
+
+[bold]Exit codes[]
+
+1. [yellow]0[] when every file was processed.
+2. [yellow]1[] when at least one file failed.
+3. [yellow]2[] for invalid arguments.
+
+[cyan]│ [][bold]Note[] Frobnication is not reversible. Keep a backup, or use [yellow]--dry-run[] first.
+
+[bold,underline]Configuration[]
+
+Settings live in [yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull requests are welcome. Please run the tests first, and mention the issue
+number in the title. For larger changes, open an issue to discuss the idea.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Released under the MIT license. Copyright (c) the frobnicate authors.
+=== width 40
+[bold,italic,double-underline]frobnicate[]
+
+A small command line tool that
+[bold]frobnicates[] files, [italic]quickly[] and with [yellow]zero[]
+configuration. See
+[underline]https://example.com/frobnicate[] for the
+full manual, or ask in the chat.
+
+[bold,underline]Installation[]
+
+Install from source with a recent Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt binaries are available for
+these platforms:
+
+• Linux, x86_64 and aarch64
+• macOS, Apple silicon and Intel
+• Windows, x86_64 only
+  • requires the Visual C++ runtime
+  • no ARM build yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+┌────────────┬───────────────┬─────────┐
+│ [bold]  Option  [] │ [bold]   Meaning   [] │ [bold]Default[] │
+├────────────┼───────────────┼─────────┤
+│ [yellow]-q[],        │ Print nothing │   off   │
+│ [yellow]--quiet[]    │ except errors │         │
+├────────────┼───────────────┼─────────┤
+│ [yellow]-j[], [yellow]--jobs[] │ Number of     │    [yellow]4[]    │
+│            │ parallel jobs │         │
+├────────────┼───────────────┼─────────┤
+│ [yellow]--dry-run[]  │ Show what     │   off   │
+│            │ would change, │         │
+│            │ change        │         │
+│            │ nothing       │         │
+└────────────┴───────────────┴─────────┘
+
+[bold]Exit codes[]
+
+1. [yellow]0[] when every file was processed.
+2. [yellow]1[] when at least one file failed.
+3. [yellow]2[] for invalid arguments.
+
+[cyan]│ [][bold]Note[] Frobnication is not reversible.
+[cyan]│ []Keep a backup, or use [yellow]--dry-run[] first.
+
+[bold,underline]Configuration[]
+
+Settings live in [yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull requests are welcome. Please run
+the tests first, and mention the issue
+number in the title. For larger changes,
+open an issue to discuss the idea.
+
+────────────────────────────────────────
+
+Released under the MIT license.
+Copyright (c) the frobnicate authors.
+=== width 20
+[bold,italic,double-underline]frobnicate[]
+
+A small command line
+tool that
+[bold]frobnicates[] files,
+[italic]quickly[] and with
+[yellow]zero[] configuration.
+See
+[underline]https://example.com/frobnicate[]
+for the full manual,
+or ask in the chat.
+
+[bold,underline]Installation[]
+
+Install from source
+with a recent Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt binaries
+are available for
+these platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple
+  silicon and Intel
+• Windows, x86_64
+  only
+  • requires the
+    Visual C++
+    runtime
+  • no ARM build yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]Option[]   [yellow]-q[], [yellow]--quiet[]
+[bold,dim]Meaning[]  Print
+         nothing
+         except
+         errors
+[bold,dim]Default[]  off
+────────────────────
+[bold,dim]Option[]   [yellow]-j[], [yellow]--jobs[]
+[bold,dim]Meaning[]  Number of
+         parallel
+         jobs
+[bold,dim]Default[]  [yellow]4[]
+────────────────────
+[bold,dim]Option[]   [yellow]--dry-run[]
+[bold,dim]Meaning[]  Show what
+         would
+         change,
+         change
+         nothing
+[bold,dim]Default[]  off
+
+[bold]Exit codes[]
+
+1. [yellow]0[] when every file
+   was processed.
+2. [yellow]1[] when at least
+   one file failed.
+3. [yellow]2[] for invalid
+   arguments.
+
+[cyan]│ [][bold]Note[] Frobnication
+[cyan]│ []is not reversible.
+[cyan]│ []Keep a backup, or
+[cyan]│ []use [yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings live in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull requests are
+welcome. Please run
+the tests first, and
+mention the issue
+number in the title.
+For larger changes,
+open an issue to
+discuss the idea.
+
+────────────────────
+
+Released under the
+MIT license.
+Copyright (c) the
+frobnicate authors.
+=== width 12
+[bold,italic,double-underline]frobnicate[]
+
+A small
+command line
+tool that
+[bold]frobnicates[]
+files,
+[italic]quickly[] and
+with [yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for the full
+manual, or
+ask in the
+chat.
+
+[bold,underline]Installation[]
+
+Install from
+source with
+a recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries are
+available
+for these
+platforms:
+
+• Linux,
+  x86_64 and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]Option[]
+  [yellow]-q[],
+  [yellow]--quiet[]
+[bold,dim]Meaning[]
+  Print
+  nothing
+  except
+  errors
+[bold,dim]Default[]
+  off
+────────────
+[bold,dim]Option[]
+  [yellow]-j[], [yellow]--jobs[]
+[bold,dim]Meaning[]
+  Number of
+  parallel
+  jobs
+[bold,dim]Default[]
+  [yellow]4[]
+────────────
+[bold,dim]Option[]
+  [yellow]--dry-run[]
+[bold,dim]Meaning[]
+  Show what
+  would
+  change,
+  change
+  nothing
+[bold,dim]Default[]
+  off
+
+[bold]Exit codes[]
+
+1. [yellow]0[] when
+   every
+   file was
+   processed.
+2. [yellow]1[] when at
+   least one
+   file
+   failed.
+3. [yellow]2[] for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is not
+[cyan]│ []reversible.
+[cyan]│ []Keep a
+[cyan]│ []backup, or
+[cyan]│ []use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests are
+welcome.
+Please run
+the tests
+first, and
+mention the
+issue number
+in the
+title. For
+larger
+changes,
+open an
+issue to
+discuss the
+idea.
+
+────────────
+
+Released
+under the
+MIT license.
+Copyright
+(c) the
+frobnicate
+authors.
+=== width 8
+[bold,italic,double-underline]frobnicate[]
+
+A small
+command
+line
+tool
+that
+[bold]frobnicates[]
+files,
+[italic]quickly[]
+and with
+[yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for the
+full
+manual,
+or ask
+in the
+chat.
+
+[bold,underline]Installation[]
+
+Install
+from
+source
+with a
+recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries
+are
+available
+for
+these
+platforms:
+
+• Linux,
+  x86_64
+  and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and
+  Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no
+    ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]Option[]
+  [yellow]-q[],
+  [yellow]--quie[]
+  [yellow]t[]
+[bold,dim]Meaning[]
+  Print
+  nothin
+  g
+  except
+  errors
+[bold,dim]Default[]
+  off
+────────
+[bold,dim]Option[]
+  [yellow]-j[],
+  [yellow]--jobs[]
+[bold,dim]Meaning[]
+  Number
+  of
+  parall
+  el
+  jobs
+[bold,dim]Default[]
+  [yellow]4[]
+────────
+[bold,dim]Option[]
+  [yellow]--dry-[]
+  [yellow]run[]
+[bold,dim]Meaning[]
+  Show
+  what
+  would
+  change
+  ,
+  change
+  nothin
+  g
+[bold,dim]Default[]
+  off
+
+[bold]Exit[]
+[bold]codes[]
+
+1. [yellow]0[]
+   when
+   every
+   file
+   was
+   processed.
+2. [yellow]1[]
+   when
+   at
+   least
+   one
+   file
+   failed.
+3. [yellow]2[] for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is not
+[cyan]│ []reversible.
+[cyan]│ []Keep a
+[cyan]│ []backup,
+[cyan]│ []or use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests
+are
+welcome.
+Please
+run the
+tests
+first,
+and
+mention
+the
+issue
+number
+in the
+title.
+For
+larger
+changes,
+open an
+issue to
+discuss
+the
+idea.
+
+────────
+
+Released
+under
+the MIT
+license.
+Copyright
+(c) the
+frobnicate
+authors.
+=== width 5
+[bold,italic,double-underline]frobnicate[]
+
+A
+small
+command
+line
+tool
+that
+[bold]frobnicates[]
+files,
+[italic]quickly[]
+and
+with
+[yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for
+the
+full
+manual,
+or
+ask
+in
+the
+chat.
+
+[bold,underline]Installation[]
+
+Install
+from
+source
+with
+a
+recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries
+are
+available
+for
+these
+platforms:
+
+• Linux,
+  x86_64
+  and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and
+  Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no
+    ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]Optio[]
+[bold,dim]n[]
+  [yellow]-q[],
+  [yellow]--q[]
+  [yellow]uie[]
+  [yellow]t[]
+[bold,dim]Meani[]
+[bold,dim]ng[]
+  Pri
+  nt
+  not
+  hin
+  g
+  exc
+  ept
+  err
+  ors
+[bold,dim]Defau[]
+[bold,dim]lt[]
+  off
+─────
+[bold,dim]Optio[]
+[bold,dim]n[]
+  [yellow]-j[],
+  [yellow]--j[]
+  [yellow]obs[]
+[bold,dim]Meani[]
+[bold,dim]ng[]
+  Num
+  ber
+  of
+  par
+  all
+  el
+  job
+  s
+[bold,dim]Defau[]
+[bold,dim]lt[]
+  [yellow]4[]
+─────
+[bold,dim]Optio[]
+[bold,dim]n[]
+  [yellow]--d[]
+  [yellow]ry-[]
+  [yellow]run[]
+[bold,dim]Meani[]
+[bold,dim]ng[]
+  Sho
+  w
+  wha
+  t
+  wou
+  ld
+  cha
+  nge
+  ,
+  cha
+  nge
+  not
+  hin
+  g
+[bold,dim]Defau[]
+[bold,dim]lt[]
+  off
+
+[bold]Exit[]
+[bold]codes[]
+
+1. [yellow]0[]
+   when
+   every
+   file
+   was
+   processed.
+2. [yellow]1[]
+   when
+   at
+   least
+   one
+   file
+   failed.
+3. [yellow]2[]
+   for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is
+[cyan]│ []not
+[cyan]│ []reversible.
+[cyan]│ []Keep
+[cyan]│ []a
+[cyan]│ []backup,
+[cyan]│ []or
+[cyan]│ []use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live
+in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests
+are
+welcome.
+Please
+run
+the
+tests
+first,
+and
+mention
+the
+issue
+number
+in
+the
+title.
+For
+larger
+changes,
+open
+an
+issue
+to
+discuss
+the
+idea.
+
+─────
+
+Released
+under
+the
+MIT
+license.
+Copyright
+(c)
+the
+frobnicate
+authors.
+=== width 3
+[bold,italic,double-underline]frobnicate[]
+
+A
+small
+command
+line
+tool
+that
+[bold]frobnicates[]
+files,
+[italic]quickly[]
+and
+with
+[yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for
+the
+full
+manual,
+or
+ask
+in
+the
+chat.
+
+[bold,underline]Installation[]
+
+Install
+from
+source
+with
+a
+recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries
+are
+available
+for
+these
+platforms:
+
+• Linux,
+  x86_64
+  and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and
+  Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no
+    ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]Opt[]
+[bold,dim]ion[]
+  [yellow]-[]
+  [yellow]q[]
+  ,
+  [yellow]-[]
+  [yellow]-[]
+  [yellow]q[]
+  [yellow]u[]
+  [yellow]i[]
+  [yellow]e[]
+  [yellow]t[]
+[bold,dim]Mea[]
+[bold,dim]nin[]
+[bold,dim]g[]
+  P
+  r
+  i
+  n
+  t
+  n
+  o
+  t
+  h
+  i
+  n
+  g
+  e
+  x
+  c
+  e
+  p
+  t
+  e
+  r
+  r
+  o
+  r
+  s
+[bold,dim]Def[]
+[bold,dim]aul[]
+[bold,dim]t[]
+  o
+  f
+  f
+───
+[bold,dim]Opt[]
+[bold,dim]ion[]
+  [yellow]-[]
+  [yellow]j[]
+  ,
+  [yellow]-[]
+  [yellow]-[]
+  [yellow]j[]
+  [yellow]o[]
+  [yellow]b[]
+  [yellow]s[]
+[bold,dim]Mea[]
+[bold,dim]nin[]
+[bold,dim]g[]
+  N
+  u
+  m
+  b
+  e
+  r
+  o
+  f
+  p
+  a
+  r
+  a
+  l
+  l
+  e
+  l
+  j
+  o
+  b
+  s
+[bold,dim]Def[]
+[bold,dim]aul[]
+[bold,dim]t[]
+  [yellow]4[]
+───
+[bold,dim]Opt[]
+[bold,dim]ion[]
+  [yellow]-[]
+  [yellow]-[]
+  [yellow]d[]
+  [yellow]r[]
+  [yellow]y[]
+  [yellow]-[]
+  [yellow]r[]
+  [yellow]u[]
+  [yellow]n[]
+[bold,dim]Mea[]
+[bold,dim]nin[]
+[bold,dim]g[]
+  S
+  h
+  o
+  w
+  w
+  h
+  a
+  t
+  w
+  o
+  u
+  l
+  d
+  c
+  h
+  a
+  n
+  g
+  e
+  ,
+  c
+  h
+  a
+  n
+  g
+  e
+  n
+  o
+  t
+  h
+  i
+  n
+  g
+[bold,dim]Def[]
+[bold,dim]aul[]
+[bold,dim]t[]
+  o
+  f
+  f
+
+[bold]Exit[]
+[bold]codes[]
+
+1. [yellow]0[]
+   when
+   every
+   file
+   was
+   processed.
+2. [yellow]1[]
+   when
+   at
+   least
+   one
+   file
+   failed.
+3. [yellow]2[]
+   for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is
+[cyan]│ []not
+[cyan]│ []reversible.
+[cyan]│ []Keep
+[cyan]│ []a
+[cyan]│ []backup,
+[cyan]│ []or
+[cyan]│ []use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live
+in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests
+are
+welcome.
+Please
+run
+the
+tests
+first,
+and
+mention
+the
+issue
+number
+in
+the
+title.
+For
+larger
+changes,
+open
+an
+issue
+to
+discuss
+the
+idea.
+
+───
+
+Released
+under
+the
+MIT
+license.
+Copyright
+(c)
+the
+frobnicate
+authors.
+=== width 1
+[bold,italic,double-underline]frobnicate[]
+
+A
+small
+command
+line
+tool
+that
+[bold]frobnicates[]
+files,
+[italic]quickly[]
+and
+with
+[yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for
+the
+full
+manual,
+or
+ask
+in
+the
+chat.
+
+[bold,underline]Installation[]
+
+Install
+from
+source
+with
+a
+recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries
+are
+available
+for
+these
+platforms:
+
+• Linux,
+  x86_64
+  and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and
+  Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no
+    ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]q[]
+,
+[yellow]-[]
+[yellow]-[]
+[yellow]q[]
+[yellow]u[]
+[yellow]i[]
+[yellow]e[]
+[yellow]t[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+P
+r
+i
+n
+t
+n
+o
+t
+h
+i
+n
+g
+e
+x
+c
+e
+p
+t
+e
+r
+r
+o
+r
+s
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+o
+f
+f
+─
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]j[]
+,
+[yellow]-[]
+[yellow]-[]
+[yellow]j[]
+[yellow]o[]
+[yellow]b[]
+[yellow]s[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+N
+u
+m
+b
+e
+r
+o
+f
+p
+a
+r
+a
+l
+l
+e
+l
+j
+o
+b
+s
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+[yellow]4[]
+─
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]-[]
+[yellow]d[]
+[yellow]r[]
+[yellow]y[]
+[yellow]-[]
+[yellow]r[]
+[yellow]u[]
+[yellow]n[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+S
+h
+o
+w
+w
+h
+a
+t
+w
+o
+u
+l
+d
+c
+h
+a
+n
+g
+e
+,
+c
+h
+a
+n
+g
+e
+n
+o
+t
+h
+i
+n
+g
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+o
+f
+f
+
+[bold]Exit[]
+[bold]codes[]
+
+1. [yellow]0[]
+   when
+   every
+   file
+   was
+   processed.
+2. [yellow]1[]
+   when
+   at
+   least
+   one
+   file
+   failed.
+3. [yellow]2[]
+   for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is
+[cyan]│ []not
+[cyan]│ []reversible.
+[cyan]│ []Keep
+[cyan]│ []a
+[cyan]│ []backup,
+[cyan]│ []or
+[cyan]│ []use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live
+in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests
+are
+welcome.
+Please
+run
+the
+tests
+first,
+and
+mention
+the
+issue
+number
+in
+the
+title.
+For
+larger
+changes,
+open
+an
+issue
+to
+discuss
+the
+idea.
+
+─
+
+Released
+under
+the
+MIT
+license.
+Copyright
+(c)
+the
+frobnicate
+authors.
+=== width 0
+[bold,italic,double-underline]frobnicate[]
+
+A
+small
+command
+line
+tool
+that
+[bold]frobnicates[]
+files,
+[italic]quickly[]
+and
+with
+[yellow]zero[]
+configuration.
+See
+[underline]https://example.com/frobnicate[]
+for
+the
+full
+manual,
+or
+ask
+in
+the
+chat.
+
+[bold,underline]Installation[]
+
+Install
+from
+source
+with
+a
+recent
+Rust
+toolchain:
+
+  cargo install frobnicate
+  frobnicate[cyan] --version[]
+
+Prebuilt
+binaries
+are
+available
+for
+these
+platforms:
+
+• Linux,
+  x86_64
+  and
+  aarch64
+• macOS,
+  Apple
+  silicon
+  and
+  Intel
+• Windows,
+  x86_64
+  only
+  • requires
+    the
+    Visual
+    C++
+    runtime
+  • no
+    ARM
+    build
+    yet
+
+[bold,underline]Usage[]
+
+  [yellow]frobnicate [OPTIONS] <FILE>...[]
+
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]q[]
+,
+[yellow]-[]
+[yellow]-[]
+[yellow]q[]
+[yellow]u[]
+[yellow]i[]
+[yellow]e[]
+[yellow]t[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+P
+r
+i
+n
+t
+n
+o
+t
+h
+i
+n
+g
+e
+x
+c
+e
+p
+t
+e
+r
+r
+o
+r
+s
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+o
+f
+f
+─
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]j[]
+,
+[yellow]-[]
+[yellow]-[]
+[yellow]j[]
+[yellow]o[]
+[yellow]b[]
+[yellow]s[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+N
+u
+m
+b
+e
+r
+o
+f
+p
+a
+r
+a
+l
+l
+e
+l
+j
+o
+b
+s
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+[yellow]4[]
+─
+[bold,dim]O[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+[yellow]-[]
+[yellow]-[]
+[yellow]d[]
+[yellow]r[]
+[yellow]y[]
+[yellow]-[]
+[yellow]r[]
+[yellow]u[]
+[yellow]n[]
+[bold,dim]M[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]n[]
+[bold,dim]i[]
+[bold,dim]n[]
+[bold,dim]g[]
+S
+h
+o
+w
+w
+h
+a
+t
+w
+o
+u
+l
+d
+c
+h
+a
+n
+g
+e
+,
+c
+h
+a
+n
+g
+e
+n
+o
+t
+h
+i
+n
+g
+[bold,dim]D[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]a[]
+[bold,dim]u[]
+[bold,dim]l[]
+[bold,dim]t[]
+o
+f
+f
+
+[bold]Exit[]
+[bold]codes[]
+
+1. [yellow]0[]
+   when
+   every
+   file
+   was
+   processed.
+2. [yellow]1[]
+   when
+   at
+   least
+   one
+   file
+   failed.
+3. [yellow]2[]
+   for
+   invalid
+   arguments.
+
+[cyan]│ [][bold]Note[]
+[cyan]│ []Frobnication
+[cyan]│ []is
+[cyan]│ []not
+[cyan]│ []reversible.
+[cyan]│ []Keep
+[cyan]│ []a
+[cyan]│ []backup,
+[cyan]│ []or
+[cyan]│ []use
+[cyan]│ [][yellow]--dry-run[]
+[cyan]│ []first.
+
+[bold,underline]Configuration[]
+
+Settings
+live
+in
+[yellow]frobnicate.toml[]:
+
+  [[yellow]defaults[]]
+  [red]jobs[] = [yellow]8[]
+  [red]quiet[] = [yellow]false[]
+
+[bold,underline]Contributing[]
+
+Pull
+requests
+are
+welcome.
+Please
+run
+the
+tests
+first,
+and
+mention
+the
+issue
+number
+in
+the
+title.
+For
+larger
+changes,
+open
+an
+issue
+to
+discuss
+the
+idea.
+
+─
+
+Released
+under
+the
+MIT
+license.
+Copyright
+(c)
+the
+frobnicate
+authors.

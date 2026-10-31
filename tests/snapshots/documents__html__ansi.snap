@@ -1,0 +1,197 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2mHTML in Markdown\e[24m\e[23m\e[22m
+
+A paragraph with inline bold tags and a line break tag, then a span and an
+entity & more.
+
+After the comment.
+
+• list item with inline html
+• second item
+
+\e[38;5;6m│ \e[39mquote with html
+
+┌──────┬────────┐
+│ \e[1mname\e[22m │ \e[1mmarkup\e[22m │
+├──────┼────────┤
+│ bold │ x      │
+├──────┼────────┤
+│ none │ plain  │
+└──────┴────────┘
+
+Inner \e[1mmarkdown\e[22m after a blank line.
+
+Last line with a lone < sign and Vec generic.
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2mHTML in Markdown\e[24m\e[23m\e[22m
+
+A paragraph with <b>inline bold tags</b> and a <br/> line break tag, then
+<span class="x">a span</span> and an entity & more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the comment.
+
+• list item with <i>inline</i> html
+• second item
+
+  <div>block html in an item</div>
+
+\e[38;5;6m│ \e[39mquote with <em>html</em>
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m<p>block html in a quote</p>
+
+┌──────┬──────────┐
+│ \e[1mname\e[22m │ \e[1m markup \e[22m │
+├──────┼──────────┤
+│ bold │ <b>x</b> │
+├──────┼──────────┤
+│ none │ plain    │
+└──────┴──────────┘
+
+<details>
+<summary>Click</summary>
+
+Inner \e[1mmarkdown\e[22m after a blank line.
+
+</details>
+
+Last line with a lone < sign and Vec<String> generic.
+=== width 10, default
+\e[1m\e[3m\e[4:2mHTML in\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mMarkdown\e[24m\e[23m\e[22m
+
+A
+paragraph
+with
+inline
+bold tags
+and a line
+break tag,
+then a
+span and
+an entity
+& more.
+
+After the
+comment.
+
+• list
+  item
+  with
+  inline
+  html
+• second
+  item
+
+\e[38;5;6m│ \e[39mquote
+\e[38;5;6m│ \e[39mwith
+\e[38;5;6m│ \e[39mhtml
+
+\e[1m\e[2mname\e[22m
+  bold
+\e[1m\e[2mmarkup\e[22m
+  x
+──────────
+\e[1m\e[2mname\e[22m
+  none
+\e[1m\e[2mmarkup\e[22m
+  plain
+
+Inner
+\e[1mmarkdown\e[22m
+after a
+blank
+line.
+
+Last line
+with a
+lone <
+sign and
+Vec
+generic.
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2mHTML in\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mMarkdown\e[24m\e[23m\e[22m
+
+A
+paragraph
+with
+<b>inline
+bold
+tags</b>
+and a
+<br/> line
+break tag,
+then
+<span
+class="x">a
+span</span>
+and an
+entity &
+more.
+
+<div class="note">
+A block of HTML
+spanning several lines.
+</div>
+
+<!-- a comment
+over two lines -->
+
+After the
+comment.
+
+• list
+  item
+  with
+  <i>inline</i>
+  html
+• second
+  item
+
+  <div>block html in an item</div>
+
+\e[38;5;6m│ \e[39mquote
+\e[38;5;6m│ \e[39mwith
+\e[38;5;6m│ \e[39m<em>html</em>
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m<p>block html in a quote</p>
+
+\e[1m\e[2mname\e[22m
+  bold
+\e[1m\e[2mmarkup\e[22m
+  <b>x</b>
+──────────
+\e[1m\e[2mname\e[22m
+  none
+\e[1m\e[2mmarkup\e[22m
+  plain
+
+<details>
+<summary>Click</summary>
+
+Inner
+\e[1mmarkdown\e[22m
+after a
+blank
+line.
+
+</details>
+
+Last line
+with a
+lone <
+sign and
+Vec<String>
+generic.

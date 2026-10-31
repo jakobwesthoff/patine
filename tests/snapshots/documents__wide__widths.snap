@@ -1,0 +1,756 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]日本語のタイトル 🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。 Mixed
+text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ. Arabic ligature: لا and a
+word مرحبا بالعالم with right to left text. Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth
+ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ [bold]名前[] │ [bold]    説明     [] │ [bold]値[] │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a [bold]bold[] animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+[cyan]│ []引用文: 日本語の引用ブロックです。 二行目は [bold]強調[] を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 40
+[bold,italic,double-underline]日本語のタイトル 🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text: ASCII and 全角文字 and emoji
+👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here,
+and ñ, and ǻ. Arabic ligature: لا and a
+word مرحبا بالعالم with right to left
+text. Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth
+ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ [bold]名前[] │ [bold]    説明     [] │ [bold]値[] │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a [bold]bold[] animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation
+  selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a
+  skin tone
+
+[cyan]│ []引用文: 日本語の引用ブロックです。
+[cyan]│ []二行目は [bold]強調[] を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 20
+[bold,italic,double-underline]日本語のタイトル 🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text: ASCII
+and 全角文字 and
+emoji 👩‍👩‍👧‍👦 and flags
+🇩🇪🇯🇵 together.
+
+Combining marks: é
+is written as é
+here, and ñ, and ǻ.
+Arabic ligature: لا
+and a word مرحبا
+بالعالم with right
+to left text.
+Halfwidth: ｶﾞｷﾞｸﾞ
+and fullwidth ＡＢＣ
+and wide digits
+１２３.
+
+[bold,dim]名前[]  猫
+[bold,dim]説明[]  小さな動物
+[bold,dim]値[]    🐱
+────────────────────
+[bold,dim]名前[]  Dog
+[bold,dim]説明[]  a [bold]bold[] animal
+[bold,dim]値[]    🐶
+────────────────────
+[bold,dim]名前[]  🇩🇪
+[bold,dim]説明[]  Flagge
+[bold,dim]値[]    1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign
+  with variation
+  selector
+• ✅ done, ❤️ heart,
+  👍🏽 thumbs with a
+  skin tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は [bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 12
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text:
+ASCII and
+全角文字 and
+emoji 👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é is
+written as é
+here, and ñ,
+and ǻ.
+Arabic
+ligature: لا
+and a word
+مرحبا
+بالعالم with
+right to
+left text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide digits
+１２３.
+
+[bold,dim]名前[]
+  猫
+[bold,dim]説明[]
+  小さな動物
+[bold,dim]値[]
+  🐱
+────────────
+[bold,dim]名前[]
+  Dog
+[bold,dim]説明[]
+  a [bold]bold[]
+  animal
+[bold,dim]値[]
+  🐶
+────────────
+[bold,dim]名前[]
+  🇩🇪
+[bold,dim]説明[]
+  Flagge
+[bold,dim]値[]
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning
+  sign with
+  variation
+  selector
+• ✅ done,
+  ❤️ heart,
+  👍🏽 thumbs
+  with a
+  skin tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 8
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII
+and
+全角文字
+and
+emoji 👩‍👩‍👧‍👦
+and
+flags
+🇩🇪🇯🇵
+together.
+
+Combining
+marks: é
+is
+written
+as é
+here,
+and ñ,
+and ǻ.
+Arabic
+ligature:
+لا and a
+word
+مرحبا
+بالعالم
+with
+right to
+left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ
+and
+fullwidth
+ＡＢＣ
+and wide
+digits
+１２３.
+
+[bold,dim]名前[]
+  猫
+[bold,dim]説明[]
+  小さな
+  動物
+[bold,dim]値[]
+  🐱
+────────
+[bold,dim]名前[]
+  Dog
+[bold,dim]説明[]
+  a [bold]bold[]
+  animal
+[bold,dim]値[]
+  🐶
+────────
+[bold,dim]名前[]
+  🇩🇪
+[bold,dim]説明[]
+  Flagge
+[bold,dim]値[]
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅
+  done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with a
+  skin
+  tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 5
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII
+and
+全角文字
+and
+emoji
+👩‍👩‍👧‍👦
+and
+flags
+🇩🇪🇯🇵
+together.
+
+Combining
+marks:
+é is
+written
+as é
+here,
+and
+ñ,
+and
+ǻ.
+Arabic
+ligature:
+لا
+and a
+word
+مرحبا
+بالعالم
+with
+right
+to
+left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ
+and
+fullwidth
+ＡＢＣ
+and
+wide
+digits
+１２３.
+
+[bold,dim]名前[]
+  猫
+[bold,dim]説明[]
+  小
+  さ
+  な
+  動
+  物
+[bold,dim]値[]
+  🐱
+─────
+[bold,dim]名前[]
+  Dog
+[bold,dim]説明[]
+  a
+  [bold]bol[]
+  [bold]d[]
+  ani
+  mal
+[bold,dim]値[]
+  🐶
+─────
+[bold,dim]名前[]
+  🇩🇪
+[bold,dim]説明[]
+  Fla
+  gge
+[bold,dim]値[]
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅
+  done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with
+  a
+  skin
+  tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 3
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII
+and
+全角文字
+and
+emoji
+👩‍👩‍👧‍👦
+and
+flags
+🇩🇪🇯🇵
+together.
+
+Combining
+marks:
+é
+is
+written
+as
+é
+here,
+and
+ñ,
+and
+ǻ.
+Arabic
+ligature:
+لا
+and
+a
+word
+مرحبا
+بالعالم
+with
+right
+to
+left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ
+and
+fullwidth
+ＡＢＣ
+and
+wide
+digits
+１２３.
+
+[bold,dim]名[]
+[bold,dim]前[]
+  猫
+[bold,dim]説[]
+[bold,dim]明[]
+  小
+  さ
+  な
+  動
+  物
+[bold,dim]値[]
+  🐱
+───
+[bold,dim]名[]
+[bold,dim]前[]
+  D
+  o
+  g
+[bold,dim]説[]
+[bold,dim]明[]
+  a
+  [bold]b[]
+  [bold]o[]
+  [bold]l[]
+  [bold]d[]
+  a
+  n
+  i
+  m
+  a
+  l
+[bold,dim]値[]
+  🐶
+───
+[bold,dim]名[]
+[bold,dim]前[]
+  🇩🇪
+[bold,dim]説[]
+[bold,dim]明[]
+  F
+  l
+  a
+  g
+  g
+  e
+[bold,dim]値[]
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅
+  done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with
+  a
+  skin
+  tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 1
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII
+and
+全角文字
+and
+emoji
+👩‍👩‍👧‍👦
+and
+flags
+🇩🇪🇯🇵
+together.
+
+Combining
+marks:
+é
+is
+written
+as
+é
+here,
+and
+ñ,
+and
+ǻ.
+Arabic
+ligature:
+لا
+and
+a
+word
+مرحبا
+بالعالم
+with
+right
+to
+left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ
+and
+fullwidth
+ＡＢＣ
+and
+wide
+digits
+１２３.
+
+[bold,dim]名[]
+[bold,dim]前[]
+猫
+[bold,dim]説[]
+[bold,dim]明[]
+小
+さ
+な
+動
+物
+[bold,dim]値[]
+🐱
+─
+[bold,dim]名[]
+[bold,dim]前[]
+D
+o
+g
+[bold,dim]説[]
+[bold,dim]明[]
+a
+[bold]b[]
+[bold]o[]
+[bold]l[]
+[bold]d[]
+a
+n
+i
+m
+a
+l
+[bold,dim]値[]
+🐶
+─
+[bold,dim]名[]
+[bold,dim]前[]
+🇩🇪
+[bold,dim]説[]
+[bold,dim]明[]
+F
+l
+a
+g
+g
+e
+[bold,dim]値[]
+1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅
+  done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with
+  a
+  skin
+  tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]
+=== width 0
+[bold,italic,double-underline]日本語のタイトル[]
+[bold,italic,double-underline]🚀[]
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII
+and
+全角文字
+and
+emoji
+👩‍👩‍👧‍👦
+and
+flags
+🇩🇪🇯🇵
+together.
+
+Combining
+marks:
+é
+is
+written
+as
+é
+here,
+and
+ñ,
+and
+ǻ.
+Arabic
+ligature:
+لا
+and
+a
+word
+مرحبا
+بالعالم
+with
+right
+to
+left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ
+and
+fullwidth
+ＡＢＣ
+and
+wide
+digits
+１２３.
+
+[bold,dim]名[]
+[bold,dim]前[]
+猫
+[bold,dim]説[]
+[bold,dim]明[]
+小
+さ
+な
+動
+物
+[bold,dim]値[]
+🐱
+─
+[bold,dim]名[]
+[bold,dim]前[]
+D
+o
+g
+[bold,dim]説[]
+[bold,dim]明[]
+a
+[bold]b[]
+[bold]o[]
+[bold]l[]
+[bold]d[]
+a
+n
+i
+m
+a
+l
+[bold,dim]値[]
+🐶
+─
+[bold,dim]名[]
+[bold,dim]前[]
+🇩🇪
+[bold,dim]説[]
+[bold,dim]明[]
+F
+l
+a
+g
+g
+e
+[bold,dim]値[]
+1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅
+  done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with
+  a
+  skin
+  tone
+
+[cyan]│ []引用文:
+[cyan]│ []日本語の引用ブロックです。
+[cyan]│ []二行目は
+[cyan]│ [][bold]強調[]
+[cyan]│ []を含みます。
+
+  [yellow]コードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です[]

@@ -1,0 +1,2609 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ [bold]left              [] │ [bold]center[] │ [bold]right[] │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+[bold,dim]item[]  [yellow]code[]
+[bold,dim]note[]  [italic]emphasis[] and [bold]strong[] and [strike]gone[]
+────────────────────────────────────────────────────────────────────────────────
+[bold,dim]item[]  [underline]link[][dim] (https://example.com/a/very/long/path/to/a/page)[]
+[bold,dim]note[]  [image: alt text][dim] (https://example.com/image.png)[]
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────────────────────────────────────────────┐
+│ [bold] topic  [] │ [bold]                           description                           [] │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ wrapping │ This cell holds a long sentence that has to wrap onto several     │
+│          │ lines when the table is narrow.                                   │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ short    │ ok                                                                │
+└──────────┴───────────────────────────────────────────────────────────────────┘
+
+Many columns of short words (records layout when narrow):
+
+┌─────┬─────┬───────┬──────┬──────┬─────┬───────┬───────┐
+│ [bold]one[] │ [bold]two[] │ [bold]three[] │ [bold]four[] │ [bold]five[] │ [bold]six[] │ [bold]seven[] │ [bold]eight[] │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ a   │ b   │ c     │ d    │ e    │ f   │ g     │ h     │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ ii  │ jj  │ kk    │ ll   │ mm   │ nn  │ oo    │ pp    │
+└─────┴─────┴───────┴──────┴──────┴─────┴───────┴───────┘
+
+A word wider than any column:
+
+[bold,dim]id[]   1
+[bold,dim]url[]  [underline]https://example.com/averyveryverylongpathwithoutanyseparatorthatcannotwrap[]
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ [bold]h1[] │ [bold] [] │ [bold]h3[] │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ [bold]only[] │ [bold]header[] │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│ [bold]   ab    [] │ [bold]c[] │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 40
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ [bold]left              [] │ [bold]center[] │ [bold]right[] │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+[bold,dim]item[]  [yellow]code[]
+[bold,dim]note[]  [italic]emphasis[] and [bold]strong[] and [strike]gone[]
+────────────────────────────────────────
+[bold,dim]item[]  [underline]link[]
+      [dim](https://example.com/a/very/long/p[]
+      [dim]ath/to/a/page)[]
+[bold,dim]note[]  [image: alt text]
+      [dim](https://example.com/image.png)[]
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────┐
+│ [bold] topic  [] │ [bold]       description       [] │
+├──────────┼───────────────────────────┤
+│ wrapping │ This cell holds a long    │
+│          │ sentence that has to wrap │
+│          │ onto several lines when   │
+│          │ the table is narrow.      │
+├──────────┼───────────────────────────┤
+│ short    │ ok                        │
+└──────────┴───────────────────────────┘
+
+Many columns of short words (records
+layout when narrow):
+
+[bold,dim]one[]    a
+[bold,dim]two[]    b
+[bold,dim]three[]  c
+[bold,dim]four[]   d
+[bold,dim]five[]   e
+[bold,dim]six[]    f
+[bold,dim]seven[]  g
+[bold,dim]eight[]  h
+────────────────────────────────────────
+[bold,dim]one[]    ii
+[bold,dim]two[]    jj
+[bold,dim]three[]  kk
+[bold,dim]four[]   ll
+[bold,dim]five[]   mm
+[bold,dim]six[]    nn
+[bold,dim]seven[]  oo
+[bold,dim]eight[]  pp
+
+A word wider than any column:
+
+[bold,dim]id[]   1
+[bold,dim]url[]  [underline]https://example.com/averyveryverylo[]
+     [underline]ngpathwithoutanyseparatorthatcannot[]
+     [underline]wrap[]
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ [bold]h1[] │ [bold] [] │ [bold]h3[] │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ [bold]only[] │ [bold]header[] │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│ [bold]   ab    [] │ [bold]c[] │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 20
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+[bold,dim]left[]    l1
+[bold,dim]center[]  c1
+[bold,dim]right[]   r1
+────────────────────
+[bold,dim]left[]    a longer
+        left cell
+[bold,dim]center[]  mid
+[bold,dim]right[]   12345
+
+Styled cells and
+links:
+
+[bold,dim]item[]  [yellow]code[]
+[bold,dim]note[]  [italic]emphasis[] and
+      [bold]strong[] and
+      [strike]gone[]
+────────────────────
+[bold,dim]item[]  [underline]link[]
+      [dim](https://examp[]
+      [dim]le.com/a/very/[]
+      [dim]long/path/to/a[]
+      [dim]/page)[]
+[bold,dim]note[]  [image: alt
+      text]
+      [dim](https://examp[]
+      [dim]le.com/image.p[]
+      [dim]ng)[]
+
+Long text that wraps
+inside its cell:
+
+[bold,dim]topic[]
+  wrapping
+[bold,dim]description[]
+  This cell holds a
+  long sentence that
+  has to wrap onto
+  several lines when
+  the table is
+  narrow.
+────────────────────
+[bold,dim]topic[]
+  short
+[bold,dim]description[]
+  ok
+
+Many columns of
+short words (records
+layout when narrow):
+
+[bold,dim]one[]    a
+[bold,dim]two[]    b
+[bold,dim]three[]  c
+[bold,dim]four[]   d
+[bold,dim]five[]   e
+[bold,dim]six[]    f
+[bold,dim]seven[]  g
+[bold,dim]eight[]  h
+────────────────────
+[bold,dim]one[]    ii
+[bold,dim]two[]    jj
+[bold,dim]three[]  kk
+[bold,dim]four[]   ll
+[bold,dim]five[]   mm
+[bold,dim]six[]    nn
+[bold,dim]seven[]  oo
+[bold,dim]eight[]  pp
+
+A word wider than
+any column:
+
+[bold,dim]id[]   1
+[bold,dim]url[]  [underline]https://example[]
+     [underline].com/averyveryv[]
+     [underline]erylongpathwith[]
+     [underline]outanyseparator[]
+     [underline]thatcannotwrap[]
+
+Empty cells and a
+header only table:
+
+┌────┬───┬────┐
+│ [bold]h1[] │ [bold] [] │ [bold]h3[] │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ [bold]only[] │ [bold]header[] │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│ [bold]   ab    [] │ [bold]c[] │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 12
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned
+columns:
+
+[bold,dim]left[]
+  l1
+[bold,dim]center[]
+  c1
+[bold,dim]right[]
+  r1
+────────────
+[bold,dim]left[]
+  a longer
+  left cell
+[bold,dim]center[]
+  mid
+[bold,dim]right[]
+  12345
+
+Styled cells
+and links:
+
+[bold,dim]item[]
+  [yellow]code[]
+[bold,dim]note[]
+  [italic]emphasis[]
+  and [bold]strong[]
+  and [strike]gone[]
+────────────
+[bold,dim]item[]
+  [underline]link[]
+  [dim](https://e[]
+  [dim]xample.com[]
+  [dim]/a/very/lo[]
+  [dim]ng/path/to[]
+  [dim]/a/page)[]
+[bold,dim]note[]
+  [image:
+  alt text]
+  [dim](https://e[]
+  [dim]xample.com[]
+  [dim]/image.png[]
+  [dim])[]
+
+Long text
+that wraps
+inside its
+cell:
+
+[bold,dim]topic[]
+  wrapping
+[bold,dim]description[]
+  This cell
+  holds a
+  long
+  sentence
+  that has
+  to wrap
+  onto
+  several
+  lines when
+  the table
+  is narrow.
+────────────
+[bold,dim]topic[]
+  short
+[bold,dim]description[]
+  ok
+
+Many columns
+of short
+words
+(records
+layout when
+narrow):
+
+[bold,dim]one[]    a
+[bold,dim]two[]    b
+[bold,dim]three[]  c
+[bold,dim]four[]   d
+[bold,dim]five[]   e
+[bold,dim]six[]    f
+[bold,dim]seven[]  g
+[bold,dim]eight[]  h
+────────────
+[bold,dim]one[]    ii
+[bold,dim]two[]    jj
+[bold,dim]three[]  kk
+[bold,dim]four[]   ll
+[bold,dim]five[]   mm
+[bold,dim]six[]    nn
+[bold,dim]seven[]  oo
+[bold,dim]eight[]  pp
+
+A word wider
+than any
+column:
+
+[bold,dim]id[]   1
+[bold,dim]url[]  [underline]https:/[]
+     [underline]/exampl[]
+     [underline]e.com/a[]
+     [underline]veryver[]
+     [underline]yverylo[]
+     [underline]ngpathw[]
+     [underline]ithouta[]
+     [underline]nysepar[]
+     [underline]atortha[]
+     [underline]tcannot[]
+     [underline]wrap[]
+
+Empty cells
+and a header
+only table:
+
+[bold,dim]h1[]
+    x
+[bold,dim]h3[]
+
+[bold,dim]only[]
+[bold,dim]header[]
+
+Soft break
+and hard
+break in a
+cell:
+
+┌──────┬───┐
+│ [bold] ab [] │ [bold]c[] │
+├──────┼───┤
+│ line │   │
+│ one\ │   │
+├──────┼───┤
+│ line │ d │
+│ two  │   │
+└──────┴───┘
+=== width 8
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+[bold,dim]a[]  1
+[bold,dim]b[]  2
+
+Aligned
+columns:
+
+[bold,dim]left[]
+  l1
+[bold,dim]center[]
+  c1
+[bold,dim]right[]
+  r1
+────────
+[bold,dim]left[]
+  a
+  longer
+  left
+  cell
+[bold,dim]center[]
+  mid
+[bold,dim]right[]
+  12345
+
+Styled
+cells
+and
+links:
+
+[bold,dim]item[]
+  [yellow]code[]
+[bold,dim]note[]
+  [italic]emphas[]
+  [italic]is[] and
+  [bold]strong[]
+  and
+  [strike]gone[]
+────────
+[bold,dim]item[]
+  [underline]link[]
+  [dim](https[]
+  [dim]://exa[]
+  [dim]mple.c[]
+  [dim]om/a/v[]
+  [dim]ery/lo[]
+  [dim]ng/pat[]
+  [dim]h/to/a[]
+  [dim]/page)[]
+[bold,dim]note[]
+  [image
+  : alt
+  text]
+  [dim](https[]
+  [dim]://exa[]
+  [dim]mple.c[]
+  [dim]om/ima[]
+  [dim]ge.png[]
+  [dim])[]
+
+Long
+text
+that
+wraps
+inside
+its
+cell:
+
+[bold,dim]topic[]
+  wrappi
+  ng
+[bold,dim]descript[]
+[bold,dim]ion[]
+  This
+  cell
+  holds
+  a long
+  senten
+  ce
+  that
+  has to
+  wrap
+  onto
+  severa
+  l
+  lines
+  when
+  the
+  table
+  is
+  narrow
+  .
+────────
+[bold,dim]topic[]
+  short
+[bold,dim]descript[]
+[bold,dim]ion[]
+  ok
+
+Many
+columns
+of short
+words
+(records
+layout
+when
+narrow):
+
+[bold,dim]one[]
+  a
+[bold,dim]two[]
+  b
+[bold,dim]three[]
+  c
+[bold,dim]four[]
+  d
+[bold,dim]five[]
+  e
+[bold,dim]six[]
+  f
+[bold,dim]seven[]
+  g
+[bold,dim]eight[]
+  h
+────────
+[bold,dim]one[]
+  ii
+[bold,dim]two[]
+  jj
+[bold,dim]three[]
+  kk
+[bold,dim]four[]
+  ll
+[bold,dim]five[]
+  mm
+[bold,dim]six[]
+  nn
+[bold,dim]seven[]
+  oo
+[bold,dim]eight[]
+  pp
+
+A word
+wider
+than any
+column:
+
+[bold,dim]id[]   1
+[bold,dim]url[]  [underline]htt[]
+     [underline]ps:[]
+     [underline]//e[]
+     [underline]xam[]
+     [underline]ple[]
+     [underline].co[]
+     [underline]m/a[]
+     [underline]ver[]
+     [underline]yve[]
+     [underline]ryv[]
+     [underline]ery[]
+     [underline]lon[]
+     [underline]gpa[]
+     [underline]thw[]
+     [underline]ith[]
+     [underline]out[]
+     [underline]any[]
+     [underline]sep[]
+     [underline]ara[]
+     [underline]tor[]
+     [underline]tha[]
+     [underline]tca[]
+     [underline]nno[]
+     [underline]twr[]
+     [underline]ap[]
+
+Empty
+cells
+and a
+header
+only
+table:
+
+[bold,dim]h1[]
+    x
+[bold,dim]h3[]
+
+[bold,dim]only[]
+[bold,dim]header[]
+
+Soft
+break
+and hard
+break in
+a cell:
+
+[bold,dim]ab[]  line
+    one\
+[bold,dim]c[]
+────────
+[bold,dim]ab[]  line
+    two
+[bold,dim]c[]   d
+=== width 5
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+[bold,dim]a[]  1
+[bold,dim]b[]  2
+
+Aligned
+columns:
+
+[bold,dim]left[]
+  l1
+[bold,dim]cente[]
+[bold,dim]r[]
+  c1
+[bold,dim]right[]
+  r1
+─────
+[bold,dim]left[]
+  a
+  lon
+  ger
+  lef
+  t
+  cel
+  l
+[bold,dim]cente[]
+[bold,dim]r[]
+  mid
+[bold,dim]right[]
+  123
+  45
+
+Styled
+cells
+and
+links:
+
+[bold,dim]item[]
+  [yellow]cod[]
+  [yellow]e[]
+[bold,dim]note[]
+  [italic]emp[]
+  [italic]has[]
+  [italic]is[]
+  and
+  [bold]str[]
+  [bold]ong[]
+  and
+  [strike]gon[]
+  [strike]e[]
+─────
+[bold,dim]item[]
+  [underline]lin[]
+  [underline]k[]
+  [dim](ht[]
+  [dim]tps[]
+  [dim]://[]
+  [dim]exa[]
+  [dim]mpl[]
+  [dim]e.c[]
+  [dim]om/[]
+  [dim]a/v[]
+  [dim]ery[]
+  [dim]/lo[]
+  [dim]ng/[]
+  [dim]pat[]
+  [dim]h/t[]
+  [dim]o/a[]
+  [dim]/pa[]
+  [dim]ge)[]
+[bold,dim]note[]
+  [im
+  age
+  :
+  alt
+  tex
+  t]
+  [dim](ht[]
+  [dim]tps[]
+  [dim]://[]
+  [dim]exa[]
+  [dim]mpl[]
+  [dim]e.c[]
+  [dim]om/[]
+  [dim]ima[]
+  [dim]ge.[]
+  [dim]png[]
+  [dim])[]
+
+Long
+text
+that
+wraps
+inside
+its
+cell:
+
+[bold,dim]topic[]
+  wra
+  ppi
+  ng
+[bold,dim]descr[]
+[bold,dim]iptio[]
+[bold,dim]n[]
+  Thi
+  s
+  cel
+  l
+  hol
+  ds
+  a
+  lon
+  g
+  sen
+  ten
+  ce
+  tha
+  t
+  has
+  to
+  wra
+  p
+  ont
+  o
+  sev
+  era
+  l
+  lin
+  es
+  whe
+  n
+  the
+  tab
+  le
+  is
+  nar
+  row
+  .
+─────
+[bold,dim]topic[]
+  sho
+  rt
+[bold,dim]descr[]
+[bold,dim]iptio[]
+[bold,dim]n[]
+  ok
+
+Many
+columns
+of
+short
+words
+(records
+layout
+when
+narrow):
+
+[bold,dim]one[]
+  a
+[bold,dim]two[]
+  b
+[bold,dim]three[]
+  c
+[bold,dim]four[]
+  d
+[bold,dim]five[]
+  e
+[bold,dim]six[]
+  f
+[bold,dim]seven[]
+  g
+[bold,dim]eight[]
+  h
+─────
+[bold,dim]one[]
+  ii
+[bold,dim]two[]
+  jj
+[bold,dim]three[]
+  kk
+[bold,dim]four[]
+  ll
+[bold,dim]five[]
+  mm
+[bold,dim]six[]
+  nn
+[bold,dim]seven[]
+  oo
+[bold,dim]eight[]
+  pp
+
+A
+word
+wider
+than
+any
+column:
+
+[bold,dim]id[]
+  1
+[bold,dim]url[]
+  [underline]htt[]
+  [underline]ps:[]
+  [underline]//e[]
+  [underline]xam[]
+  [underline]ple[]
+  [underline].co[]
+  [underline]m/a[]
+  [underline]ver[]
+  [underline]yve[]
+  [underline]ryv[]
+  [underline]ery[]
+  [underline]lon[]
+  [underline]gpa[]
+  [underline]thw[]
+  [underline]ith[]
+  [underline]out[]
+  [underline]any[]
+  [underline]sep[]
+  [underline]ara[]
+  [underline]tor[]
+  [underline]tha[]
+  [underline]tca[]
+  [underline]nno[]
+  [underline]twr[]
+  [underline]ap[]
+
+Empty
+cells
+and a
+header
+only
+table:
+
+[bold,dim]h1[]
+    x
+[bold,dim]h3[]
+
+[bold,dim]only[]
+[bold,dim]heade[]
+[bold,dim]r[]
+
+Soft
+break
+and
+hard
+break
+in a
+cell:
+
+[bold,dim]ab[]
+  lin
+  e
+  one
+  \
+[bold,dim]c[]
+─────
+[bold,dim]ab[]
+  lin
+  e
+  two
+[bold,dim]c[]
+  d
+=== width 3
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+[bold,dim]a[]
+  1
+[bold,dim]b[]
+  2
+
+Aligned
+columns:
+
+[bold,dim]lef[]
+[bold,dim]t[]
+  l
+  1
+[bold,dim]cen[]
+[bold,dim]ter[]
+  c
+  1
+[bold,dim]rig[]
+[bold,dim]ht[]
+  r
+  1
+───
+[bold,dim]lef[]
+[bold,dim]t[]
+  a
+  l
+  o
+  n
+  g
+  e
+  r
+  l
+  e
+  f
+  t
+  c
+  e
+  l
+  l
+[bold,dim]cen[]
+[bold,dim]ter[]
+  m
+  i
+  d
+[bold,dim]rig[]
+[bold,dim]ht[]
+  1
+  2
+  3
+  4
+  5
+
+Styled
+cells
+and
+links:
+
+[bold,dim]ite[]
+[bold,dim]m[]
+  [yellow]c[]
+  [yellow]o[]
+  [yellow]d[]
+  [yellow]e[]
+[bold,dim]not[]
+[bold,dim]e[]
+  [italic]e[]
+  [italic]m[]
+  [italic]p[]
+  [italic]h[]
+  [italic]a[]
+  [italic]s[]
+  [italic]i[]
+  [italic]s[]
+  a
+  n
+  d
+  [bold]s[]
+  [bold]t[]
+  [bold]r[]
+  [bold]o[]
+  [bold]n[]
+  [bold]g[]
+  a
+  n
+  d
+  [strike]g[]
+  [strike]o[]
+  [strike]n[]
+  [strike]e[]
+───
+[bold,dim]ite[]
+[bold,dim]m[]
+  [underline]l[]
+  [underline]i[]
+  [underline]n[]
+  [underline]k[]
+  [dim]([]
+  [dim]h[]
+  [dim]t[]
+  [dim]t[]
+  [dim]p[]
+  [dim]s[]
+  [dim]:[]
+  [dim]/[]
+  [dim]/[]
+  [dim]e[]
+  [dim]x[]
+  [dim]a[]
+  [dim]m[]
+  [dim]p[]
+  [dim]l[]
+  [dim]e[]
+  [dim].[]
+  [dim]c[]
+  [dim]o[]
+  [dim]m[]
+  [dim]/[]
+  [dim]a[]
+  [dim]/[]
+  [dim]v[]
+  [dim]e[]
+  [dim]r[]
+  [dim]y[]
+  [dim]/[]
+  [dim]l[]
+  [dim]o[]
+  [dim]n[]
+  [dim]g[]
+  [dim]/[]
+  [dim]p[]
+  [dim]a[]
+  [dim]t[]
+  [dim]h[]
+  [dim]/[]
+  [dim]t[]
+  [dim]o[]
+  [dim]/[]
+  [dim]a[]
+  [dim]/[]
+  [dim]p[]
+  [dim]a[]
+  [dim]g[]
+  [dim]e[]
+  [dim])[]
+[bold,dim]not[]
+[bold,dim]e[]
+  [
+  i
+  m
+  a
+  g
+  e
+  :
+  a
+  l
+  t
+  t
+  e
+  x
+  t
+  ]
+  [dim]([]
+  [dim]h[]
+  [dim]t[]
+  [dim]t[]
+  [dim]p[]
+  [dim]s[]
+  [dim]:[]
+  [dim]/[]
+  [dim]/[]
+  [dim]e[]
+  [dim]x[]
+  [dim]a[]
+  [dim]m[]
+  [dim]p[]
+  [dim]l[]
+  [dim]e[]
+  [dim].[]
+  [dim]c[]
+  [dim]o[]
+  [dim]m[]
+  [dim]/[]
+  [dim]i[]
+  [dim]m[]
+  [dim]a[]
+  [dim]g[]
+  [dim]e[]
+  [dim].[]
+  [dim]p[]
+  [dim]n[]
+  [dim]g[]
+  [dim])[]
+
+Long
+text
+that
+wraps
+inside
+its
+cell:
+
+[bold,dim]top[]
+[bold,dim]ic[]
+  w
+  r
+  a
+  p
+  p
+  i
+  n
+  g
+[bold,dim]des[]
+[bold,dim]cri[]
+[bold,dim]pti[]
+[bold,dim]on[]
+  T
+  h
+  i
+  s
+  c
+  e
+  l
+  l
+  h
+  o
+  l
+  d
+  s
+  a
+  l
+  o
+  n
+  g
+  s
+  e
+  n
+  t
+  e
+  n
+  c
+  e
+  t
+  h
+  a
+  t
+  h
+  a
+  s
+  t
+  o
+  w
+  r
+  a
+  p
+  o
+  n
+  t
+  o
+  s
+  e
+  v
+  e
+  r
+  a
+  l
+  l
+  i
+  n
+  e
+  s
+  w
+  h
+  e
+  n
+  t
+  h
+  e
+  t
+  a
+  b
+  l
+  e
+  i
+  s
+  n
+  a
+  r
+  r
+  o
+  w
+  .
+───
+[bold,dim]top[]
+[bold,dim]ic[]
+  s
+  h
+  o
+  r
+  t
+[bold,dim]des[]
+[bold,dim]cri[]
+[bold,dim]pti[]
+[bold,dim]on[]
+  o
+  k
+
+Many
+columns
+of
+short
+words
+(records
+layout
+when
+narrow):
+
+[bold,dim]one[]
+  a
+[bold,dim]two[]
+  b
+[bold,dim]thr[]
+[bold,dim]ee[]
+  c
+[bold,dim]fou[]
+[bold,dim]r[]
+  d
+[bold,dim]fiv[]
+[bold,dim]e[]
+  e
+[bold,dim]six[]
+  f
+[bold,dim]sev[]
+[bold,dim]en[]
+  g
+[bold,dim]eig[]
+[bold,dim]ht[]
+  h
+───
+[bold,dim]one[]
+  i
+  i
+[bold,dim]two[]
+  j
+  j
+[bold,dim]thr[]
+[bold,dim]ee[]
+  k
+  k
+[bold,dim]fou[]
+[bold,dim]r[]
+  l
+  l
+[bold,dim]fiv[]
+[bold,dim]e[]
+  m
+  m
+[bold,dim]six[]
+  n
+  n
+[bold,dim]sev[]
+[bold,dim]en[]
+  o
+  o
+[bold,dim]eig[]
+[bold,dim]ht[]
+  p
+  p
+
+A
+word
+wider
+than
+any
+column:
+
+[bold,dim]id[]
+  1
+[bold,dim]url[]
+  [underline]h[]
+  [underline]t[]
+  [underline]t[]
+  [underline]p[]
+  [underline]s[]
+  [underline]:[]
+  [underline]/[]
+  [underline]/[]
+  [underline]e[]
+  [underline]x[]
+  [underline]a[]
+  [underline]m[]
+  [underline]p[]
+  [underline]l[]
+  [underline]e[]
+  [underline].[]
+  [underline]c[]
+  [underline]o[]
+  [underline]m[]
+  [underline]/[]
+  [underline]a[]
+  [underline]v[]
+  [underline]e[]
+  [underline]r[]
+  [underline]y[]
+  [underline]v[]
+  [underline]e[]
+  [underline]r[]
+  [underline]y[]
+  [underline]v[]
+  [underline]e[]
+  [underline]r[]
+  [underline]y[]
+  [underline]l[]
+  [underline]o[]
+  [underline]n[]
+  [underline]g[]
+  [underline]p[]
+  [underline]a[]
+  [underline]t[]
+  [underline]h[]
+  [underline]w[]
+  [underline]i[]
+  [underline]t[]
+  [underline]h[]
+  [underline]o[]
+  [underline]u[]
+  [underline]t[]
+  [underline]a[]
+  [underline]n[]
+  [underline]y[]
+  [underline]s[]
+  [underline]e[]
+  [underline]p[]
+  [underline]a[]
+  [underline]r[]
+  [underline]a[]
+  [underline]t[]
+  [underline]o[]
+  [underline]r[]
+  [underline]t[]
+  [underline]h[]
+  [underline]a[]
+  [underline]t[]
+  [underline]c[]
+  [underline]a[]
+  [underline]n[]
+  [underline]n[]
+  [underline]o[]
+  [underline]t[]
+  [underline]w[]
+  [underline]r[]
+  [underline]a[]
+  [underline]p[]
+
+Empty
+cells
+and
+a
+header
+only
+table:
+
+[bold,dim]h1[]
+  x
+[bold,dim]h3[]
+
+[bold,dim]onl[]
+[bold,dim]y[]
+[bold,dim]hea[]
+[bold,dim]der[]
+
+Soft
+break
+and
+hard
+break
+in
+a
+cell:
+
+[bold,dim]ab[]
+  l
+  i
+  n
+  e
+  o
+  n
+  e
+  \
+[bold,dim]c[]
+───
+[bold,dim]ab[]
+  l
+  i
+  n
+  e
+  t
+  w
+  o
+[bold,dim]c[]
+  d
+=== width 1
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+[bold,dim]a[]
+1
+[bold,dim]b[]
+2
+
+Aligned
+columns:
+
+[bold,dim]l[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]t[]
+l
+1
+[bold,dim]c[]
+[bold,dim]e[]
+[bold,dim]n[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]r[]
+c
+1
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+r
+1
+─
+[bold,dim]l[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]t[]
+a
+l
+o
+n
+g
+e
+r
+l
+e
+f
+t
+c
+e
+l
+l
+[bold,dim]c[]
+[bold,dim]e[]
+[bold,dim]n[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]r[]
+m
+i
+d
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+1
+2
+3
+4
+5
+
+Styled
+cells
+and
+links:
+
+[bold,dim]i[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]m[]
+[yellow]c[]
+[yellow]o[]
+[yellow]d[]
+[yellow]e[]
+[bold,dim]n[]
+[bold,dim]o[]
+[bold,dim]t[]
+[bold,dim]e[]
+[italic]e[]
+[italic]m[]
+[italic]p[]
+[italic]h[]
+[italic]a[]
+[italic]s[]
+[italic]i[]
+[italic]s[]
+a
+n
+d
+[bold]s[]
+[bold]t[]
+[bold]r[]
+[bold]o[]
+[bold]n[]
+[bold]g[]
+a
+n
+d
+[strike]g[]
+[strike]o[]
+[strike]n[]
+[strike]e[]
+─
+[bold,dim]i[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]m[]
+[underline]l[]
+[underline]i[]
+[underline]n[]
+[underline]k[]
+[dim]([]
+[dim]h[]
+[dim]t[]
+[dim]t[]
+[dim]p[]
+[dim]s[]
+[dim]:[]
+[dim]/[]
+[dim]/[]
+[dim]e[]
+[dim]x[]
+[dim]a[]
+[dim]m[]
+[dim]p[]
+[dim]l[]
+[dim]e[]
+[dim].[]
+[dim]c[]
+[dim]o[]
+[dim]m[]
+[dim]/[]
+[dim]a[]
+[dim]/[]
+[dim]v[]
+[dim]e[]
+[dim]r[]
+[dim]y[]
+[dim]/[]
+[dim]l[]
+[dim]o[]
+[dim]n[]
+[dim]g[]
+[dim]/[]
+[dim]p[]
+[dim]a[]
+[dim]t[]
+[dim]h[]
+[dim]/[]
+[dim]t[]
+[dim]o[]
+[dim]/[]
+[dim]a[]
+[dim]/[]
+[dim]p[]
+[dim]a[]
+[dim]g[]
+[dim]e[]
+[dim])[]
+[bold,dim]n[]
+[bold,dim]o[]
+[bold,dim]t[]
+[bold,dim]e[]
+[
+i
+m
+a
+g
+e
+:
+a
+l
+t
+t
+e
+x
+t
+]
+[dim]([]
+[dim]h[]
+[dim]t[]
+[dim]t[]
+[dim]p[]
+[dim]s[]
+[dim]:[]
+[dim]/[]
+[dim]/[]
+[dim]e[]
+[dim]x[]
+[dim]a[]
+[dim]m[]
+[dim]p[]
+[dim]l[]
+[dim]e[]
+[dim].[]
+[dim]c[]
+[dim]o[]
+[dim]m[]
+[dim]/[]
+[dim]i[]
+[dim]m[]
+[dim]a[]
+[dim]g[]
+[dim]e[]
+[dim].[]
+[dim]p[]
+[dim]n[]
+[dim]g[]
+[dim])[]
+
+Long
+text
+that
+wraps
+inside
+its
+cell:
+
+[bold,dim]t[]
+[bold,dim]o[]
+[bold,dim]p[]
+[bold,dim]i[]
+[bold,dim]c[]
+w
+r
+a
+p
+p
+i
+n
+g
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]s[]
+[bold,dim]c[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+T
+h
+i
+s
+c
+e
+l
+l
+h
+o
+l
+d
+s
+a
+l
+o
+n
+g
+s
+e
+n
+t
+e
+n
+c
+e
+t
+h
+a
+t
+h
+a
+s
+t
+o
+w
+r
+a
+p
+o
+n
+t
+o
+s
+e
+v
+e
+r
+a
+l
+l
+i
+n
+e
+s
+w
+h
+e
+n
+t
+h
+e
+t
+a
+b
+l
+e
+i
+s
+n
+a
+r
+r
+o
+w
+.
+─
+[bold,dim]t[]
+[bold,dim]o[]
+[bold,dim]p[]
+[bold,dim]i[]
+[bold,dim]c[]
+s
+h
+o
+r
+t
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]s[]
+[bold,dim]c[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+o
+k
+
+Many
+columns
+of
+short
+words
+(records
+layout
+when
+narrow):
+
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]e[]
+a
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]o[]
+b
+[bold,dim]t[]
+[bold,dim]h[]
+[bold,dim]r[]
+[bold,dim]e[]
+[bold,dim]e[]
+c
+[bold,dim]f[]
+[bold,dim]o[]
+[bold,dim]u[]
+[bold,dim]r[]
+d
+[bold,dim]f[]
+[bold,dim]i[]
+[bold,dim]v[]
+[bold,dim]e[]
+e
+[bold,dim]s[]
+[bold,dim]i[]
+[bold,dim]x[]
+f
+[bold,dim]s[]
+[bold,dim]e[]
+[bold,dim]v[]
+[bold,dim]e[]
+[bold,dim]n[]
+g
+[bold,dim]e[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+h
+─
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]e[]
+i
+i
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]o[]
+j
+j
+[bold,dim]t[]
+[bold,dim]h[]
+[bold,dim]r[]
+[bold,dim]e[]
+[bold,dim]e[]
+k
+k
+[bold,dim]f[]
+[bold,dim]o[]
+[bold,dim]u[]
+[bold,dim]r[]
+l
+l
+[bold,dim]f[]
+[bold,dim]i[]
+[bold,dim]v[]
+[bold,dim]e[]
+m
+m
+[bold,dim]s[]
+[bold,dim]i[]
+[bold,dim]x[]
+n
+n
+[bold,dim]s[]
+[bold,dim]e[]
+[bold,dim]v[]
+[bold,dim]e[]
+[bold,dim]n[]
+o
+o
+[bold,dim]e[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+p
+p
+
+A
+word
+wider
+than
+any
+column:
+
+[bold,dim]i[]
+[bold,dim]d[]
+1
+[bold,dim]u[]
+[bold,dim]r[]
+[bold,dim]l[]
+[underline]h[]
+[underline]t[]
+[underline]t[]
+[underline]p[]
+[underline]s[]
+[underline]:[]
+[underline]/[]
+[underline]/[]
+[underline]e[]
+[underline]x[]
+[underline]a[]
+[underline]m[]
+[underline]p[]
+[underline]l[]
+[underline]e[]
+[underline].[]
+[underline]c[]
+[underline]o[]
+[underline]m[]
+[underline]/[]
+[underline]a[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]l[]
+[underline]o[]
+[underline]n[]
+[underline]g[]
+[underline]p[]
+[underline]a[]
+[underline]t[]
+[underline]h[]
+[underline]w[]
+[underline]i[]
+[underline]t[]
+[underline]h[]
+[underline]o[]
+[underline]u[]
+[underline]t[]
+[underline]a[]
+[underline]n[]
+[underline]y[]
+[underline]s[]
+[underline]e[]
+[underline]p[]
+[underline]a[]
+[underline]r[]
+[underline]a[]
+[underline]t[]
+[underline]o[]
+[underline]r[]
+[underline]t[]
+[underline]h[]
+[underline]a[]
+[underline]t[]
+[underline]c[]
+[underline]a[]
+[underline]n[]
+[underline]n[]
+[underline]o[]
+[underline]t[]
+[underline]w[]
+[underline]r[]
+[underline]a[]
+[underline]p[]
+
+Empty
+cells
+and
+a
+header
+only
+table:
+
+[bold,dim]h[]
+[bold,dim]1[]
+x
+[bold,dim]h[]
+[bold,dim]3[]
+
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]l[]
+[bold,dim]y[]
+[bold,dim]h[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]r[]
+
+Soft
+break
+and
+hard
+break
+in
+a
+cell:
+
+[bold,dim]a[]
+[bold,dim]b[]
+l
+i
+n
+e
+o
+n
+e
+\
+[bold,dim]c[]
+─
+[bold,dim]a[]
+[bold,dim]b[]
+l
+i
+n
+e
+t
+w
+o
+[bold,dim]c[]
+d
+=== width 0
+[bold,italic,double-underline]Tables[]
+
+Plain:
+
+[bold,dim]a[]
+1
+[bold,dim]b[]
+2
+
+Aligned
+columns:
+
+[bold,dim]l[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]t[]
+l
+1
+[bold,dim]c[]
+[bold,dim]e[]
+[bold,dim]n[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]r[]
+c
+1
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+r
+1
+─
+[bold,dim]l[]
+[bold,dim]e[]
+[bold,dim]f[]
+[bold,dim]t[]
+a
+l
+o
+n
+g
+e
+r
+l
+e
+f
+t
+c
+e
+l
+l
+[bold,dim]c[]
+[bold,dim]e[]
+[bold,dim]n[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]r[]
+m
+i
+d
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+1
+2
+3
+4
+5
+
+Styled
+cells
+and
+links:
+
+[bold,dim]i[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]m[]
+[yellow]c[]
+[yellow]o[]
+[yellow]d[]
+[yellow]e[]
+[bold,dim]n[]
+[bold,dim]o[]
+[bold,dim]t[]
+[bold,dim]e[]
+[italic]e[]
+[italic]m[]
+[italic]p[]
+[italic]h[]
+[italic]a[]
+[italic]s[]
+[italic]i[]
+[italic]s[]
+a
+n
+d
+[bold]s[]
+[bold]t[]
+[bold]r[]
+[bold]o[]
+[bold]n[]
+[bold]g[]
+a
+n
+d
+[strike]g[]
+[strike]o[]
+[strike]n[]
+[strike]e[]
+─
+[bold,dim]i[]
+[bold,dim]t[]
+[bold,dim]e[]
+[bold,dim]m[]
+[underline]l[]
+[underline]i[]
+[underline]n[]
+[underline]k[]
+[dim]([]
+[dim]h[]
+[dim]t[]
+[dim]t[]
+[dim]p[]
+[dim]s[]
+[dim]:[]
+[dim]/[]
+[dim]/[]
+[dim]e[]
+[dim]x[]
+[dim]a[]
+[dim]m[]
+[dim]p[]
+[dim]l[]
+[dim]e[]
+[dim].[]
+[dim]c[]
+[dim]o[]
+[dim]m[]
+[dim]/[]
+[dim]a[]
+[dim]/[]
+[dim]v[]
+[dim]e[]
+[dim]r[]
+[dim]y[]
+[dim]/[]
+[dim]l[]
+[dim]o[]
+[dim]n[]
+[dim]g[]
+[dim]/[]
+[dim]p[]
+[dim]a[]
+[dim]t[]
+[dim]h[]
+[dim]/[]
+[dim]t[]
+[dim]o[]
+[dim]/[]
+[dim]a[]
+[dim]/[]
+[dim]p[]
+[dim]a[]
+[dim]g[]
+[dim]e[]
+[dim])[]
+[bold,dim]n[]
+[bold,dim]o[]
+[bold,dim]t[]
+[bold,dim]e[]
+[
+i
+m
+a
+g
+e
+:
+a
+l
+t
+t
+e
+x
+t
+]
+[dim]([]
+[dim]h[]
+[dim]t[]
+[dim]t[]
+[dim]p[]
+[dim]s[]
+[dim]:[]
+[dim]/[]
+[dim]/[]
+[dim]e[]
+[dim]x[]
+[dim]a[]
+[dim]m[]
+[dim]p[]
+[dim]l[]
+[dim]e[]
+[dim].[]
+[dim]c[]
+[dim]o[]
+[dim]m[]
+[dim]/[]
+[dim]i[]
+[dim]m[]
+[dim]a[]
+[dim]g[]
+[dim]e[]
+[dim].[]
+[dim]p[]
+[dim]n[]
+[dim]g[]
+[dim])[]
+
+Long
+text
+that
+wraps
+inside
+its
+cell:
+
+[bold,dim]t[]
+[bold,dim]o[]
+[bold,dim]p[]
+[bold,dim]i[]
+[bold,dim]c[]
+w
+r
+a
+p
+p
+i
+n
+g
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]s[]
+[bold,dim]c[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+T
+h
+i
+s
+c
+e
+l
+l
+h
+o
+l
+d
+s
+a
+l
+o
+n
+g
+s
+e
+n
+t
+e
+n
+c
+e
+t
+h
+a
+t
+h
+a
+s
+t
+o
+w
+r
+a
+p
+o
+n
+t
+o
+s
+e
+v
+e
+r
+a
+l
+l
+i
+n
+e
+s
+w
+h
+e
+n
+t
+h
+e
+t
+a
+b
+l
+e
+i
+s
+n
+a
+r
+r
+o
+w
+.
+─
+[bold,dim]t[]
+[bold,dim]o[]
+[bold,dim]p[]
+[bold,dim]i[]
+[bold,dim]c[]
+s
+h
+o
+r
+t
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]s[]
+[bold,dim]c[]
+[bold,dim]r[]
+[bold,dim]i[]
+[bold,dim]p[]
+[bold,dim]t[]
+[bold,dim]i[]
+[bold,dim]o[]
+[bold,dim]n[]
+o
+k
+
+Many
+columns
+of
+short
+words
+(records
+layout
+when
+narrow):
+
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]e[]
+a
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]o[]
+b
+[bold,dim]t[]
+[bold,dim]h[]
+[bold,dim]r[]
+[bold,dim]e[]
+[bold,dim]e[]
+c
+[bold,dim]f[]
+[bold,dim]o[]
+[bold,dim]u[]
+[bold,dim]r[]
+d
+[bold,dim]f[]
+[bold,dim]i[]
+[bold,dim]v[]
+[bold,dim]e[]
+e
+[bold,dim]s[]
+[bold,dim]i[]
+[bold,dim]x[]
+f
+[bold,dim]s[]
+[bold,dim]e[]
+[bold,dim]v[]
+[bold,dim]e[]
+[bold,dim]n[]
+g
+[bold,dim]e[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+h
+─
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]e[]
+i
+i
+[bold,dim]t[]
+[bold,dim]w[]
+[bold,dim]o[]
+j
+j
+[bold,dim]t[]
+[bold,dim]h[]
+[bold,dim]r[]
+[bold,dim]e[]
+[bold,dim]e[]
+k
+k
+[bold,dim]f[]
+[bold,dim]o[]
+[bold,dim]u[]
+[bold,dim]r[]
+l
+l
+[bold,dim]f[]
+[bold,dim]i[]
+[bold,dim]v[]
+[bold,dim]e[]
+m
+m
+[bold,dim]s[]
+[bold,dim]i[]
+[bold,dim]x[]
+n
+n
+[bold,dim]s[]
+[bold,dim]e[]
+[bold,dim]v[]
+[bold,dim]e[]
+[bold,dim]n[]
+o
+o
+[bold,dim]e[]
+[bold,dim]i[]
+[bold,dim]g[]
+[bold,dim]h[]
+[bold,dim]t[]
+p
+p
+
+A
+word
+wider
+than
+any
+column:
+
+[bold,dim]i[]
+[bold,dim]d[]
+1
+[bold,dim]u[]
+[bold,dim]r[]
+[bold,dim]l[]
+[underline]h[]
+[underline]t[]
+[underline]t[]
+[underline]p[]
+[underline]s[]
+[underline]:[]
+[underline]/[]
+[underline]/[]
+[underline]e[]
+[underline]x[]
+[underline]a[]
+[underline]m[]
+[underline]p[]
+[underline]l[]
+[underline]e[]
+[underline].[]
+[underline]c[]
+[underline]o[]
+[underline]m[]
+[underline]/[]
+[underline]a[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]v[]
+[underline]e[]
+[underline]r[]
+[underline]y[]
+[underline]l[]
+[underline]o[]
+[underline]n[]
+[underline]g[]
+[underline]p[]
+[underline]a[]
+[underline]t[]
+[underline]h[]
+[underline]w[]
+[underline]i[]
+[underline]t[]
+[underline]h[]
+[underline]o[]
+[underline]u[]
+[underline]t[]
+[underline]a[]
+[underline]n[]
+[underline]y[]
+[underline]s[]
+[underline]e[]
+[underline]p[]
+[underline]a[]
+[underline]r[]
+[underline]a[]
+[underline]t[]
+[underline]o[]
+[underline]r[]
+[underline]t[]
+[underline]h[]
+[underline]a[]
+[underline]t[]
+[underline]c[]
+[underline]a[]
+[underline]n[]
+[underline]n[]
+[underline]o[]
+[underline]t[]
+[underline]w[]
+[underline]r[]
+[underline]a[]
+[underline]p[]
+
+Empty
+cells
+and
+a
+header
+only
+table:
+
+[bold,dim]h[]
+[bold,dim]1[]
+x
+[bold,dim]h[]
+[bold,dim]3[]
+
+[bold,dim]o[]
+[bold,dim]n[]
+[bold,dim]l[]
+[bold,dim]y[]
+[bold,dim]h[]
+[bold,dim]e[]
+[bold,dim]a[]
+[bold,dim]d[]
+[bold,dim]e[]
+[bold,dim]r[]
+
+Soft
+break
+and
+hard
+break
+in
+a
+cell:
+
+[bold,dim]a[]
+[bold,dim]b[]
+l
+i
+n
+e
+o
+n
+e
+\
+[bold,dim]c[]
+─
+[bold,dim]a[]
+[bold,dim]b[]
+l
+i
+n
+e
+t
+w
+o
+[bold,dim]c[]
+d

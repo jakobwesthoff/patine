@@ -1,0 +1,222 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2m日本語のタイトル 🚀\e[24m\e[23m\e[22m
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。 Mixed
+text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ. Arabic ligature: لا and a
+word مرحبا بالعالم with right to left text. Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth
+ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ \e[1m名前\e[22m │ \e[1m    説明     \e[22m │ \e[1m値\e[22m │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a \e[1mbold\e[22m animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+\e[38;5;6m│ \e[39m引用文: 日本語の引用ブロックです。 二行目は \e[1m強調\e[22m を含みます。
+
+  \e[38;5;3mコードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です\e[39m
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2m日本語のタイトル 🚀\e[24m\e[23m\e[22m
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed text: ASCII and 全角文字 and emoji 👩‍👩‍👧‍👦 and flags 🇩🇪🇯🇵 together.
+
+Combining marks: é is written as é here, and ñ, and ǻ.
+Arabic ligature: لا and a word مرحبا بالعالم with right to left text.
+Halfwidth: ｶﾞｷﾞｸﾞ and fullwidth ＡＢＣ and wide digits １２３.
+
+┌──────┬───────────────┬────┐
+│ \e[1m名前\e[22m │ \e[1m    説明     \e[22m │ \e[1m値\e[22m │
+├──────┼───────────────┼────┤
+│ 猫   │ 小さな動物    │ 🐱 │
+├──────┼───────────────┼────┤
+│ Dog  │ a \e[1mbold\e[22m animal │ 🐶 │
+├──────┼───────────────┼────┤
+│ 🇩🇪   │ Flagge        │  1 │
+└──────┴───────────────┴────┘
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️ warning sign with variation selector
+• ✅ done, ❤️ heart, 👍🏽 thumbs with a skin tone
+
+\e[38;5;6m│ \e[39m引用文: 日本語の引用ブロックです。
+\e[38;5;6m│ \e[39m二行目は \e[1m強調\e[22m を含みます。
+
+  \e[38;5;3mコードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です\e[39m
+=== width 10, default
+\e[1m\e[3m\e[4:2m日本語のタイトル\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2m🚀\e[24m\e[23m\e[22m
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII and
+全角文字
+and emoji
+👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é
+is written
+as é here,
+and ñ, and
+ǻ. Arabic
+ligature:
+لا and a
+word مرحبا
+بالعالم
+with right
+to left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide
+digits
+１２３.
+
+\e[1m\e[2m名前\e[22m
+  猫
+\e[1m\e[2m説明\e[22m
+  小さな動
+  物
+\e[1m\e[2m値\e[22m
+  🐱
+──────────
+\e[1m\e[2m名前\e[22m
+  Dog
+\e[1m\e[2m説明\e[22m
+  a \e[1mbold\e[22m
+  animal
+\e[1m\e[2m値\e[22m
+  🐶
+──────────
+\e[1m\e[2m名前\e[22m
+  🇩🇪
+\e[1m\e[2m説明\e[22m
+  Flagge
+\e[1m\e[2m値\e[22m
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅ done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with a
+  skin
+  tone
+
+\e[38;5;6m│ \e[39m引用文:
+\e[38;5;6m│ \e[39m日本語の引用ブロックです。
+\e[38;5;6m│ \e[39m二行目は
+\e[38;5;6m│ \e[39m\e[1m強調\e[22m
+\e[38;5;6m│ \e[39mを含みます。
+
+  \e[38;5;3mコードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です\e[39m
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2m日本語のタイトル\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2m🚀\e[24m\e[23m\e[22m
+
+日本語の文章は単語の間にスペースがありません。これは折り返しの試験です。
+Mixed
+text:
+ASCII and
+全角文字
+and emoji
+👩‍👩‍👧‍👦 and
+flags 🇩🇪🇯🇵
+together.
+
+Combining
+marks: é
+is written
+as é here,
+and ñ, and
+ǻ.
+Arabic
+ligature:
+لا and a
+word مرحبا
+بالعالم
+with right
+to left
+text.
+Halfwidth:
+ｶﾞｷﾞｸﾞ and
+fullwidth
+ＡＢＣ and
+wide
+digits
+１２３.
+
+\e[1m\e[2m名前\e[22m
+  猫
+\e[1m\e[2m説明\e[22m
+  小さな動
+  物
+\e[1m\e[2m値\e[22m
+  🐱
+──────────
+\e[1m\e[2m名前\e[22m
+  Dog
+\e[1m\e[2m説明\e[22m
+  a \e[1mbold\e[22m
+  animal
+\e[1m\e[2m値\e[22m
+  🐶
+──────────
+\e[1m\e[2m名前\e[22m
+  🇩🇪
+\e[1m\e[2m説明\e[22m
+  Flagge
+\e[1m\e[2m値\e[22m
+  1
+
+• 箇条書きの項目、とても長い文章がここに入ります、折り返しが必要です
+• ⚠️
+  warning
+  sign
+  with
+  variation
+  selector
+• ✅ done,
+  ❤️
+  heart,
+  👍🏽
+  thumbs
+  with a
+  skin
+  tone
+
+\e[38;5;6m│ \e[39m引用文:
+\e[38;5;6m│ \e[39m日本語の引用ブロックです。
+\e[38;5;6m│ \e[39m二行目は
+\e[38;5;6m│ \e[39m\e[1m強調\e[22m
+\e[38;5;6m│ \e[39mを含みます。
+
+  \e[38;5;3mコードブロックは折り返されない、とても長い日本語の行がここにあります、本当に長い行です\e[39m

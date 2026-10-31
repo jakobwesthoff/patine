@@ -1,0 +1,390 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+A dense mix
+
+Intro with code, bold, italic, strike, link (https://example.com), [image: img]
+(https://example.com/i.png) and html.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done with code
+2. ☐ open with a link (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== crlf, width 80, break and literal
+A dense mix
+
+Intro with code, bold, italic, strike, link (https://example.com), [image: img]
+(https://example.com/i.png) and <span>html</span>.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done with code
+2. ☐ open with a link (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== crlf, width 12, default
+A dense mix
+
+Intro with
+code, bold,
+italic,
+strike, link
+(https://example.com),
+[image: img]
+(https://example.com/i.png)
+and html.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done
+     with
+     code
+2. ☐ open
+     with a
+     link
+     (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final
+paragraph
+ending with
+a hard break
+and a
+trailing
+line.
+=== crlf, width 12, break and literal
+A dense mix
+
+Intro with
+code, bold,
+italic,
+strike, link
+(https://example.com),
+[image: img]
+(https://example.com/i.png)
+and
+<span>html</span>.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done
+     with
+     code
+2. ☐ open
+     with a
+     link
+     (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final
+paragraph
+ending with
+a hard break
+and a
+trailing
+line.
+=== cr, width 80, default
+A dense mix
+
+Intro with code, bold, italic, strike, link (https://example.com), [image: img]
+(https://example.com/i.png) and html.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done with code
+2. ☐ open with a link (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== cr, width 80, break and literal
+A dense mix
+
+Intro with code, bold, italic, strike, link (https://example.com), [image: img]
+(https://example.com/i.png) and <span>html</span>.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done with code
+2. ☐ open with a link (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== cr, width 12, default
+A dense mix
+
+Intro with
+code, bold,
+italic,
+strike, link
+(https://example.com),
+[image: img]
+(https://example.com/i.png)
+and html.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done
+     with
+     code
+2. ☐ open
+     with a
+     link
+     (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final
+paragraph
+ending with
+a hard break
+and a
+trailing
+line.
+=== cr, width 12, break and literal
+A dense mix
+
+Intro with
+code, bold,
+italic,
+strike, link
+(https://example.com),
+[image: img]
+(https://example.com/i.png)
+and
+<span>html</span>.
+
+  // highlighted
+  pub fn main() { println!("hi {}", 1 + 2); }
+
+  plain colored block
+  	with a tab
+
+  {"a": [1, 2, {"b": null}], "c": "d"}
+
+  key: value
+  list:
+    - one
+
+┌─────┬───┐
+│  a  │ b │
+├─────┼───┤
+│ x|y │ z │
+└─────┴───┘
+
+• one
+
+    fenced in item
+• two
+
+1. ☑ done
+     with
+     code
+2. ☐ open
+     with a
+     link
+     (https://example.com)
+
+│ quote
+│ 
+│ │ nested
+│ │ 
+│ │ │ deeper
+
+Final
+paragraph
+ending with
+a hard break
+and a
+trailing
+line.

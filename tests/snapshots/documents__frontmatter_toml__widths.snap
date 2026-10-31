@@ -1,0 +1,326 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A post with TOML front matter[]
+
+The closing fence is followed directly by the heading.
+
+────────────────────────────────────────────────────────────────────────────────
+
+[bold,underline]title: this is not front matter[]
+
+Text after the thematic break and a setext heading above.
+=== width 40
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A post with TOML front matter[]
+
+The closing fence is followed directly
+by the heading.
+
+────────────────────────────────────────
+
+[bold,underline]title: this is not front matter[]
+
+Text after the thematic break and a
+setext heading above.
+=== width 20
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A post with TOML[]
+[bold,italic,double-underline]front matter[]
+
+The closing fence is
+followed directly by
+the heading.
+
+────────────────────
+
+[bold,underline]title: this is not[]
+[bold,underline]front matter[]
+
+Text after the
+thematic break and a
+setext heading
+above.
+=== width 12
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A post with[]
+[bold,italic,double-underline]TOML front[]
+[bold,italic,double-underline]matter[]
+
+The closing
+fence is
+followed
+directly by
+the heading.
+
+────────────
+
+[bold,underline]title: this[]
+[bold,underline]is not front[]
+[bold,underline]matter[]
+
+Text after
+the thematic
+break and a
+setext
+heading
+above.
+=== width 8
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]TOML[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+closing
+fence is
+followed
+directly
+by the
+heading.
+
+────────
+
+[bold,underline]title:[]
+[bold,underline]this is[]
+[bold,underline]not[]
+[bold,underline]front[]
+[bold,underline]matter[]
+
+Text
+after
+the
+thematic
+break
+and a
+setext
+heading
+above.
+=== width 5
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]TOML[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+closing
+fence
+is
+followed
+directly
+by
+the
+heading.
+
+─────
+
+[bold,underline]title:[]
+[bold,underline]this[]
+[bold,underline]is[]
+[bold,underline]not[]
+[bold,underline]front[]
+[bold,underline]matter[]
+
+Text
+after
+the
+thematic
+break
+and a
+setext
+heading
+above.
+=== width 3
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]TOML[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+closing
+fence
+is
+followed
+directly
+by
+the
+heading.
+
+───
+
+[bold,underline]title:[]
+[bold,underline]this[]
+[bold,underline]is[]
+[bold,underline]not[]
+[bold,underline]front[]
+[bold,underline]matter[]
+
+Text
+after
+the
+thematic
+break
+and
+a
+setext
+heading
+above.
+=== width 1
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]TOML[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+closing
+fence
+is
+followed
+directly
+by
+the
+heading.
+
+─
+
+[bold,underline]title:[]
+[bold,underline]this[]
+[bold,underline]is[]
+[bold,underline]not[]
+[bold,underline]front[]
+[bold,underline]matter[]
+
+Text
+after
+the
+thematic
+break
+and
+a
+setext
+heading
+above.
+=== width 0
+  +++
+  [red]title[] = [green]"A post with TOML front matter"[]
+  [red]date[] = [yellow]2026-10-31[]
+  [red]tags[] = [[green]"rust"[], [green]"terminal"[]]
+  
+  [[yellow]extra[]]
+  [red]comments[] = [yellow]true[]
+  +++
+
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]post[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]TOML[]
+[bold,italic,double-underline]front[]
+[bold,italic,double-underline]matter[]
+
+The
+closing
+fence
+is
+followed
+directly
+by
+the
+heading.
+
+─
+
+[bold,underline]title:[]
+[bold,underline]this[]
+[bold,underline]is[]
+[bold,underline]not[]
+[bold,underline]front[]
+[bold,underline]matter[]
+
+Text
+after
+the
+thematic
+break
+and
+a
+setext
+heading
+above.

@@ -1,0 +1,252 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+Glued runs: foo\e[1mbar\e[22m and \e[1mfoo\e[22mbar and a\e[38;5;3mcode\e[39mb and \e[9mx\e[29m\e[3my\e[23mz and \e[4mlink\e[24m\e[2m (u)\e[22ms. Wrap-sensitive:
+aaaa foo\e[1mbar\e[22m baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > ! Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft break right here.
+
+\e[1m\e[3m\e[4:2mSetext One\e[24m\e[23m\e[22m
+
+\e[1m\e[4mSetext Two\e[24m\e[22m
+
+\e[1mSix hashes\e[22m
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: \e[4mhttps://example.com/auto\e[24m \e[4mmailto:a@example.com\e[24m \e[4ma@example.com\e[24m and bare
+\e[4mhttps://example.com/bare\e[24m, \e[4mhttp://example.com\e[24m. and \e[4mwww.example.com/x\e[24m
+\e[2m(http://www.example.com/x)\e[22m.
+
+Emphasis edge cases: \e[3ma\e[23mb, _a_b, a\e[3mb\e[23m, snake_case_word, 2\e[3m3\e[23m4, \e[1ma\e[22m, \e[1m\e[3mboth\e[23m\e[22m, \e[1m\e[3mmix\e[23m\e[22m. Inline
+code: \e[38;5;3ma ` b\e[39m and \e[38;5;3mpadded\e[39m and \e[38;5;3ma\\e[39m and \e[38;5;3m``\e[39m.
+=== width 80, break and literal
+Glued runs: foo\e[1mbar\e[22m and \e[1mfoo\e[22mbar and a\e[38;5;3mcode\e[39mb and \e[9mx\e[29m\e[3my\e[23mz and \e[4mlink\e[24m\e[2m (u)\e[22ms.
+Wrap-sensitive: aaaa foo\e[1mbar\e[22m baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > !
+Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft
+break right here.
+
+\e[1m\e[3m\e[4:2mSetext One\e[24m\e[23m\e[22m
+
+\e[1m\e[4mSetext Two\e[24m\e[22m
+
+\e[1mSix hashes\e[22m
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code
+  tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: \e[4mhttps://example.com/auto\e[24m \e[4mmailto:a@example.com\e[24m \e[4ma@example.com\e[24m
+and bare \e[4mhttps://example.com/bare\e[24m, \e[4mhttp://example.com\e[24m. and \e[4mwww.example.com/x\e[24m
+\e[2m(http://www.example.com/x)\e[22m.
+
+Emphasis edge cases: \e[3ma\e[23mb, _a_b, a\e[3mb\e[23m, snake_case_word, 2\e[3m3\e[23m4, \e[1ma\e[22m, \e[1m\e[3mboth\e[23m\e[22m, \e[1m\e[3mmix\e[23m\e[22m.
+Inline code: \e[38;5;3ma ` b\e[39m and \e[38;5;3mpadded\e[39m and \e[38;5;3ma\\e[39m and \e[38;5;3m``\e[39m.
+=== width 10, default
+Glued
+runs:
+foo\e[1mbar\e[22m and
+\e[1mfoo\e[22mbar and
+a\e[38;5;3mcode\e[39mb and
+\e[9mx\e[29m\e[3my\e[23mz and
+\e[4mlink\e[24m\e[2m (u)\e[22ms.
+Wrap-sensitive:
+aaaa
+foo\e[1mbar\e[22m baz
+qux quux
+corge
+grault
+garply
+waldo fred
+plugh.
+
+Escapes:
+*star*
+_under_ \
+# [x] ` <
+> !
+Entities:
+& < > " #
+A © |
+&unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break
+right
+here.
+
+\e[1m\e[3m\e[4:2mSetext One\e[24m\e[23m\e[22m
+
+\e[1m\e[4mSetext Two\e[24m\e[22m
+
+\e[1mSix hashes\e[22m
+
+#Not a
+heading
+
+Tabs: a b
+c
+
+• tab
+  after
+  bullet
+
+  indented
+  code tab
+  indented
+  code
+
+──────────
+
+──────────
+
+Autolinks:
+\e[4mhttps://example.com/auto\e[24m
+\e[4mmailto:a@example.com\e[24m
+\e[4ma@example.com\e[24m
+and bare
+\e[4mhttps://example.com/bare\e[24m,
+\e[4mhttp://example.com\e[24m.
+and
+\e[4mwww.example.com/x\e[24m
+\e[2m(http://www.example.com/x)\e[22m.
+
+Emphasis
+edge
+cases: \e[3ma\e[23mb,
+_a_b, a\e[3mb\e[23m,
+snake_case_word,
+2\e[3m3\e[23m4, \e[1ma\e[22m,
+\e[1m\e[3mboth\e[23m\e[22m, \e[1m\e[3mmix\e[23m\e[22m.
+Inline
+code: \e[38;5;3ma `\e[39m
+\e[38;5;3mb\e[39m and
+\e[38;5;3mpadded\e[39m and
+\e[38;5;3ma\\e[39m and \e[38;5;3m``\e[39m.
+=== width 10, break and literal
+Glued
+runs:
+foo\e[1mbar\e[22m and
+\e[1mfoo\e[22mbar and
+a\e[38;5;3mcode\e[39mb and
+\e[9mx\e[29m\e[3my\e[23mz and
+\e[4mlink\e[24m\e[2m (u)\e[22ms.
+Wrap-sensitive:
+aaaa
+foo\e[1mbar\e[22m baz
+qux quux
+corge
+grault
+garply
+waldo fred
+plugh.
+
+Escapes:
+*star*
+_under_ \
+# [x] ` <
+> !
+Entities:
+& < > " #
+A © |
+&unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break
+right
+here.
+
+\e[1m\e[3m\e[4:2mSetext One\e[24m\e[23m\e[22m
+
+\e[1m\e[4mSetext Two\e[24m\e[22m
+
+\e[1mSix hashes\e[22m
+
+#Not a
+heading
+
+Tabs: a b
+c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+──────────
+
+──────────
+
+Autolinks:
+\e[4mhttps://example.com/auto\e[24m
+\e[4mmailto:a@example.com\e[24m
+\e[4ma@example.com\e[24m
+and bare
+\e[4mhttps://example.com/bare\e[24m,
+\e[4mhttp://example.com\e[24m.
+and
+\e[4mwww.example.com/x\e[24m
+\e[2m(http://www.example.com/x)\e[22m.
+
+Emphasis
+edge
+cases: \e[3ma\e[23mb,
+_a_b, a\e[3mb\e[23m,
+snake_case_word,
+2\e[3m3\e[23m4, \e[1ma\e[22m,
+\e[1m\e[3mboth\e[23m\e[22m, \e[1m\e[3mmix\e[23m\e[22m.
+Inline
+code: \e[38;5;3ma `\e[39m
+\e[38;5;3mb\e[39m and
+\e[38;5;3mpadded\e[39m and
+\e[38;5;3ma\\e[39m and \e[38;5;3m``\e[39m.

@@ -1,0 +1,61 @@
+# frobnicate
+
+A small command line tool that **frobnicates** files, *quickly* and with `zero` configuration.
+See https://example.com/frobnicate for the full manual, or ask in the chat.
+
+## Installation
+
+Install from source with a recent Rust toolchain:
+
+```sh
+cargo install frobnicate
+frobnicate --version
+```
+
+Prebuilt binaries are available for these platforms:
+
+- Linux, x86_64 and aarch64
+- macOS, Apple silicon and Intel
+- Windows, x86_64 only
+  - requires the Visual C++ runtime
+  - no ARM build yet
+
+## Usage
+
+```
+frobnicate [OPTIONS] <FILE>...
+```
+
+| Option          | Meaning                                   | Default |
+|-----------------|-------------------------------------------|:-------:|
+| `-q`, `--quiet` | Print nothing except errors               |   off   |
+| `-j`, `--jobs`  | Number of parallel jobs                   |   `4`   |
+| `--dry-run`     | Show what would change, change nothing   |   off   |
+
+### Exit codes
+
+1. `0` when every file was processed.
+2. `1` when at least one file failed.
+3. `2` for invalid arguments.
+
+> **Note**
+> Frobnication is not reversible. Keep a backup, or use `--dry-run` first.
+
+## Configuration
+
+Settings live in `frobnicate.toml`:
+
+```toml
+[defaults]
+jobs = 8
+quiet = false
+```
+
+## Contributing
+
+Pull requests are welcome. Please run the tests first, and mention the issue
+number in the title. For larger changes, open an issue to discuss the idea.
+
+---
+
+Released under the MIT license. Copyright (c) the frobnicate authors.

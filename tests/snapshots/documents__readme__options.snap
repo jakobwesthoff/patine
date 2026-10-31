@@ -1,0 +1,1040 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration. See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note Frobnication is
+│ not reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue number in the
+title. For larger
+changes, open an issue
+to discuss the idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Join, Drop, first line Some(9)
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration. See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note Frobnication is
+│ not reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue number in the
+title. For larger
+changes, open an issue
+to discuss the idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Join, Literal, first line None
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration. See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note Frobnication is
+│ not reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue number in the
+title. For larger
+changes, open an issue
+to discuss the idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Join, Literal, first line Some(9)
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration. See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note Frobnication is
+│ not reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue number in the
+title. For larger
+changes, open an issue
+to discuss the idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Break, Drop, first line None
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration.
+See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note
+│ Frobnication is not
+│ reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue
+number in the title. For
+larger changes, open an
+issue to discuss the
+idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Break, Drop, first line Some(9)
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration.
+See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note
+│ Frobnication is not
+│ reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue
+number in the title. For
+larger changes, open an
+issue to discuss the
+idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Break, Literal, first line None
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration.
+See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note
+│ Frobnication is not
+│ reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue
+number in the title. For
+larger changes, open an
+issue to discuss the
+idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Break, Literal, first line Some(9)
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration.
+See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note
+│ Frobnication is not
+│ reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue
+number in the title. For
+larger changes, open an
+issue to discuss the
+idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Join, Drop, DimBar
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration. See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note Frobnication is
+│ not reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue number in the
+title. For larger
+changes, open an issue
+to discuss the idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 24, Break, Literal, DimBar
+frobnicate
+
+A small command line
+tool that frobnicates
+files, quickly and with
+zero configuration.
+See
+https://example.com/frobnicate
+for the full manual, or
+ask in the chat.
+
+Installation
+
+Install from source with
+a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are
+available for these
+platforms:
+
+• Linux, x86_64 and
+  aarch64
+• macOS, Apple silicon
+  and Intel
+• Windows, x86_64 only
+  • requires the Visual
+    C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+Option   -q, --quiet
+Meaning  Print nothing
+         except errors
+Default  off
+────────────────────────
+Option   -j, --jobs
+Meaning  Number of
+         parallel jobs
+Default  4
+────────────────────────
+Option   --dry-run
+Meaning  Show what would
+         change, change
+         nothing
+Default  off
+
+Exit codes
+
+1. 0 when every file was
+   processed.
+2. 1 when at least one
+   file failed.
+3. 2 for invalid
+   arguments.
+
+│ Note
+│ Frobnication is not
+│ reversible. Keep a
+│ backup, or use
+│ --dry-run first.
+
+Configuration
+
+Settings live in
+frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are
+welcome. Please run the
+tests first, and mention
+the issue
+number in the title. For
+larger changes, open an
+issue to discuss the
+idea.
+
+────────────────────────
+
+Released under the MIT
+license. Copyright (c)
+the frobnicate authors.
+=== width 80, Join, Drop
+frobnicate
+
+A small command line tool that frobnicates files, quickly and with zero
+configuration. See https://example.com/frobnicate for the full manual, or ask in
+the chat.
+
+Installation
+
+Install from source with a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are available for these platforms:
+
+• Linux, x86_64 and aarch64
+• macOS, Apple silicon and Intel
+• Windows, x86_64 only
+  • requires the Visual C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+┌─────────────┬────────────────────────────────────────┬─────────┐
+│   Option    │                Meaning                 │ Default │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ -q, --quiet │ Print nothing except errors            │   off   │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ -j, --jobs  │ Number of parallel jobs                │    4    │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ --dry-run   │ Show what would change, change nothing │   off   │
+└─────────────┴────────────────────────────────────────┴─────────┘
+
+Exit codes
+
+1. 0 when every file was processed.
+2. 1 when at least one file failed.
+3. 2 for invalid arguments.
+
+│ Note Frobnication is not reversible. Keep a backup, or use --dry-run first.
+
+Configuration
+
+Settings live in frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are welcome. Please run the tests first, and mention the issue
+number in the title. For larger changes, open an issue to discuss the idea.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Released under the MIT license. Copyright (c) the frobnicate authors.
+=== width 80, Break, Literal
+frobnicate
+
+A small command line tool that frobnicates files, quickly and with zero
+configuration.
+See https://example.com/frobnicate for the full manual, or ask in the chat.
+
+Installation
+
+Install from source with a recent Rust toolchain:
+
+  cargo install frobnicate
+  frobnicate --version
+
+Prebuilt binaries are available for these platforms:
+
+• Linux, x86_64 and aarch64
+• macOS, Apple silicon and Intel
+• Windows, x86_64 only
+  • requires the Visual C++ runtime
+  • no ARM build yet
+
+Usage
+
+  frobnicate [OPTIONS] <FILE>...
+
+┌─────────────┬────────────────────────────────────────┬─────────┐
+│   Option    │                Meaning                 │ Default │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ -q, --quiet │ Print nothing except errors            │   off   │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ -j, --jobs  │ Number of parallel jobs                │    4    │
+├─────────────┼────────────────────────────────────────┼─────────┤
+│ --dry-run   │ Show what would change, change nothing │   off   │
+└─────────────┴────────────────────────────────────────┴─────────┘
+
+Exit codes
+
+1. 0 when every file was processed.
+2. 1 when at least one file failed.
+3. 2 for invalid arguments.
+
+│ Note
+│ Frobnication is not reversible. Keep a backup, or use --dry-run first.
+
+Configuration
+
+Settings live in frobnicate.toml:
+
+  [defaults]
+  jobs = 8
+  quiet = false
+
+Contributing
+
+Pull requests are welcome. Please run the tests first, and mention the issue
+number in the title. For larger changes, open an issue to discuss the idea.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Released under the MIT license. Copyright (c) the frobnicate authors.

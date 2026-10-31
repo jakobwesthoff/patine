@@ -1,0 +1,292 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Join, Drop, first line Some(9)
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Join, Literal, first line None
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Join, Literal, first line Some(9)
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Break, Drop, first line None
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Break, Drop, first line Some(9)
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Break, Literal, first line None
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Break, Literal, first line Some(9)
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Join, Drop, DimBar
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 24, Break, Literal, DimBar
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front
+matter
+
+The closing fence is
+followed directly by the
+heading.
+
+────────────────────────
+
+title: this is not front
+matter
+
+Text after the thematic
+break and a setext
+heading above.
+=== width 80, Join, Drop
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front matter
+
+The closing fence is followed directly by the heading.
+
+────────────────────────────────────────────────────────────────────────────────
+
+title: this is not front matter
+
+Text after the thematic break and a setext heading above.
+=== width 80, Break, Literal
+  +++
+  title = "A post with TOML front matter"
+  date = 2026-10-31
+  tags = ["rust", "terminal"]
+  
+  [extra]
+  comments = true
+  +++
+
+A post with TOML front matter
+
+The closing fence is followed directly by the heading.
+
+────────────────────────────────────────────────────────────────────────────────
+
+title: this is not front matter
+
+Text after the thematic break and a setext heading above.

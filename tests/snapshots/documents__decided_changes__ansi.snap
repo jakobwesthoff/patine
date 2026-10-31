@@ -1,0 +1,247 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2mConstructs that change with the parser\e[24m\e[23m\e[22m
+
+Reference links: full the text, collapsed r1, shortcut r1 and undefined
+[text][nope].
+
+Reference image: and and undefined ![alt][nope].
+
+A footnote reference and another, referenced in reverse order of the definitions
+below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │ \e[1m \e[22m │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+\e[2m☑ with text\e[22m
+
+Autolink literals: ftp://example.com/file, [ \e[4mhttps://example.com\e[24m after a
+bracket, \e[4mWWW.example.com\e[24m\e[2m (http://WWW.example.com)\e[22m, [a]\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m, \e[4mhttps://example.com/a\e[24m] and \e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m].
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2mConstructs that change with the parser\e[24m\e[23m\e[22m
+
+Reference links: full the text, collapsed r1, shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and undefined ![alt][nope].
+
+A footnote reference and another, referenced in reverse order of
+the definitions below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │ \e[1m \e[22m │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+\e[2m☑ with text\e[22m
+
+Autolink literals: ftp://example.com/file, [ \e[4mhttps://example.com\e[24m after a
+bracket,
+\e[4mWWW.example.com\e[24m\e[2m (http://WWW.example.com)\e[22m, [a]\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m, \e[4mhttps://example.com/a\e[24m] and \e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m].
+=== width 10, default
+\e[1m\e[3m\e[4:2mConstructs\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mthat\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mchange\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mwith the\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mparser\e[24m\e[23m\e[22m
+
+Reference
+links:
+full the
+text,
+collapsed
+r1,
+shortcut
+r1 and
+undefined
+[text][nope].
+
+Reference
+image: and
+and
+undefined
+![alt][nope].
+
+A footnote
+reference
+and
+another,
+referenced
+in reverse
+order of
+the
+definitions
+below.
+
+The first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The second
+footnote,
+with a
+\e[4mlink\e[24m
+\e[2m(https://example.com)\e[22m.
+
+Nobody
+refers to
+this
+footnote.
+
+\e[1m\e[2ma\e[22m  1
+\e[1m\e[2mb\e[22m  2
+   3
+──────────
+\e[1m\e[2ma\e[22m  4
+\e[1m\e[2mb\e[22m
+
+
+• [x]
+• [ ]
+• [ ]
+\e[2m☑ with\e[22m
+  \e[2mtext\e[22m
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+\e[4mhttps://example.com\e[24m
+after a
+bracket,
+\e[4mWWW.example.com\e[24m
+\e[2m(http://WWW.example.com)\e[22m,
+[a]\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m,
+\e[4mhttps://example.com/a\e[24m]
+and
+\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m].
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2mConstructs\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mthat\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mchange\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mwith the\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mparser\e[24m\e[23m\e[22m
+
+Reference
+links:
+full the
+text,
+collapsed
+r1,
+shortcut
+r1 and
+undefined
+[text][nope].
+
+Reference
+image: and
+and
+undefined
+![alt][nope].
+
+A footnote
+reference
+and
+another,
+referenced
+in reverse
+order of
+the
+definitions
+below.
+
+The first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The second
+footnote,
+with a
+\e[4mlink\e[24m
+\e[2m(https://example.com)\e[22m.
+
+Nobody
+refers to
+this
+footnote.
+
+\e[1m\e[2ma\e[22m  1
+\e[1m\e[2mb\e[22m  2
+   3
+──────────
+\e[1m\e[2ma\e[22m  4
+\e[1m\e[2mb\e[22m
+
+
+• [x]
+• [ ]
+• [ ]
+\e[2m☑ with\e[22m
+  \e[2mtext\e[22m
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+\e[4mhttps://example.com\e[24m
+after a
+bracket,
+\e[4mWWW.example.com\e[24m
+\e[2m(http://WWW.example.com)\e[22m,
+[a]\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m,
+\e[4mhttps://example.com/a\e[24m]
+and
+\e[4mwww.example.com\e[24m
+\e[2m(http://www.example.com)\e[22m].

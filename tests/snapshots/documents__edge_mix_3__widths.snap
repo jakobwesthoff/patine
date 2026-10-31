@@ -1,0 +1,526 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]A dense mix[]
+
+Intro with [yellow]code[], [bold]bold[], [italic]italic[], [strike]strike[], [underline]link[][dim] (https://example.com)[], [image: img]
+[dim](https://example.com/i.png)[] and html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+┌─────┬───┐
+│ [bold] a [] │ [bold]b[] │
+├─────┼───┤
+│ [yellow]x|y[] │ [bold]z[] │
+└─────┴───┘
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done with [][dim,yellow]code[]
+2. ☐ open with a [underline]link[][dim] (https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== width 40
+[bold,italic,double-underline]A dense mix[]
+
+Intro with [yellow]code[], [bold]bold[], [italic]italic[], [strike]strike[],
+[underline]link[][dim] (https://example.com)[], [image: img]
+[dim](https://example.com/i.png)[] and html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+┌─────┬───┐
+│ [bold] a [] │ [bold]b[] │
+├─────┼───┤
+│ [yellow]x|y[] │ [bold]z[] │
+└─────┴───┘
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done with [][dim,yellow]code[]
+2. ☐ open with a [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final paragraph ending with a hard break
+and a trailing line.
+=== width 20
+[bold,italic,double-underline]A dense mix[]
+
+Intro with [yellow]code[],
+[bold]bold[], [italic]italic[],
+[strike]strike[], [underline]link[]
+[dim](https://example.com)[],
+[image: img]
+[dim](https://example.com/i.png)[]
+and html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+┌─────┬───┐
+│ [bold] a [] │ [bold]b[] │
+├─────┼───┤
+│ [yellow]x|y[] │ [bold]z[] │
+└─────┴───┘
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done with [][dim,yellow]code[]
+2. ☐ open with a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final paragraph
+ending with a hard
+break
+and a trailing line.
+=== width 12
+[bold,italic,double-underline]A dense mix[]
+
+Intro with
+[yellow]code[], [bold]bold[],
+[italic]italic[],
+[strike]strike[], [underline]link[]
+[dim](https://example.com)[],
+[image: img]
+[dim](https://example.com/i.png)[]
+and html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+┌─────┬───┐
+│ [bold] a [] │ [bold]b[] │
+├─────┼───┤
+│ [yellow]x|y[] │ [bold]z[] │
+└─────┴───┘
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending with
+a hard break
+and a
+trailing
+line.
+=== width 8
+[bold,italic,double-underline]A dense[]
+[bold,italic,double-underline]mix[]
+
+Intro
+with
+[yellow]code[],
+[bold]bold[],
+[italic]italic[],
+[strike]strike[],
+[underline]link[]
+[dim](https://example.com)[],
+[image:
+img]
+[dim](https://example.com/i.png)[]
+and
+html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+[bold,dim]a[]  [yellow]x|y[]
+[bold,dim]b[]  [bold]z[]
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with
+     a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending
+with a
+hard
+break
+and a
+trailing
+line.
+=== width 5
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]dense[]
+[bold,italic,double-underline]mix[]
+
+Intro
+with
+[yellow]code[],
+[bold]bold[],
+[italic]italic[],
+[strike]strike[],
+[underline]link[]
+[dim](https://example.com)[],
+[image:
+img]
+[dim](https://example.com/i.png)[]
+and
+html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+[bold,dim]a[]
+  [yellow]x|y[]
+[bold,dim]b[]
+  [bold]z[]
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with
+     a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending
+with
+a
+hard
+break
+and a
+trailing
+line.
+=== width 3
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]dense[]
+[bold,italic,double-underline]mix[]
+
+Intro
+with
+[yellow]code[],
+[bold]bold[],
+[italic]italic[],
+[strike]strike[],
+[underline]link[]
+[dim](https://example.com)[],
+[image:
+img]
+[dim](https://example.com/i.png)[]
+and
+html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+[bold,dim]a[]
+  [yellow]x[]
+  [yellow]|[]
+  [yellow]y[]
+[bold,dim]b[]
+  [bold]z[]
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with
+     a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending
+with
+a
+hard
+break
+and
+a
+trailing
+line.
+=== width 1
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]dense[]
+[bold,italic,double-underline]mix[]
+
+Intro
+with
+[yellow]code[],
+[bold]bold[],
+[italic]italic[],
+[strike]strike[],
+[underline]link[]
+[dim](https://example.com)[],
+[image:
+img]
+[dim](https://example.com/i.png)[]
+and
+html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+[bold,dim]a[]
+[yellow]x[]
+[yellow]|[]
+[yellow]y[]
+[bold,dim]b[]
+[bold]z[]
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with
+     a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending
+with
+a
+hard
+break
+and
+a
+trailing
+line.
+=== width 0
+[bold,italic,double-underline]A[]
+[bold,italic,double-underline]dense[]
+[bold,italic,double-underline]mix[]
+
+Intro
+with
+[yellow]code[],
+[bold]bold[],
+[italic]italic[],
+[strike]strike[],
+[underline]link[]
+[dim](https://example.com)[],
+[image:
+img]
+[dim](https://example.com/i.png)[]
+and
+html.
+
+  [green]// highlighted[]
+  [magenta]pub[] [magenta]fn[] [blue]main[]() { println!([green]"hi [][yellow]{}[][green]"[], [yellow]1[] [magenta]+[] [yellow]2[]); }
+
+  [yellow]plain colored block[]
+  [yellow]	with a tab[]
+
+  {[blue]"a"[]: [[yellow]1[], [yellow]2[], {[blue]"b"[]: [yellow]null[]}], [blue]"c"[]: [green]"d"[]}
+
+  [red]key[]: [green]value[]
+  [red]list[]:
+    - [green]one[]
+
+[bold,dim]a[]
+[yellow]x[]
+[yellow]|[]
+[yellow]y[]
+[bold,dim]b[]
+[bold]z[]
+
+• one
+
+    [yellow]fenced in item[]
+• two
+
+[dim]1. ☑ done[]
+     [dim]with[]
+     [dim,yellow]code[]
+2. ☐ open
+     with
+     a
+     [underline]link[]
+     [dim](https://example.com)[]
+
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ │ []nested
+[cyan]│ │ []
+[cyan]│ │ │ []deeper
+
+Final
+paragraph
+ending
+with
+a
+hard
+break
+and
+a
+trailing
+line.

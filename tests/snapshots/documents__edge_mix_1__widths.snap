@@ -1,0 +1,824 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+Glued runs: foo[bold]bar[] and [bold]foo[]bar and a[yellow]code[]b and [strike]x[][italic]y[]z and [underline]link[][dim] (u)[]s. Wrap-sensitive:
+aaaa foo[bold]bar[] baz qux quux corge grault garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > ! Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft break right here.
+
+[bold,italic,double-underline]Setext One[]
+
+[bold,underline]Setext Two[]
+
+[bold]Six hashes[]
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab indented code
+
+────────────────────────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────────────────────────
+
+Autolinks: [underline]https://example.com/auto[] [underline]mailto:a@example.com[] [underline]a@example.com[] and bare
+[underline]https://example.com/bare[], [underline]http://example.com[]. and [underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis edge cases: [italic]a[]b, _a_b, a[italic]b[], snake_case_word, 2[italic]3[]4, [bold]a[], [bold,italic]both[], [bold,italic]mix[]. Inline
+code: [yellow]a ` b[] and [yellow]padded[] and [yellow]a\[] and [yellow]``[].
+=== width 40
+Glued runs: foo[bold]bar[] and [bold]foo[]bar and a[yellow]code[]b
+and [strike]x[][italic]y[]z and [underline]link[][dim] (u)[]s. Wrap-sensitive:
+aaaa foo[bold]bar[] baz qux quux corge grault
+garply waldo fred plugh.
+
+Escapes: *star* _under_ \ # [x] ` < > !
+Entities: & < > " # A © | &unknown;
+
+Hard break with backslash
+next line, and two spaces
+next line, and a soft break right here.
+
+[bold,italic,double-underline]Setext One[]
+
+[bold,underline]Setext Two[]
+
+[bold]Six hashes[]
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab indented code
+
+────────────────────────────────────────
+
+────────────────────────────────────────
+
+Autolinks: [underline]https://example.com/auto[]
+[underline]mailto:a@example.com[] [underline]a@example.com[] and
+bare [underline]https://example.com/bare[],
+[underline]http://example.com[]. and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis edge cases: [italic]a[]b, _a_b, a[italic]b[],
+snake_case_word, 2[italic]3[]4, [bold]a[], [bold,italic]both[], [bold,italic]mix[].
+Inline code: [yellow]a ` b[] and [yellow]padded[] and [yellow]a\[] and
+[yellow]``[].
+=== width 20
+Glued runs: foo[bold]bar[]
+and [bold]foo[]bar and
+a[yellow]code[]b and [strike]x[][italic]y[]z and
+[underline]link[][dim] (u)[]s.
+Wrap-sensitive: aaaa
+foo[bold]bar[] baz qux quux
+corge grault garply
+waldo fred plugh.
+
+Escapes: *star*
+_under_ \ # [x] ` <
+> ! Entities: & < >
+" # A © | &unknown;
+
+Hard break with
+backslash
+next line, and two
+spaces
+next line, and a
+soft break right
+here.
+
+[bold,italic,double-underline]Setext One[]
+
+[bold,underline]Setext Two[]
+
+[bold]Six hashes[]
+
+#Not a heading
+
+Tabs: a b c
+
+• tab after bullet
+
+  indented code tab
+  indented code
+
+────────────────────
+
+────────────────────
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[] and
+bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis edge cases:
+[italic]a[]b, _a_b, a[italic]b[],
+snake_case_word,
+2[italic]3[]4, [bold]a[], [bold,italic]both[], [bold,italic]mix[].
+Inline code: [yellow]a ` b[]
+and [yellow]padded[] and [yellow]a\[]
+and [yellow]``[].
+=== width 12
+Glued runs:
+foo[bold]bar[] and
+[bold]foo[]bar and
+a[yellow]code[]b and
+[strike]x[][italic]y[]z and [underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa foo[bold]bar[]
+baz qux quux
+corge grault
+garply waldo
+fred plugh.
+
+Escapes:
+*star*
+_under_ \ #
+[x] ` < > !
+Entities: &
+< > " # A ©
+| &unknown;
+
+Hard break
+with
+backslash
+next line,
+and two
+spaces
+next line,
+and a soft
+break right
+here.
+
+[bold,italic,double-underline]Setext One[]
+
+[bold,underline]Setext Two[]
+
+[bold]Six hashes[]
+
+#Not a
+heading
+
+Tabs: a b c
+
+• tab after
+  bullet
+
+  indented
+  code tab
+  indented
+  code
+
+────────────
+
+────────────
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge cases:
+[italic]a[]b, _a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4, [bold]a[],
+[bold,italic]both[], [bold,italic]mix[].
+Inline code:
+[yellow]a ` b[] and
+[yellow]padded[] and
+[yellow]a\[] and [yellow]``[].
+=== width 8
+Glued
+runs:
+foo[bold]bar[]
+and
+[bold]foo[]bar
+and
+a[yellow]code[]b
+and [strike]x[][italic]y[]z
+and [underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa
+foo[bold]bar[]
+baz qux
+quux
+corge
+grault
+garply
+waldo
+fred
+plugh.
+
+Escapes:
+*star*
+_under_
+\ # [x]
+` < > !
+Entities:
+& < > "
+# A © |
+&unknown;
+
+Hard
+break
+with
+backslash
+next
+line,
+and two
+spaces
+next
+line,
+and a
+soft
+break
+right
+here.
+
+[bold,italic,double-underline]Setext[]
+[bold,italic,double-underline]One[]
+
+[bold,underline]Setext[]
+[bold,underline]Two[]
+
+[bold]Six[]
+[bold]hashes[]
+
+#Not a
+heading
+
+Tabs: a
+b c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+────────
+
+────────
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge
+cases:
+[italic]a[]b,
+_a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4, [bold]a[],
+[bold,italic]both[],
+[bold,italic]mix[].
+Inline
+code: [yellow]a[]
+[yellow]` b[] and
+[yellow]padded[]
+and [yellow]a\[]
+and [yellow]``[].
+=== width 5
+Glued
+runs:
+foo[bold]bar[]
+and
+[bold]foo[]bar
+and
+a[yellow]code[]b
+and
+[strike]x[][italic]y[]z
+and
+[underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa
+foo[bold]bar[]
+baz
+qux
+quux
+corge
+grault
+garply
+waldo
+fred
+plugh.
+
+Escapes:
+*star*
+_under_
+\ #
+[x] `
+< > !
+Entities:
+& < >
+" # A
+© |
+&unknown;
+
+Hard
+break
+with
+backslash
+next
+line,
+and
+two
+spaces
+next
+line,
+and a
+soft
+break
+right
+here.
+
+[bold,italic,double-underline]Setext[]
+[bold,italic,double-underline]One[]
+
+[bold,underline]Setext[]
+[bold,underline]Two[]
+
+[bold]Six[]
+[bold]hashes[]
+
+#Not
+a
+heading
+
+Tabs:
+a b c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+─────
+
+─────
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and
+bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge
+cases:
+[italic]a[]b,
+_a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4,
+[bold]a[],
+[bold,italic]both[],
+[bold,italic]mix[].
+Inline
+code:
+[yellow]a ` b[]
+and
+[yellow]padded[]
+and
+[yellow]a\[]
+and
+[yellow]``[].
+=== width 3
+Glued
+runs:
+foo[bold]bar[]
+and
+[bold]foo[]bar
+and
+a[yellow]code[]b
+and
+[strike]x[][italic]y[]z
+and
+[underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa
+foo[bold]bar[]
+baz
+qux
+quux
+corge
+grault
+garply
+waldo
+fred
+plugh.
+
+Escapes:
+*star*
+_under_
+\ #
+[x]
+` <
+> !
+Entities:
+& <
+> "
+# A
+© |
+&unknown;
+
+Hard
+break
+with
+backslash
+next
+line,
+and
+two
+spaces
+next
+line,
+and
+a
+soft
+break
+right
+here.
+
+[bold,italic,double-underline]Setext[]
+[bold,italic,double-underline]One[]
+
+[bold,underline]Setext[]
+[bold,underline]Two[]
+
+[bold]Six[]
+[bold]hashes[]
+
+#Not
+a
+heading
+
+Tabs:
+a b
+c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+───
+
+───
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and
+bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge
+cases:
+[italic]a[]b,
+_a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4,
+[bold]a[],
+[bold,italic]both[],
+[bold,italic]mix[].
+Inline
+code:
+[yellow]a `[]
+[yellow]b[]
+and
+[yellow]padded[]
+and
+[yellow]a\[]
+and
+[yellow]``[].
+=== width 1
+Glued
+runs:
+foo[bold]bar[]
+and
+[bold]foo[]bar
+and
+a[yellow]code[]b
+and
+[strike]x[][italic]y[]z
+and
+[underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa
+foo[bold]bar[]
+baz
+qux
+quux
+corge
+grault
+garply
+waldo
+fred
+plugh.
+
+Escapes:
+*star*
+_under_
+\
+#
+[x]
+`
+<
+>
+!
+Entities:
+&
+<
+>
+"
+#
+A
+©
+|
+&unknown;
+
+Hard
+break
+with
+backslash
+next
+line,
+and
+two
+spaces
+next
+line,
+and
+a
+soft
+break
+right
+here.
+
+[bold,italic,double-underline]Setext[]
+[bold,italic,double-underline]One[]
+
+[bold,underline]Setext[]
+[bold,underline]Two[]
+
+[bold]Six[]
+[bold]hashes[]
+
+#Not
+a
+heading
+
+Tabs:
+a
+b
+c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+─
+
+─
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and
+bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge
+cases:
+[italic]a[]b,
+_a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4,
+[bold]a[],
+[bold,italic]both[],
+[bold,italic]mix[].
+Inline
+code:
+[yellow]a[]
+[yellow]`[]
+[yellow]b[]
+and
+[yellow]padded[]
+and
+[yellow]a\[]
+and
+[yellow]``[].
+=== width 0
+Glued
+runs:
+foo[bold]bar[]
+and
+[bold]foo[]bar
+and
+a[yellow]code[]b
+and
+[strike]x[][italic]y[]z
+and
+[underline]link[]
+[dim](u)[]s.
+Wrap-sensitive:
+aaaa
+foo[bold]bar[]
+baz
+qux
+quux
+corge
+grault
+garply
+waldo
+fred
+plugh.
+
+Escapes:
+*star*
+_under_
+\
+#
+[x]
+`
+<
+>
+!
+Entities:
+&
+<
+>
+"
+#
+A
+©
+|
+&unknown;
+
+Hard
+break
+with
+backslash
+next
+line,
+and
+two
+spaces
+next
+line,
+and
+a
+soft
+break
+right
+here.
+
+[bold,italic,double-underline]Setext[]
+[bold,italic,double-underline]One[]
+
+[bold,underline]Setext[]
+[bold,underline]Two[]
+
+[bold]Six[]
+[bold]hashes[]
+
+#Not
+a
+heading
+
+Tabs:
+a
+b
+c
+
+• tab
+  after
+  bullet
+
+  indented
+  code
+  tab
+  indented
+  code
+
+─
+
+─
+
+Autolinks:
+[underline]https://example.com/auto[]
+[underline]mailto:a@example.com[]
+[underline]a@example.com[]
+and
+bare
+[underline]https://example.com/bare[],
+[underline]http://example.com[].
+and
+[underline]www.example.com/x[]
+[dim](http://www.example.com/x)[].
+
+Emphasis
+edge
+cases:
+[italic]a[]b,
+_a_b,
+a[italic]b[],
+snake_case_word,
+2[italic]3[]4,
+[bold]a[],
+[bold,italic]both[],
+[bold,italic]mix[].
+Inline
+code:
+[yellow]a[]
+[yellow]`[]
+[yellow]b[]
+and
+[yellow]padded[]
+and
+[yellow]a\[]
+and
+[yellow]``[].

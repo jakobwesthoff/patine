@@ -1,0 +1,1236 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Join, Drop, first line Some(9)
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Join, Literal, first line None
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Join, Literal, first line Some(9)
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Break, Drop, first line None
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Break, Drop, first line Some(9)
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Break, Literal, first line None
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Break, Literal, first line Some(9)
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Join, Drop, DimBar
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 24, Break, Literal, DimBar
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+left    l1
+center  c1
+right   r1
+────────────────────────
+left    a longer left
+        cell
+center  mid
+right   12345
+
+Styled cells and links:
+
+item  code
+note  emphasis and
+      strong and gone
+────────────────────────
+item  link
+      (https://example.c
+      om/a/very/long/pat
+      h/to/a/page)
+note  [image: alt text]
+      (https://example.c
+      om/image.png)
+
+Long text that wraps
+inside its cell:
+
+topic        wrapping
+description  This cell
+             holds a
+             long
+             sentence
+             that has to
+             wrap onto
+             several
+             lines when
+             the table
+             is narrow.
+────────────────────────
+topic        short
+description  ok
+
+Many columns of short
+words (records layout
+when narrow):
+
+one    a
+two    b
+three  c
+four   d
+five   e
+six    f
+seven  g
+eight  h
+────────────────────────
+one    ii
+two    jj
+three  kk
+four   ll
+five   mm
+six    nn
+seven  oo
+eight  pp
+
+A word wider than any
+column:
+
+id   1
+url  https://example.com
+     /averyveryverylongp
+     athwithoutanysepara
+     torthatcannotwrap
+
+Empty cells and a header
+only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard
+break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 80, Join, Drop
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ left               │ center │ right │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+item  code
+note  emphasis and strong and gone
+────────────────────────────────────────────────────────────────────────────────
+item  link (https://example.com/a/very/long/path/to/a/page)
+note  [image: alt text] (https://example.com/image.png)
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────────────────────────────────────────────┐
+│  topic   │                            description                            │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ wrapping │ This cell holds a long sentence that has to wrap onto several     │
+│          │ lines when the table is narrow.                                   │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ short    │ ok                                                                │
+└──────────┴───────────────────────────────────────────────────────────────────┘
+
+Many columns of short words (records layout when narrow):
+
+┌─────┬─────┬───────┬──────┬──────┬─────┬───────┬───────┐
+│ one │ two │ three │ four │ five │ six │ seven │ eight │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ a   │ b   │ c     │ d    │ e    │ f   │ g     │ h     │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ ii  │ jj  │ kk    │ ll   │ mm   │ nn  │ oo    │ pp    │
+└─────┴─────┴───────┴──────┴──────┴─────┴───────┴───────┘
+
+A word wider than any column:
+
+id   1
+url  https://example.com/averyveryverylongpathwithoutanyseparatorthatcannotwrap
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│    ab     │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 80, Break, Literal
+Tables
+
+Plain:
+
+┌───┬───┐
+│ a │ b │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ left               │ center │ right │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+item  code
+note  emphasis and strong and gone
+────────────────────────────────────────────────────────────────────────────────
+item  link (https://example.com/a/very/long/path/to/a/page)
+note  [image: alt text] (https://example.com/image.png)
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────────────────────────────────────────────┐
+│  topic   │                            description                            │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ wrapping │ This cell holds a long sentence that has to wrap onto several     │
+│          │ lines when the table is narrow.                                   │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ short    │ ok                                                                │
+└──────────┴───────────────────────────────────────────────────────────────────┘
+
+Many columns of short words (records layout when narrow):
+
+┌─────┬─────┬───────┬──────┬──────┬─────┬───────┬───────┐
+│ one │ two │ three │ four │ five │ six │ seven │ eight │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ a   │ b   │ c     │ d    │ e    │ f   │ g     │ h     │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ ii  │ jj  │ kk    │ ll   │ mm   │ nn  │ oo    │ pp    │
+└─────┴─────┴───────┴──────┴──────┴─────┴───────┴───────┘
+
+A word wider than any column:
+
+id   1
+url  https://example.com/averyveryverylongpathwithoutanyseparatorthatcannotwrap
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ h1 │   │ h3 │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ only │ header │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│  a<br>b   │ c │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘

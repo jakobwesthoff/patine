@@ -1,0 +1,712 @@
+---
+source: tests/documents.rs
+expression: widths(& markdown)
+---
+=== width 80
+[bold,italic,double-underline]Constructs that change with the parser[]
+
+Reference links: full the text, collapsed r1, shortcut r1 and undefined
+[text][nope].
+
+Reference image: and and undefined ![alt][nope].
+
+A footnote reference and another, referenced in reverse order of the definitions
+below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a [underline]link[][dim] (https://example.com)[].
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ [bold]a[] │ [bold]b[] │ [bold] [] │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with text[]
+
+Autolink literals: ftp://example.com/file, [ [underline]https://example.com[] after a
+bracket, [underline]WWW.example.com[][dim] (http://WWW.example.com)[], [a][underline]www.example.com[]
+[dim](http://www.example.com)[], [underline]https://example.com/a[]] and [underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 40
+[bold,italic,double-underline]Constructs that change with the parser[]
+
+Reference links: full the text,
+collapsed r1, shortcut r1 and undefined
+[text][nope].
+
+Reference image: and and undefined
+![alt][nope].
+
+A footnote reference and another,
+referenced in reverse order of the
+definitions below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a [underline]link[]
+[dim](https://example.com)[].
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ [bold]a[] │ [bold]b[] │ [bold] [] │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with text[]
+
+Autolink literals:
+ftp://example.com/file, [
+[underline]https://example.com[] after a bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]] and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 20
+[bold,italic,double-underline]Constructs that[]
+[bold,italic,double-underline]change with the[]
+[bold,italic,double-underline]parser[]
+
+Reference links:
+full the text,
+collapsed r1,
+shortcut r1 and
+undefined
+[text][nope].
+
+Reference image: and
+and undefined
+![alt][nope].
+
+A footnote reference
+and another,
+referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a [underline]link[]
+[dim](https://example.com)[].
+
+Nobody refers to
+this footnote.
+
+┌───┬───┬───┐
+│ [bold]a[] │ [bold]b[] │ [bold] [] │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with text[]
+
+Autolink literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after a bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and [underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 12
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that change[]
+[bold,italic,double-underline]with the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links: full
+the text,
+collapsed
+r1, shortcut
+r1 and
+undefined
+[text][nope].
+
+Reference
+image: and
+and
+undefined
+![alt][nope].
+
+A footnote
+reference
+and another,
+referenced
+in reverse
+order of the
+definitions
+below.
+
+The first
+footnote,
+written
+first.
+
+Text between
+the
+definitions.
+
+The second
+footnote,
+with a [underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers to
+this
+footnote.
+
+[bold,dim]a[]  1
+[bold,dim]b[]  2
+   3
+────────────
+[bold,dim]a[]  4
+[bold,dim]b[]
+
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 8
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that[]
+[bold,italic,double-underline]change[]
+[bold,italic,double-underline]with the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links:
+full the
+text,
+collapsed
+r1,
+shortcut
+r1 and
+undefined
+[text][nope].
+
+Reference
+image:
+and and
+undefined
+![alt][nope].
+
+A
+footnote
+reference
+and
+another,
+referenced
+in
+reverse
+order of
+the
+definitions
+below.
+
+The
+first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The
+second
+footnote,
+with a
+[underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers
+to this
+footnote.
+
+[bold,dim]a[]  1
+[bold,dim]b[]  2
+   3
+────────
+[bold,dim]a[]  4
+[bold,dim]b[]
+
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with[]
+  [dim]text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 5
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that[]
+[bold,italic,double-underline]change[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links:
+full
+the
+text,
+collapsed
+r1,
+shortcut
+r1
+and
+undefined
+[text][nope].
+
+Reference
+image:
+and
+and
+undefined
+![alt][nope].
+
+A
+footnote
+reference
+and
+another,
+referenced
+in
+reverse
+order
+of
+the
+definitions
+below.
+
+The
+first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The
+second
+footnote,
+with
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers
+to
+this
+footnote.
+
+[bold,dim]a[]  1
+[bold,dim]b[]  2
+   3
+─────
+[bold,dim]a[]  4
+[bold,dim]b[]
+
+
+• [x]
+• [ ]
+• [ ]
+[dim]☑ with[]
+  [dim]text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after
+a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 3
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that[]
+[bold,italic,double-underline]change[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links:
+full
+the
+text,
+collapsed
+r1,
+shortcut
+r1
+and
+undefined
+[text][nope].
+
+Reference
+image:
+and
+and
+undefined
+![alt][nope].
+
+A
+footnote
+reference
+and
+another,
+referenced
+in
+reverse
+order
+of
+the
+definitions
+below.
+
+The
+first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The
+second
+footnote,
+with
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers
+to
+this
+footnote.
+
+[bold,dim]a[]
+  1
+[bold,dim]b[]
+  2
+  3
+───
+[bold,dim]a[]
+  4
+[bold,dim]b[]
+
+• [x]
+• [
+  ]
+• [
+  ]
+[dim]☑ with[]
+  [dim]text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after
+a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 1
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that[]
+[bold,italic,double-underline]change[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links:
+full
+the
+text,
+collapsed
+r1,
+shortcut
+r1
+and
+undefined
+[text][nope].
+
+Reference
+image:
+and
+and
+undefined
+![alt][nope].
+
+A
+footnote
+reference
+and
+another,
+referenced
+in
+reverse
+order
+of
+the
+definitions
+below.
+
+The
+first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The
+second
+footnote,
+with
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers
+to
+this
+footnote.
+
+[bold,dim]a[]
+1
+[bold,dim]b[]
+2
+3
+─
+[bold,dim]a[]
+4
+[bold,dim]b[]
+
+• [x]
+• [
+  ]
+• [
+  ]
+[dim]☑ with[]
+  [dim]text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after
+a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].
+=== width 0
+[bold,italic,double-underline]Constructs[]
+[bold,italic,double-underline]that[]
+[bold,italic,double-underline]change[]
+[bold,italic,double-underline]with[]
+[bold,italic,double-underline]the[]
+[bold,italic,double-underline]parser[]
+
+Reference
+links:
+full
+the
+text,
+collapsed
+r1,
+shortcut
+r1
+and
+undefined
+[text][nope].
+
+Reference
+image:
+and
+and
+undefined
+![alt][nope].
+
+A
+footnote
+reference
+and
+another,
+referenced
+in
+reverse
+order
+of
+the
+definitions
+below.
+
+The
+first
+footnote,
+written
+first.
+
+Text
+between
+the
+definitions.
+
+The
+second
+footnote,
+with
+a
+[underline]link[]
+[dim](https://example.com)[].
+
+Nobody
+refers
+to
+this
+footnote.
+
+[bold,dim]a[]
+1
+[bold,dim]b[]
+2
+3
+─
+[bold,dim]a[]
+4
+[bold,dim]b[]
+
+• [x]
+• [
+  ]
+• [
+  ]
+[dim]☑ with[]
+  [dim]text[]
+
+Autolink
+literals:
+ftp://example.com/file,
+[
+[underline]https://example.com[]
+after
+a
+bracket,
+[underline]WWW.example.com[]
+[dim](http://WWW.example.com)[],
+[a][underline]www.example.com[]
+[dim](http://www.example.com)[],
+[underline]https://example.com/a[]]
+and
+[underline]www.example.com[]
+[dim](http://www.example.com)[]].

@@ -1,0 +1,621 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Join, Drop, first line Some(9)
+Constructs
+that change with the
+parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Join, Literal, first line None
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Join, Literal, first line Some(9)
+Constructs
+that change with the
+parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Break, Drop, first line None
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of
+the definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Break, Drop, first line Some(9)
+Constructs
+that change with the
+parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of
+the definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Break, Literal, first line None
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of
+the definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Break, Literal, first line Some(9)
+Constructs
+that change with the
+parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of
+the definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Join, Drop, DimBar
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of the
+definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 24, Break, Literal, DimBar
+Constructs that change
+with the parser
+
+Reference links: full
+the text, collapsed r1,
+shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and
+undefined ![alt][nope].
+
+A footnote reference and
+another, referenced in
+reverse order of
+the definitions below.
+
+The first footnote,
+written first.
+
+Text between the
+definitions.
+
+The second footnote,
+with a link
+(https://example.com).
+
+Nobody refers to this
+footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals:
+ftp://example.com/file,
+[ https://example.com
+after a bracket,
+WWW.example.com
+(http://WWW.example.com),
+[a]www.example.com
+(http://www.example.com),
+https://example.com/a]
+and www.example.com
+(http://www.example.com)].
+=== width 80, Join, Drop
+Constructs that change with the parser
+
+Reference links: full the text, collapsed r1, shortcut r1 and undefined
+[text][nope].
+
+Reference image: and and undefined ![alt][nope].
+
+A footnote reference and another, referenced in reverse order of the definitions
+below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a link (https://example.com).
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals: ftp://example.com/file, [ https://example.com after a
+bracket, WWW.example.com (http://WWW.example.com), [a]www.example.com
+(http://www.example.com), https://example.com/a] and www.example.com
+(http://www.example.com)].
+=== width 80, Break, Literal
+Constructs that change with the parser
+
+Reference links: full the text, collapsed r1, shortcut r1 and
+undefined [text][nope].
+
+Reference image: and and undefined ![alt][nope].
+
+A footnote reference and another, referenced in reverse order of
+the definitions below.
+
+The first footnote, written first.
+
+Text between the definitions.
+
+The second footnote, with a link (https://example.com).
+
+Nobody refers to this footnote.
+
+┌───┬───┬───┐
+│ a │ b │   │
+├───┼───┼───┤
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │   │   │
+└───┴───┴───┘
+
+• [x]
+• [ ]
+• [ ]
+☑ with text
+
+Autolink literals: ftp://example.com/file, [ https://example.com after a
+bracket,
+WWW.example.com (http://WWW.example.com), [a]www.example.com
+(http://www.example.com), https://example.com/a] and www.example.com
+(http://www.example.com)].

@@ -1,0 +1,714 @@
+---
+source: tests/documents.rs
+expression: line_endings(& markdown)
+---
+=== crlf, width 80, default
+Nesting
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence that needs to wrap when the terminal is
+      narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    │ A quote inside an ordered item that spans two lines
+  3. Last
+
+│ A quote with a list:
+│ 
+│ • first
+│ • second
+│   • nested in quote
+│ 
+│ │ And a quote in a quote
+│ │ 
+│ │ │ and one more level
+│ │ 
+│ │ back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done subtask
+  ☐ open subtask
+
+1. ☑ numbered done
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== crlf, width 80, break and literal
+Nesting
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence that needs to wrap when the terminal is
+      narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    │ A quote inside an ordered item
+    │ that spans two lines
+  3. Last
+
+│ A quote with a list:
+│ 
+│ • first
+│ • second
+│   • nested in quote
+│ 
+│ │ And a quote in a quote
+│ │ 
+│ │ │ and one more level
+│ │ 
+│ │ back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done subtask
+  ☐ open subtask
+
+1. ☑ numbered done
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== crlf, width 12, default
+Nesting
+
+• Level one,
+  item one
+  • Level
+    two,
+    item one
+    • Level
+      three
+      with a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item two
+
+    A second
+    paragraph
+    inside
+    the
+    item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one,
+  item two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    │ A
+    │ quote
+    │ inside
+    │ an
+    │ ordered
+    │ item
+    │ that
+    │ spans
+    │ two
+    │ lines
+  3. Last
+
+│ A quote
+│ with a
+│ list:
+│ 
+│ • first
+│ • second
+│   • nested
+│     in
+│     quote
+│ 
+│ │ And a
+│ │ quote in
+│ │ a quote
+│ │ 
+│ │ │ and
+│ │ │ one
+│ │ │ more
+│ │ │ level
+│ │ 
+│ │ back out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done
+    subtask
+  ☐ open
+    subtask
+
+1. ☑ numbered
+     done
+2. ☐ numbered
+     open
+3. Starts at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== crlf, width 12, break and literal
+Nesting
+
+• Level one,
+  item one
+  • Level
+    two,
+    item one
+    • Level
+      three
+      with a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item two
+
+    A second
+    paragraph
+    inside
+    the
+    item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one,
+  item two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    │ A
+    │ quote
+    │ inside
+    │ an
+    │ ordered
+    │ item
+    │ that
+    │ spans
+    │ two
+    │ lines
+  3. Last
+
+│ A quote
+│ with a
+│ list:
+│ 
+│ • first
+│ • second
+│   • nested
+│     in
+│     quote
+│ 
+│ │ And a
+│ │ quote in
+│ │ a quote
+│ │ 
+│ │ │ and
+│ │ │ one
+│ │ │ more
+│ │ │ level
+│ │ 
+│ │ back out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done
+    subtask
+  ☐ open
+    subtask
+
+1. ☑ numbered
+     done
+2. ☐ numbered
+     open
+3. Starts at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== cr, width 80, default
+Nesting
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence that needs to wrap when the terminal is
+      narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    │ A quote inside an ordered item that spans two lines
+  3. Last
+
+│ A quote with a list:
+│ 
+│ • first
+│ • second
+│   • nested in quote
+│ 
+│ │ And a quote in a quote
+│ │ 
+│ │ │ and one more level
+│ │ 
+│ │ back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done subtask
+  ☐ open subtask
+
+1. ☑ numbered done
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== cr, width 80, break and literal
+Nesting
+
+• Level one, item one
+  • Level two, item one
+    • Level three with a long sentence that needs to wrap when the terminal is
+      narrow enough
+    • Level three again
+  • Level two, item two
+
+    A second paragraph inside the item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one, item two
+  1. Ordered inside bullet
+  2. Another one
+
+    │ A quote inside an ordered item
+    │ that spans two lines
+  3. Last
+
+│ A quote with a list:
+│ 
+│ • first
+│ • second
+│   • nested in quote
+│ 
+│ │ And a quote in a quote
+│ │ 
+│ │ │ and one more level
+│ │ 
+│ │ back out
+
+1. Ordered start
+  • bullet inside
+  • another bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done subtask
+  ☐ open subtask
+
+1. ☑ numbered done
+2. ☐ numbered open
+3. Starts at ten
+4. Continues
+
+• star bullet
+
+• plus bullet
+
+• dash bullet
+=== cr, width 12, default
+Nesting
+
+• Level one,
+  item one
+  • Level
+    two,
+    item one
+    • Level
+      three
+      with a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item two
+
+    A second
+    paragraph
+    inside
+    the
+    item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one,
+  item two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    │ A
+    │ quote
+    │ inside
+    │ an
+    │ ordered
+    │ item
+    │ that
+    │ spans
+    │ two
+    │ lines
+  3. Last
+
+│ A quote
+│ with a
+│ list:
+│ 
+│ • first
+│ • second
+│   • nested
+│     in
+│     quote
+│ 
+│ │ And a
+│ │ quote in
+│ │ a quote
+│ │ 
+│ │ │ and
+│ │ │ one
+│ │ │ more
+│ │ │ level
+│ │ 
+│ │ back out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done
+    subtask
+  ☐ open
+    subtask
+
+1. ☑ numbered
+     done
+2. ☐ numbered
+     open
+3. Starts at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet
+=== cr, width 12, break and literal
+Nesting
+
+• Level one,
+  item one
+  • Level
+    two,
+    item one
+    • Level
+      three
+      with a
+      long
+      sentence
+      that
+      needs
+      to
+      wrap
+      when
+      the
+      terminal
+      is
+      narrow
+      enough
+    • Level
+      three
+      again
+  • Level
+    two,
+    item two
+
+    A second
+    paragraph
+    inside
+    the
+    item.
+
+      def greet(name):
+          return f"hello {name}"
+• Level one,
+  item two
+  1. Ordered
+     inside
+     bullet
+  2. Another
+     one
+
+    │ A
+    │ quote
+    │ inside
+    │ an
+    │ ordered
+    │ item
+    │ that
+    │ spans
+    │ two
+    │ lines
+  3. Last
+
+│ A quote
+│ with a
+│ list:
+│ 
+│ • first
+│ • second
+│   • nested
+│     in
+│     quote
+│ 
+│ │ And a
+│ │ quote in
+│ │ a quote
+│ │ 
+│ │ │ and
+│ │ │ one
+│ │ │ more
+│ │ │ level
+│ │ 
+│ │ back out
+
+1. Ordered
+   start
+  • bullet
+    inside
+  • another
+    bullet
+2. Second
+
+  ┌───┬───┐
+  │ a │ b │
+  ├───┼───┤
+  │ 1 │ 2 │
+  └───┴───┘
+3. Third
+
+☑ done task
+☐ open task
+  ☑ done
+    subtask
+  ☐ open
+    subtask
+
+1. ☑ numbered
+     done
+2. ☐ numbered
+     open
+3. Starts at
+   ten
+4. Continues
+
+• star
+  bullet
+
+• plus
+  bullet
+
+• dash
+  bullet

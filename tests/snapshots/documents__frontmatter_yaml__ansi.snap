@@ -1,0 +1,134 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+  ---
+  \e[38;5;1mtitle\e[39m: \e[38;5;2mA post with front matter\e[39m
+  \e[38;5;1mtags\e[39m: [\e[38;5;2mrust\e[39m, \e[38;5;2mterminal\e[39m, \e[38;5;2m"markdown"\e[39m]
+  \e[38;5;1mdraft\e[39m: \e[38;5;3mfalse\e[39m
+  \e[38;5;1mauthor\e[39m:
+    \e[38;5;1mname\e[39m: \e[38;5;2mAda\e[39m
+    \e[38;5;1memail\e[39m: \e[38;5;2mada@example.com\e[39m
+  ---
+
+\e[1m\e[3m\e[4:2mA post with front matter\e[24m\e[23m\e[22m
+
+The block above is metadata. It renders as a highlighted block, fences included,
+and the body follows after a blank line.
+
+Another paragraph with \e[38;5;3mcode\e[39m, \e[1mbold\e[22m and a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+
+────────────────────────────────────────────────────────────────────────────────
+
+A thematic break sits above this line, not front matter.
+=== width 80, break and literal
+  ---
+  \e[38;5;1mtitle\e[39m: \e[38;5;2mA post with front matter\e[39m
+  \e[38;5;1mtags\e[39m: [\e[38;5;2mrust\e[39m, \e[38;5;2mterminal\e[39m, \e[38;5;2m"markdown"\e[39m]
+  \e[38;5;1mdraft\e[39m: \e[38;5;3mfalse\e[39m
+  \e[38;5;1mauthor\e[39m:
+    \e[38;5;1mname\e[39m: \e[38;5;2mAda\e[39m
+    \e[38;5;1memail\e[39m: \e[38;5;2mada@example.com\e[39m
+  ---
+
+\e[1m\e[3m\e[4:2mA post with front matter\e[24m\e[23m\e[22m
+
+The block above is metadata. It renders as a highlighted block, fences
+included, and the body follows after a blank line.
+
+Another paragraph with \e[38;5;3mcode\e[39m, \e[1mbold\e[22m and a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+
+────────────────────────────────────────────────────────────────────────────────
+
+A thematic break sits above this line, not front matter.
+=== width 10, default
+  ---
+  \e[38;5;1mtitle\e[39m: \e[38;5;2mA post with front matter\e[39m
+  \e[38;5;1mtags\e[39m: [\e[38;5;2mrust\e[39m, \e[38;5;2mterminal\e[39m, \e[38;5;2m"markdown"\e[39m]
+  \e[38;5;1mdraft\e[39m: \e[38;5;3mfalse\e[39m
+  \e[38;5;1mauthor\e[39m:
+    \e[38;5;1mname\e[39m: \e[38;5;2mAda\e[39m
+    \e[38;5;1memail\e[39m: \e[38;5;2mada@example.com\e[39m
+  ---
+
+\e[1m\e[3m\e[4:2mA post\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mwith front\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mmatter\e[24m\e[23m\e[22m
+
+The block
+above is
+metadata.
+It renders
+as a
+highlighted
+block,
+fences
+included,
+and the
+body
+follows
+after a
+blank
+line.
+
+Another
+paragraph
+with \e[38;5;3mcode\e[39m,
+\e[1mbold\e[22m and a
+\e[4mlink\e[24m
+\e[2m(https://example.com)\e[22m.
+
+──────────
+
+A thematic
+break sits
+above this
+line, not
+front
+matter.
+=== width 10, break and literal
+  ---
+  \e[38;5;1mtitle\e[39m: \e[38;5;2mA post with front matter\e[39m
+  \e[38;5;1mtags\e[39m: [\e[38;5;2mrust\e[39m, \e[38;5;2mterminal\e[39m, \e[38;5;2m"markdown"\e[39m]
+  \e[38;5;1mdraft\e[39m: \e[38;5;3mfalse\e[39m
+  \e[38;5;1mauthor\e[39m:
+    \e[38;5;1mname\e[39m: \e[38;5;2mAda\e[39m
+    \e[38;5;1memail\e[39m: \e[38;5;2mada@example.com\e[39m
+  ---
+
+\e[1m\e[3m\e[4:2mA post\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mwith front\e[24m\e[23m\e[22m
+\e[1m\e[3m\e[4:2mmatter\e[24m\e[23m\e[22m
+
+The block
+above is
+metadata.
+It renders
+as a
+highlighted
+block,
+fences
+included,
+and the
+body
+follows
+after a
+blank
+line.
+
+Another
+paragraph
+with \e[38;5;3mcode\e[39m,
+\e[1mbold\e[22m and a
+\e[4mlink\e[24m
+\e[2m(https://example.com)\e[22m.
+
+──────────
+
+A thematic
+break sits
+above this
+line, not
+front
+matter.

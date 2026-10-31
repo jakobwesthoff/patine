@@ -1,0 +1,245 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    \e[38;5;3mindented code in item\e[39m
+• item
+
+  \e[38;5;6m│ \e[39mquote in item
+  \e[38;5;6m│ \e[39m
+  \e[38;5;6m│ \e[39m• list in quote in item
+• a
+
+  b
+
+  c
+
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mHeading in a quote\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39mtext
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mcode in quote\e[39m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mfenced in quote\e[39m
+
+Term : not a definition list
+
+[not a link]
+
+[image]\e[2m (empty-alt.png)\e[22m [image: only alt]\e[2m ()\e[22m \e[4mempty\e[24m\e[2m ()\e[22m
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 80, break and literal
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    \e[38;5;3mindented code in item\e[39m
+• item
+
+  \e[38;5;6m│ \e[39mquote in item
+  \e[38;5;6m│ \e[39m
+  \e[38;5;6m│ \e[39m• list in quote in item
+• a
+
+  b
+
+  c
+
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mHeading in a quote\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39mtext
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mcode in quote\e[39m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mfenced in quote\e[39m
+
+Term
+: not a definition list
+
+[not a link]
+
+[image]\e[2m (empty-alt.png)\e[22m [image: only alt]\e[2m ()\e[22m \e[4mempty\e[24m\e[2m ()\e[22m
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 10, default
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    \e[38;5;3mindented code in item\e[39m
+• item
+
+  \e[38;5;6m│ \e[39mquote
+  \e[38;5;6m│ \e[39min
+  \e[38;5;6m│ \e[39mitem
+  \e[38;5;6m│ \e[39m
+  \e[38;5;6m│ \e[39m• list
+  \e[38;5;6m│ \e[39m  in
+  \e[38;5;6m│ \e[39m  quote
+  \e[38;5;6m│ \e[39m  in
+  \e[38;5;6m│ \e[39m  item
+• a
+
+  b
+
+  c
+
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mHeading\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2min a\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mquote\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39mtext
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mcode in quote\e[39m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mfenced in quote\e[39m
+
+Term : not
+a
+definition
+list
+
+[not a
+link]
+
+[image]
+\e[2m(empty-alt.png)\e[22m
+[image:
+only alt]
+\e[2m()\e[22m \e[4mempty\e[24m
+\e[2m()\e[22m
+
+A very
+long line
+without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 10, break and literal
+1. first
+   with
+   paren
+2. second
+3. third
+
+3. starts
+   at
+   three
+4. four
+
+• 
+• empty
+  bullet
+  above
+• continuation
+  after
+  empty
+
+• 
+
+• item
+
+    \e[38;5;3mindented code in item\e[39m
+• item
+
+  \e[38;5;6m│ \e[39mquote
+  \e[38;5;6m│ \e[39min
+  \e[38;5;6m│ \e[39mitem
+  \e[38;5;6m│ \e[39m
+  \e[38;5;6m│ \e[39m• list
+  \e[38;5;6m│ \e[39m  in
+  \e[38;5;6m│ \e[39m  quote
+  \e[38;5;6m│ \e[39m  in
+  \e[38;5;6m│ \e[39m  item
+• a
+
+  b
+
+  c
+
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mHeading\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2min a\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m\e[1m\e[3m\e[4:2mquote\e[24m\e[23m\e[22m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39mtext
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mcode in quote\e[39m
+\e[38;5;6m│ \e[39m
+\e[38;5;6m│ \e[39m  \e[38;5;3mfenced in quote\e[39m
+
+Term
+: not a
+definition
+list
+
+[not a
+link]
+
+[image]
+\e[2m(empty-alt.png)\e[22m
+[image:
+only alt]
+\e[2m()\e[22m \e[4mempty\e[24m
+\e[2m()\e[22m
+
+A very
+long line
+without
+any spaces
+to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.

@@ -1,0 +1,482 @@
+---
+source: tests/documents.rs
+expression: ansi_bytes(& markdown)
+---
+=== width 80, default
+\e[1m\e[3m\e[4:2mTables\e[24m\e[23m\e[22m
+
+Plain:
+
+┌───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ \e[1mleft              \e[22m │ \e[1mcenter\e[22m │ \e[1mright\e[22m │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+\e[1m\e[2mitem\e[22m  \e[38;5;3mcode\e[39m
+\e[1m\e[2mnote\e[22m  \e[3memphasis\e[23m and \e[1mstrong\e[22m and \e[9mgone\e[29m
+────────────────────────────────────────────────────────────────────────────────
+\e[1m\e[2mitem\e[22m  \e[4mlink\e[24m\e[2m (https://example.com/a/very/long/path/to/a/page)\e[22m
+\e[1m\e[2mnote\e[22m  [image: alt text]\e[2m (https://example.com/image.png)\e[22m
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────────────────────────────────────────────┐
+│ \e[1m topic  \e[22m │ \e[1m                           description                           \e[22m │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ wrapping │ This cell holds a long sentence that has to wrap onto several     │
+│          │ lines when the table is narrow.                                   │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ short    │ ok                                                                │
+└──────────┴───────────────────────────────────────────────────────────────────┘
+
+Many columns of short words (records layout when narrow):
+
+┌─────┬─────┬───────┬──────┬──────┬─────┬───────┬───────┐
+│ \e[1mone\e[22m │ \e[1mtwo\e[22m │ \e[1mthree\e[22m │ \e[1mfour\e[22m │ \e[1mfive\e[22m │ \e[1msix\e[22m │ \e[1mseven\e[22m │ \e[1meight\e[22m │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ a   │ b   │ c     │ d    │ e    │ f   │ g     │ h     │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ ii  │ jj  │ kk    │ ll   │ mm   │ nn  │ oo    │ pp    │
+└─────┴─────┴───────┴──────┴──────┴─────┴───────┴───────┘
+
+A word wider than any column:
+
+\e[1m\e[2mid\e[22m   1
+\e[1m\e[2murl\e[22m  \e[4mhttps://example.com/averyveryverylongpathwithoutanyseparatorthatcannotwrap\e[24m
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ \e[1mh1\e[22m │ \e[1m \e[22m │ \e[1mh3\e[22m │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ \e[1monly\e[22m │ \e[1mheader\e[22m │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│ \e[1m   ab    \e[22m │ \e[1mc\e[22m │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 80, break and literal
+\e[1m\e[3m\e[4:2mTables\e[24m\e[23m\e[22m
+
+Plain:
+
+┌───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned columns:
+
+┌────────────────────┬────────┬───────┐
+│ \e[1mleft              \e[22m │ \e[1mcenter\e[22m │ \e[1mright\e[22m │
+├────────────────────┼────────┼───────┤
+│ l1                 │   c1   │    r1 │
+├────────────────────┼────────┼───────┤
+│ a longer left cell │  mid   │ 12345 │
+└────────────────────┴────────┴───────┘
+
+Styled cells and links:
+
+\e[1m\e[2mitem\e[22m  \e[38;5;3mcode\e[39m
+\e[1m\e[2mnote\e[22m  \e[3memphasis\e[23m and \e[1mstrong\e[22m and \e[9mgone\e[29m
+────────────────────────────────────────────────────────────────────────────────
+\e[1m\e[2mitem\e[22m  \e[4mlink\e[24m\e[2m (https://example.com/a/very/long/path/to/a/page)\e[22m
+\e[1m\e[2mnote\e[22m  [image: alt text]\e[2m (https://example.com/image.png)\e[22m
+
+Long text that wraps inside its cell:
+
+┌──────────┬───────────────────────────────────────────────────────────────────┐
+│ \e[1m topic  \e[22m │ \e[1m                           description                           \e[22m │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ wrapping │ This cell holds a long sentence that has to wrap onto several     │
+│          │ lines when the table is narrow.                                   │
+├──────────┼───────────────────────────────────────────────────────────────────┤
+│ short    │ ok                                                                │
+└──────────┴───────────────────────────────────────────────────────────────────┘
+
+Many columns of short words (records layout when narrow):
+
+┌─────┬─────┬───────┬──────┬──────┬─────┬───────┬───────┐
+│ \e[1mone\e[22m │ \e[1mtwo\e[22m │ \e[1mthree\e[22m │ \e[1mfour\e[22m │ \e[1mfive\e[22m │ \e[1msix\e[22m │ \e[1mseven\e[22m │ \e[1meight\e[22m │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ a   │ b   │ c     │ d    │ e    │ f   │ g     │ h     │
+├─────┼─────┼───────┼──────┼──────┼─────┼───────┼───────┤
+│ ii  │ jj  │ kk    │ ll   │ mm   │ nn  │ oo    │ pp    │
+└─────┴─────┴───────┴──────┴──────┴─────┴───────┴───────┘
+
+A word wider than any column:
+
+\e[1m\e[2mid\e[22m   1
+\e[1m\e[2murl\e[22m  \e[4mhttps://example.com/averyveryverylongpathwithoutanyseparatorthatcannotwrap\e[24m
+
+Empty cells and a header only table:
+
+┌────┬───┬────┐
+│ \e[1mh1\e[22m │ \e[1m \e[22m │ \e[1mh3\e[22m │
+├────┼───┼────┤
+│    │ x │    │
+└────┴───┴────┘
+
+┌──────┬────────┐
+│ \e[1monly\e[22m │ \e[1mheader\e[22m │
+└──────┴────────┘
+
+Soft break and hard break in a cell:
+
+┌───────────┬───┐
+│ \e[1m a<br>b  \e[22m │ \e[1mc\e[22m │
+├───────────┼───┤
+│ line one\ │   │
+├───────────┼───┤
+│ line two  │ d │
+└───────────┴───┘
+=== width 10, default
+\e[1m\e[3m\e[4:2mTables\e[24m\e[23m\e[22m
+
+Plain:
+
+┌───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned
+columns:
+
+\e[1m\e[2mleft\e[22m
+  l1
+\e[1m\e[2mcenter\e[22m
+  c1
+\e[1m\e[2mright\e[22m
+  r1
+──────────
+\e[1m\e[2mleft\e[22m
+  a longer
+  left
+  cell
+\e[1m\e[2mcenter\e[22m
+  mid
+\e[1m\e[2mright\e[22m
+  12345
+
+Styled
+cells and
+links:
+
+\e[1m\e[2mitem\e[22m
+  \e[38;5;3mcode\e[39m
+\e[1m\e[2mnote\e[22m
+  \e[3memphasis\e[23m
+  and
+  \e[1mstrong\e[22m
+  and \e[9mgone\e[29m
+──────────
+\e[1m\e[2mitem\e[22m
+  \e[4mlink\e[24m
+  \e[2m(https:/\e[22m
+  \e[2m/example\e[22m
+  \e[2m.com/a/v\e[22m
+  \e[2mery/long\e[22m
+  \e[2m/path/to\e[22m
+  \e[2m/a/page)\e[22m
+\e[1m\e[2mnote\e[22m
+  [image:
+  alt
+  text]
+  \e[2m(https:/\e[22m
+  \e[2m/example\e[22m
+  \e[2m.com/ima\e[22m
+  \e[2mge.png)\e[22m
+
+Long text
+that wraps
+inside its
+cell:
+
+\e[1m\e[2mtopic\e[22m
+  wrapping
+\e[1m\e[2mdescriptio\e[22m
+\e[1m\e[2mn\e[22m
+  This
+  cell
+  holds a
+  long
+  sentence
+  that has
+  to wrap
+  onto
+  several
+  lines
+  when the
+  table is
+  narrow.
+──────────
+\e[1m\e[2mtopic\e[22m
+  short
+\e[1m\e[2mdescriptio\e[22m
+\e[1m\e[2mn\e[22m
+  ok
+
+Many
+columns of
+short
+words
+(records
+layout
+when
+narrow):
+
+\e[1m\e[2mone\e[22m    a
+\e[1m\e[2mtwo\e[22m    b
+\e[1m\e[2mthree\e[22m  c
+\e[1m\e[2mfour\e[22m   d
+\e[1m\e[2mfive\e[22m   e
+\e[1m\e[2msix\e[22m    f
+\e[1m\e[2mseven\e[22m  g
+\e[1m\e[2meight\e[22m  h
+──────────
+\e[1m\e[2mone\e[22m    ii
+\e[1m\e[2mtwo\e[22m    jj
+\e[1m\e[2mthree\e[22m  kk
+\e[1m\e[2mfour\e[22m   ll
+\e[1m\e[2mfive\e[22m   mm
+\e[1m\e[2msix\e[22m    nn
+\e[1m\e[2mseven\e[22m  oo
+\e[1m\e[2meight\e[22m  pp
+
+A word
+wider than
+any
+column:
+
+\e[1m\e[2mid\e[22m   1
+\e[1m\e[2murl\e[22m  \e[4mhttps\e[24m
+     \e[4m://ex\e[24m
+     \e[4mample\e[24m
+     \e[4m.com/\e[24m
+     \e[4mavery\e[24m
+     \e[4mveryv\e[24m
+     \e[4merylo\e[24m
+     \e[4mngpat\e[24m
+     \e[4mhwith\e[24m
+     \e[4moutan\e[24m
+     \e[4mysepa\e[24m
+     \e[4mrator\e[24m
+     \e[4mthatc\e[24m
+     \e[4mannot\e[24m
+     \e[4mwrap\e[24m
+
+Empty
+cells and
+a header
+only
+table:
+
+\e[1m\e[2mh1\e[22m
+    x
+\e[1m\e[2mh3\e[22m
+
+\e[1m\e[2monly\e[22m
+\e[1m\e[2mheader\e[22m
+
+Soft break
+and hard
+break in a
+cell:
+
+\e[1m\e[2mab\e[22m  line
+    one\
+\e[1m\e[2mc\e[22m
+──────────
+\e[1m\e[2mab\e[22m  line
+    two
+\e[1m\e[2mc\e[22m   d
+=== width 10, break and literal
+\e[1m\e[3m\e[4:2mTables\e[24m\e[23m\e[22m
+
+Plain:
+
+┌───┬───┐
+│ \e[1ma\e[22m │ \e[1mb\e[22m │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘
+
+Aligned
+columns:
+
+\e[1m\e[2mleft\e[22m
+  l1
+\e[1m\e[2mcenter\e[22m
+  c1
+\e[1m\e[2mright\e[22m
+  r1
+──────────
+\e[1m\e[2mleft\e[22m
+  a longer
+  left
+  cell
+\e[1m\e[2mcenter\e[22m
+  mid
+\e[1m\e[2mright\e[22m
+  12345
+
+Styled
+cells and
+links:
+
+\e[1m\e[2mitem\e[22m
+  \e[38;5;3mcode\e[39m
+\e[1m\e[2mnote\e[22m
+  \e[3memphasis\e[23m
+  and
+  \e[1mstrong\e[22m
+  and \e[9mgone\e[29m
+──────────
+\e[1m\e[2mitem\e[22m
+  \e[4mlink\e[24m
+  \e[2m(https:/\e[22m
+  \e[2m/example\e[22m
+  \e[2m.com/a/v\e[22m
+  \e[2mery/long\e[22m
+  \e[2m/path/to\e[22m
+  \e[2m/a/page)\e[22m
+\e[1m\e[2mnote\e[22m
+  [image:
+  alt
+  text]
+  \e[2m(https:/\e[22m
+  \e[2m/example\e[22m
+  \e[2m.com/ima\e[22m
+  \e[2mge.png)\e[22m
+
+Long text
+that wraps
+inside its
+cell:
+
+\e[1m\e[2mtopic\e[22m
+  wrapping
+\e[1m\e[2mdescriptio\e[22m
+\e[1m\e[2mn\e[22m
+  This
+  cell
+  holds a
+  long
+  sentence
+  that has
+  to wrap
+  onto
+  several
+  lines
+  when the
+  table is
+  narrow.
+──────────
+\e[1m\e[2mtopic\e[22m
+  short
+\e[1m\e[2mdescriptio\e[22m
+\e[1m\e[2mn\e[22m
+  ok
+
+Many
+columns of
+short
+words
+(records
+layout
+when
+narrow):
+
+\e[1m\e[2mone\e[22m    a
+\e[1m\e[2mtwo\e[22m    b
+\e[1m\e[2mthree\e[22m  c
+\e[1m\e[2mfour\e[22m   d
+\e[1m\e[2mfive\e[22m   e
+\e[1m\e[2msix\e[22m    f
+\e[1m\e[2mseven\e[22m  g
+\e[1m\e[2meight\e[22m  h
+──────────
+\e[1m\e[2mone\e[22m    ii
+\e[1m\e[2mtwo\e[22m    jj
+\e[1m\e[2mthree\e[22m  kk
+\e[1m\e[2mfour\e[22m   ll
+\e[1m\e[2mfive\e[22m   mm
+\e[1m\e[2msix\e[22m    nn
+\e[1m\e[2mseven\e[22m  oo
+\e[1m\e[2meight\e[22m  pp
+
+A word
+wider than
+any
+column:
+
+\e[1m\e[2mid\e[22m   1
+\e[1m\e[2murl\e[22m  \e[4mhttps\e[24m
+     \e[4m://ex\e[24m
+     \e[4mample\e[24m
+     \e[4m.com/\e[24m
+     \e[4mavery\e[24m
+     \e[4mveryv\e[24m
+     \e[4merylo\e[24m
+     \e[4mngpat\e[24m
+     \e[4mhwith\e[24m
+     \e[4moutan\e[24m
+     \e[4mysepa\e[24m
+     \e[4mrator\e[24m
+     \e[4mthatc\e[24m
+     \e[4mannot\e[24m
+     \e[4mwrap\e[24m
+
+Empty
+cells and
+a header
+only
+table:
+
+\e[1m\e[2mh1\e[22m
+    x
+\e[1m\e[2mh3\e[22m
+
+\e[1m\e[2monly\e[22m
+\e[1m\e[2mheader\e[22m
+
+Soft break
+and hard
+break in a
+cell:
+
+\e[1m\e[2ma<br>b\e[22m
+  line
+  one\
+\e[1m\e[2mc\e[22m
+──────────
+\e[1m\e[2ma<br>b\e[22m
+  line two
+\e[1m\e[2mc\e[22m
+  d

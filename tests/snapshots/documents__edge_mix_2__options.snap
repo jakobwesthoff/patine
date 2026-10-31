@@ -1,0 +1,619 @@
+---
+source: tests/documents.rs
+expression: options(& markdown)
+---
+=== width 24, Join, Drop, first line None
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition
+list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Join, Drop, first line Some(9)
+1. first
+   with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition
+list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Join, Literal, first line None
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition
+list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Join, Literal, first line Some(9)
+1. first
+   with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition
+list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Break, Drop, first line None
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Break, Drop, first line Some(9)
+1. first
+   with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Break, Literal, first line None
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Break, Literal, first line Some(9)
+1. first
+   with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Join, Drop, DimBar
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition
+list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 24, Break, Literal, DimBar
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after
+  empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in
+  │   item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png)
+[image: only alt] ()
+empty ()
+
+A very long line without
+any spaces to force
+overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 80, Join, Drop
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term : not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
+=== width 80, Break, Literal
+1. first with paren
+2. second
+3. third
+
+3. starts at three
+4. four
+
+• 
+• empty bullet above
+• continuation after empty
+
+• 
+
+• item
+
+    indented code in item
+• item
+
+  │ quote in item
+  │ 
+  │ • list in quote in item
+• a
+
+  b
+
+  c
+
+│ Heading in a quote
+│ 
+│ text
+│ 
+│   code in quote
+│ 
+│   fenced in quote
+
+Term
+: not a definition list
+
+[not a link]
+
+[image] (empty-alt.png) [image: only alt] () empty ()
+
+A very long line without any spaces to force overflowing:
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+end.
