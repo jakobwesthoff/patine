@@ -12,8 +12,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of the definitions
-below.
+A footnote reference[1] and another[2], referenced in reverse order of the
+definitions below[2][1].
 
 Text between the definitions.
 
@@ -34,9 +34,9 @@ Autolink literals: ftp://example.com/file, [ https://example.com after a
 bracket, WWW.example.com, [a]www.example.com, https://example.com/a] and
 www.example.com] (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).
 === crlf, width 80, break and literal
 Constructs that change with the parser
 
@@ -47,8 +47,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of
-the definitions below.
+A footnote reference[1] and another[2], referenced in reverse order of
+the definitions below[2][1].
 
 Text between the definitions.
 
@@ -70,9 +70,9 @@ bracket,
 WWW.example.com, [a]www.example.com, https://example.com/a] and www.example.com]
 (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).
 === crlf, width 12, default
 Constructs
 that change
@@ -104,13 +104,14 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
-and another,
+reference[1]
+and
+another[2],
 referenced
 in reverse
 order of the
 definitions
-below.
+below[2][1].
 
 Text between
 the
@@ -143,15 +144,18 @@ and
 www.example.com]
 (http://www.example.com]).
 
-The first
-footnote,
-written
-first.
+[1] The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a link
-(https://example.com).
+[2] The
+    second
+    footnote,
+    with a
+    link
+    (https://example.com).
 === crlf, width 12, break and literal
 Constructs
 that change
@@ -183,14 +187,15 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
-and another,
+reference[1]
+and
+another[2],
 referenced
 in reverse
 order of
 the
 definitions
-below.
+below[2][1].
 
 Text between
 the
@@ -223,15 +228,18 @@ and
 www.example.com]
 (http://www.example.com]).
 
-The first
-footnote,
-written
-first.
+[1] The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a link
-(https://example.com).
+[2] The
+    second
+    footnote,
+    with a
+    link
+    (https://example.com).
 === cr, width 80, default
 Constructs that change with the parser
 
@@ -242,8 +250,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of the definitions
-below.
+A footnote reference[1] and another[2], referenced in reverse order of the
+definitions below[2][1].
 
 Text between the definitions.
 
@@ -264,9 +272,9 @@ Autolink literals: ftp://example.com/file, [ https://example.com after a
 bracket, WWW.example.com, [a]www.example.com, https://example.com/a] and
 www.example.com] (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).
 === cr, width 80, break and literal
 Constructs that change with the parser
 
@@ -277,8 +285,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of
-the definitions below.
+A footnote reference[1] and another[2], referenced in reverse order of
+the definitions below[2][1].
 
 Text between the definitions.
 
@@ -300,9 +308,9 @@ bracket,
 WWW.example.com, [a]www.example.com, https://example.com/a] and www.example.com]
 (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).
 === cr, width 12, default
 Constructs
 that change
@@ -334,13 +342,14 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
-and another,
+reference[1]
+and
+another[2],
 referenced
 in reverse
 order of the
 definitions
-below.
+below[2][1].
 
 Text between
 the
@@ -373,15 +382,18 @@ and
 www.example.com]
 (http://www.example.com]).
 
-The first
-footnote,
-written
-first.
+[1] The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a link
-(https://example.com).
+[2] The
+    second
+    footnote,
+    with a
+    link
+    (https://example.com).
 === cr, width 12, break and literal
 Constructs
 that change
@@ -413,14 +425,15 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
-and another,
+reference[1]
+and
+another[2],
 referenced
 in reverse
 order of
 the
 definitions
-below.
+below[2][1].
 
 Text between
 the
@@ -453,12 +466,15 @@ and
 www.example.com]
 (http://www.example.com]).
 
-The first
-footnote,
-written
-first.
+[1] The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a link
-(https://example.com).
+[2] The
+    second
+    footnote,
+    with a
+    link
+    (https://example.com).

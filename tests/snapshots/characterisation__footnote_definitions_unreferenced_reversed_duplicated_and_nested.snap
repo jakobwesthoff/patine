@@ -6,29 +6,29 @@ expression: "pinned_all(&[\"text\\n\\n[^unused]: nobody refers to this\",\n\"[^a
 text
 ---
 "[^a]: first defined\n\n[^b]: second defined\n\nrefers to b[^b] and then a[^a]"
-refers to b and then a
+refers to b[dim][1][] and then a[dim][2][]
 
-second defined
+[dim][1][] second defined
 
-first defined
+[dim][2][] first defined
 ---
 "[^a]: one\n\n[^a]: two\n\nrefers[^a]"
 one
 
-refers
+refers[dim][1][]
 
-two
+[dim][1][] two
 ---
 "- item[^n]\n\n  [^n]: note in an item\n\nafter"
-• item
+• item[dim][1][]
 
 after
 
-note in an item
+[dim][1][] note in an item
 ---
 "> quote[^n]\n>\n> [^n]: note in a quote\n\nafter"
-[cyan]│ []quote
+[cyan]│ []quote[dim][1][]
 
 after
 
-note in a quote
+[dim][1][] note in a quote

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- A footnote reference shows its number in dimmed square brackets after
+  the text it follows (`a guide[1]`), and each footnote at the end of the
+  document starts with the same number. Numbers count from 1 in the order
+  of the first references, whatever the labels in the source. A reference
+  used to draw nothing.
+
 ## [2.0.0] - 2026-10-31
 
 ### Changed

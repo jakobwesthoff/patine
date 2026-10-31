@@ -12,8 +12,8 @@ undefined [text][nope].
 Reference image: [image: alt text]\e[2m (https://example.com/image.png)\e[22m and [image:
 img]\e[2m (https://example.com/image.png)\e[22m and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of the definitions
-below.
+A footnote reference\e[2m[1]\e[22m and another\e[2m[2]\e[22m, referenced in reverse order of the
+definitions below\e[2m[2][1]\e[22m.
 
 Text between the definitions.
 
@@ -34,9 +34,9 @@ Autolink literals: \e[4mftp://example.com/file\e[24m, [ https://example.com afte
 bracket, WWW.example.com, [a]www.example.com, https://example.com/a] and
 \e[4mwww.example.com]\e[24m\e[2m (http://www.example.com])\e[22m.
 
-The first footnote, written first.
+\e[2m[1]\e[22m The first footnote, written first.
 
-The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+\e[2m[2]\e[22m The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
 === width 80, break and literal
 \e[1m\e[3m\e[4:2mConstructs that change with the parser\e[24m\e[23m\e[22m
 
@@ -47,8 +47,8 @@ undefined [text][nope].
 Reference image: [image: alt text]\e[2m (https://example.com/image.png)\e[22m and [image:
 img]\e[2m (https://example.com/image.png)\e[22m and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of
-the definitions below.
+A footnote reference\e[2m[1]\e[22m and another\e[2m[2]\e[22m, referenced in reverse order of
+the definitions below\e[2m[2][1]\e[22m.
 
 Text between the definitions.
 
@@ -70,9 +70,9 @@ bracket,
 WWW.example.com, [a]www.example.com, https://example.com/a] and \e[4mwww.example.com]\e[24m
 \e[2m(http://www.example.com])\e[22m.
 
-The first footnote, written first.
+\e[2m[1]\e[22m The first footnote, written first.
 
-The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
+\e[2m[2]\e[22m The second footnote, with a \e[4mlink\e[24m\e[2m (https://example.com)\e[22m.
 === width 10, default
 \e[1m\e[3m\e[4:2mConstructs\e[24m\e[23m\e[22m
 \e[1m\e[3m\e[4:2mthat\e[24m\e[23m\e[22m
@@ -109,15 +109,15 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
+reference\e[2m[1]\e[22m
 and
-another,
+another\e[2m[2]\e[22m,
 referenced
 in reverse
 order of
 the
 definitions
-below.
+below\e[2m[2][1]\e[22m.
 
 Text
 between
@@ -152,16 +152,18 @@ and
 \e[4mwww.example.com]\e[24m
 \e[2m(http://www.example.com])\e[22m.
 
-The first
-footnote,
-written
-first.
+\e[2m[1]\e[22m The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a
-\e[4mlink\e[24m
-\e[2m(https://example.com)\e[22m.
+\e[2m[2]\e[22m The
+    second
+    footnote,
+    with a
+    \e[4mlink\e[24m
+    \e[2m(https://example.com)\e[22m.
 === width 10, break and literal
 \e[1m\e[3m\e[4:2mConstructs\e[24m\e[23m\e[22m
 \e[1m\e[3m\e[4:2mthat\e[24m\e[23m\e[22m
@@ -198,15 +200,15 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
+reference\e[2m[1]\e[22m
 and
-another,
+another\e[2m[2]\e[22m,
 referenced
 in reverse
 order of
 the
 definitions
-below.
+below\e[2m[2][1]\e[22m.
 
 Text
 between
@@ -241,13 +243,15 @@ and
 \e[4mwww.example.com]\e[24m
 \e[2m(http://www.example.com])\e[22m.
 
-The first
-footnote,
-written
-first.
+\e[2m[1]\e[22m The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a
-\e[4mlink\e[24m
-\e[2m(https://example.com)\e[22m.
+\e[2m[2]\e[22m The
+    second
+    footnote,
+    with a
+    \e[4mlink\e[24m
+    \e[2m(https://example.com)\e[22m.

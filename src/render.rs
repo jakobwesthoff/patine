@@ -2,6 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+use std::collections::HashMap;
+
 use comrak::nodes::{
     AstNode, ListType, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
 };
@@ -230,6 +232,12 @@ pub struct Renderer {
     /// How many more table cells the document may lay out in tables. A
     /// table with more cells than that renders as rows of running text.
     table_cells_left: usize,
+
+    /// The number each referenced footnote shows, by footnote name. The
+    /// parser counts footnotes from 1 in the order of their first
+    /// reference; a definition has to look its number up by name as it
+    /// carries none of its own.
+    footnote_numbers: HashMap<String, u32>,
 }
 
 impl Renderer {
@@ -251,6 +259,7 @@ impl Renderer {
             long_words: LongWords::Overflow,
             block_depth: 0,
             table_cells_left: MAX_TABLE_CELLS,
+            footnote_numbers: HashMap::new(),
         }
     }
 
@@ -280,12 +289,25 @@ impl Renderer {
             NodeValue::Table(table) => self.render_table(node, table),
             NodeValue::ThematicBreak => self.render_thematic_break(),
             NodeValue::HtmlBlock(html) => self.render_block_html(html),
-            NodeValue::FootnoteDefinition(_) => {
-                self.nested(node, |renderer| renderer.render_children(node));
+            NodeValue::Document => {
+                self.footnote_numbers = footnote_numbers(node);
+                self.render_children(node);
             }
-            // Everything else, such as the document or an item outside a
-            // list, renders its children; a leaf we do not handle draws
-            // nothing.
+            NodeValue::FootnoteDefinition(definition) => {
+                // Only the definition a reference points to counts its
+                // references.
+                let number = (definition.total_references > 0).then(|| {
+                    *self
+                        .footnote_numbers
+                        .get(&definition.name)
+                        .expect("a definition with references has a reference node")
+                });
+                self.nested(node, |renderer| {
+                    renderer.render_footnote_definition(node, number);
+                });
+            }
+            // Everything else, such as an item outside a list, renders its
+            // children; a leaf we do not handle draws nothing.
             _ => self.render_children(node),
         }
     }
@@ -690,6 +712,40 @@ impl Renderer {
         }
     }
 
+    /// Render a footnote's blocks behind its number, `[1] `, the way a
+    /// list item renders behind its bullet: the text starts after the
+    /// number and every later line sits under it. A definition without a
+    /// number is one the parser left where it was written because a later
+    /// definition of the same name replaced it, or because no reference
+    /// points to it; it renders without a prefix.
+    fn render_footnote_definition(&mut self, definition: Node<'_>, number: Option<u32>) {
+        let Some(number) = number else {
+            self.render_children(definition);
+            return;
+        };
+
+        self.ensure_block_spacing();
+        self.write_indent();
+        let marker = format!("[{number}]");
+        self.push_style(Style::Dim);
+        self.emit(&marker);
+        self.pop_style();
+        self.emit(" ");
+        let prefix_width = text_width(&marker) + 1;
+        self.column += prefix_width;
+        self.text_start = self.column;
+        self.mark_drawn();
+
+        let segment = Segment::Item {
+            hang: prefix_width,
+            bare: true,
+        };
+        self.with_segment(segment, |renderer| {
+            renderer.render_list_item_children(definition, false);
+        });
+        self.ensure_line_break();
+    }
+
     fn render_thematic_break(&mut self) {
         self.ensure_block_spacing();
         self.write_indent();
@@ -786,6 +842,10 @@ impl Renderer {
                         }
                         NodeValue::Image(image) => {
                             self.render_image(node, &image.url);
+                            continue;
+                        }
+                        NodeValue::FootnoteReference(reference) => {
+                            self.render_footnote_reference(reference.ix);
                             continue;
                         }
                         NodeValue::Strong => Some(Style::Bold),
@@ -903,6 +963,14 @@ impl Renderer {
         self.write_dimmed_url_suffix(url);
     }
 
+    /// Write a footnote's number, `[1]`, dimmed. It joins the word before
+    /// it, so a line never breaks between the text and its number.
+    fn render_footnote_reference(&mut self, number: u32) {
+        self.push_style(Style::Dim);
+        self.write_word(&format!("[{number}]"));
+        self.pop_style();
+    }
+
     fn render_inline_code(&mut self, code: &str) {
         self.push_style(Style::ForegroundColor(CODE_COLOR));
         self.render_text(code);
@@ -931,8 +999,8 @@ impl Renderer {
     /// Append the source text below `parent` that rendering draws to
     /// `text`: the value of every text, inline code and raw HTML node,
     /// except raw HTML that [`Html::Drop`] leaves out. A soft break is a
-    /// line ending in it; a hard break, an image and a footnote reference
-    /// add nothing.
+    /// line ending in it; a footnote reference is its number in square
+    /// brackets; a hard break and an image add nothing.
     fn push_drawn_text(&self, parent: Node<'_>, text: &mut String) {
         let mut pending: Vec<Node<'_>> = parent.reverse_children().collect();
         while let Some(node) = pending.pop() {
@@ -943,10 +1011,10 @@ impl Renderer {
                     text.push_str(html);
                 }
                 NodeValue::SoftBreak => text.push('\n'),
-                NodeValue::HtmlInline(_)
-                | NodeValue::LineBreak
-                | NodeValue::Image(_)
-                | NodeValue::FootnoteReference(_) => {}
+                NodeValue::FootnoteReference(reference) => {
+                    text.push_str(&format!("[{}]", reference.ix));
+                }
+                NodeValue::HtmlInline(_) | NodeValue::LineBreak | NodeValue::Image(_) => {}
                 _ => pending.extend(node.reverse_children()),
             }
         }
@@ -1367,6 +1435,23 @@ fn html_block_lines(block: &NodeHtmlBlock) -> &str {
     } else {
         literal
     }
+}
+
+// =========================================================
+// Footnote numbers
+// =========================================================
+
+/// The number of each footnote the document refers to, by name. The
+/// parser sets it on every reference that has a definition; a reference
+/// without one is plain text by then.
+fn footnote_numbers(document: Node<'_>) -> HashMap<String, u32> {
+    document
+        .descendants()
+        .filter_map(|node| match &node.data.borrow().value {
+            NodeValue::FootnoteReference(reference) => Some((reference.name.clone(), reference.ix)),
+            _ => None,
+        })
+        .collect()
 }
 
 // =========================================================

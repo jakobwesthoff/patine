@@ -12,8 +12,8 @@ undefined [text][nope].
 Reference image: [image: alt text][dim] (https://example.com/image.png)[] and [image:
 img][dim] (https://example.com/image.png)[] and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of the definitions
-below.
+A footnote reference[dim][1][] and another[dim][2][], referenced in reverse order of the
+definitions below[dim][2][1][].
 
 Text between the definitions.
 
@@ -34,9 +34,9 @@ Autolink literals: [underline]ftp://example.com/file[], [ https://example.com af
 bracket, WWW.example.com, [a]www.example.com, https://example.com/a] and
 [underline]www.example.com][][dim] (http://www.example.com])[].
 
-The first footnote, written first.
+[dim][1][] The first footnote, written first.
 
-The second footnote, with a [underline]link[][dim] (https://example.com)[].
+[dim][2][] The second footnote, with a [underline]link[][dim] (https://example.com)[].
 === width 40
 [bold,italic,double-underline]Constructs that change with the parser[]
 
@@ -54,9 +54,9 @@ Reference image: [image: alt text]
 [dim](https://example.com/image.png)[] and
 undefined ![alt][nope].
 
-A footnote reference and another,
+A footnote reference[dim][1][] and another[dim][2][],
 referenced in reverse order of the
-definitions below.
+definitions below[dim][2][1][].
 
 Text between the definitions.
 
@@ -81,10 +81,10 @@ https://example.com/a] and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The first footnote, written first.
+[dim][1][] The first footnote, written first.
 
-The second footnote, with a [underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The second footnote, with a [underline]link[]
+    [dim](https://example.com)[].
 === width 20
 [bold,italic,double-underline]Constructs that[]
 [bold,italic,double-underline]change with the[]
@@ -108,11 +108,13 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference
-and another,
+A footnote
+reference[dim][1][] and
+another[dim][2][],
 referenced in
 reverse order of the
-definitions below.
+definitions
+below[dim][2][1][].
 
 Text between the
 definitions.
@@ -141,12 +143,14 @@ https://example.com/a]
 and [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The first footnote,
-written first.
+[dim][1][] The first
+    footnote,
+    written first.
 
-The second footnote,
-with a [underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The second
+    footnote, with a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 12
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that change[]
@@ -178,13 +182,14 @@ undefined
 ![alt][nope].
 
 A footnote
-reference
-and another,
+reference[dim][1][]
+and
+another[dim][2][],
 referenced
 in reverse
 order of the
 definitions
-below.
+below[dim][2][1][].
 
 Text between
 the
@@ -217,15 +222,18 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The second
-footnote,
-with a [underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 8
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that[]
@@ -264,16 +272,16 @@ undefined
 
 A
 footnote
-reference
+reference[dim][1][]
 and
-another,
+another[dim][2][],
 referenced
 in
 reverse
 order of
 the
 definitions
-below.
+below[dim][2][1][].
 
 Text
 between
@@ -306,18 +314,19 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The
-first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The
-second
-footnote,
-with a
-[underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with
+    a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 5
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that[]
@@ -358,9 +367,9 @@ undefined
 
 A
 footnote
-reference
+reference[dim][1][]
 and
-another,
+another[dim][2][],
 referenced
 in
 reverse
@@ -368,7 +377,7 @@ order
 of
 the
 definitions
-below.
+below[dim][2][1][].
 
 Text
 between
@@ -402,19 +411,19 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The
-first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The
-second
-footnote,
-with
-a
-[underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with
+    a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 3
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that[]
@@ -455,9 +464,9 @@ undefined
 
 A
 footnote
-reference
+reference[dim][1][]
 and
-another,
+another[dim][2][],
 referenced
 in
 reverse
@@ -465,7 +474,7 @@ order
 of
 the
 definitions
-below.
+below[dim][2][1][].
 
 Text
 between
@@ -502,19 +511,19 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The
-first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The
-second
-footnote,
-with
-a
-[underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with
+    a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 1
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that[]
@@ -555,9 +564,9 @@ undefined
 
 A
 footnote
-reference
+reference[dim][1][]
 and
-another,
+another[dim][2][],
 referenced
 in
 reverse
@@ -565,7 +574,7 @@ order
 of
 the
 definitions
-below.
+below[dim][2][1][].
 
 Text
 between
@@ -602,19 +611,19 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The
-first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The
-second
-footnote,
-with
-a
-[underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with
+    a
+    [underline]link[]
+    [dim](https://example.com)[].
 === width 0
 [bold,italic,double-underline]Constructs[]
 [bold,italic,double-underline]that[]
@@ -655,9 +664,9 @@ undefined
 
 A
 footnote
-reference
+reference[dim][1][]
 and
-another,
+another[dim][2][],
 referenced
 in
 reverse
@@ -665,7 +674,7 @@ order
 of
 the
 definitions
-below.
+below[dim][2][1][].
 
 Text
 between
@@ -702,16 +711,16 @@ and
 [underline]www.example.com][]
 [dim](http://www.example.com])[].
 
-The
-first
-footnote,
-written
-first.
+[dim][1][] The
+    first
+    footnote,
+    written
+    first.
 
-The
-second
-footnote,
-with
-a
-[underline]link[]
-[dim](https://example.com)[].
+[dim][2][] The
+    second
+    footnote,
+    with
+    a
+    [underline]link[]
+    [dim](https://example.com)[].

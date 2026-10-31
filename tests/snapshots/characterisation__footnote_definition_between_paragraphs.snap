@@ -5,6 +5,6 @@ expression: "pinned(\"first\\n\\n[^1]: the note\\n\\nsecond[^1]\", WIDTH, &defau
 "first\n\n[^1]: the note\n\nsecond[^1]"
 first
 
-second
+second[dim][1][]
 
-the note
+[dim][1][] the note

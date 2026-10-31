@@ -3,6 +3,6 @@ source: tests/characterisation.rs
 expression: "pinned(\"one[^a] two[^a] three[^missing]\\n\\n[^a]: the note\", WIDTH, &default())"
 ---
 "one[^a] two[^a] three[^missing]\n\n[^a]: the note"
-one two three[^missing]
+one[dim][1][] two[dim][1][] three[^missing]
 
-the note
+[dim][1][] the note

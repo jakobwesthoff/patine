@@ -421,11 +421,22 @@ inside a list item sits after the item's indent:
 
 ## Footnotes
 
-A footnote reference (`[^1]`) draws nothing. The definition (`[^1]: text`)
-renders as paragraphs at the end of the document, wherever it is written,
-in the order of the first references to the definitions. A definition that
-no reference points to is not shown. A reference without a definition stays
-text.
+A footnote reference (`[^1]`) shows a dimmed number in square brackets
+right after the text it follows: `a guide[1]`. Footnotes are numbered from 1
+in the order of their first references, whatever their labels in the source,
+and a second reference to a footnote shows the same number.
+
+The definition (`[^1]: text`) renders as paragraphs at the end of the
+document, wherever it is written, in the order of the first references to
+the definitions. The first line starts with the same dimmed number, `[1] `,
+and the lines after it sit under the text. A definition that no reference
+points to is not shown. A reference without a definition stays text.
+
+```
+See a guide[1] and more.
+
+[1] The note.
+```
 
 ## Horizontal Rules
 

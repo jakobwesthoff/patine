@@ -24,10 +24,11 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of the
-definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -55,12 +56,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Join, Drop, first line Some(9)
 Constructs
 that change with the
@@ -84,10 +85,11 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of the
-definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -115,12 +117,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Join, Literal, first line None
 Constructs that change
 with the parser
@@ -143,10 +145,11 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of the
-definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -174,12 +177,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Join, Literal, first line Some(9)
 Constructs
 that change with the
@@ -203,10 +206,11 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of the
-definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -234,12 +238,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Break, Drop, first line None
 Constructs that change
 with the parser
@@ -262,10 +266,12 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of
-the definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of
+the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -293,12 +299,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Break, Drop, first line Some(9)
 Constructs
 that change with the
@@ -322,10 +328,12 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of
-the definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of
+the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -353,12 +361,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Break, Literal, first line None
 Constructs that change
 with the parser
@@ -381,10 +389,12 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of
-the definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of
+the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -412,12 +422,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Break, Literal, first line Some(9)
 Constructs
 that change with the
@@ -441,10 +451,12 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of
-the definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of
+the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -472,12 +484,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Join, Drop, DimBar
 Constructs that change
 with the parser
@@ -500,10 +512,11 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of the
-definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -531,12 +544,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 24, Break, Literal, DimBar
 Constructs that change
 with the parser
@@ -559,10 +572,12 @@ and [image: img]
 and undefined
 ![alt][nope].
 
-A footnote reference and
-another, referenced in
-reverse order of
-the definitions below.
+A footnote reference[1]
+and another[2],
+referenced in reverse
+order of
+the definitions
+below[2][1].
 
 Text between the
 definitions.
@@ -590,12 +605,12 @@ https://example.com/a]
 and www.example.com]
 (http://www.example.com]).
 
-The first footnote,
-written first.
+[1] The first footnote,
+    written first.
 
-The second footnote,
-with a link
-(https://example.com).
+[2] The second footnote,
+    with a link
+    (https://example.com).
 === width 80, Join, Drop
 Constructs that change with the parser
 
@@ -606,8 +621,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of the definitions
-below.
+A footnote reference[1] and another[2], referenced in reverse order of the
+definitions below[2][1].
 
 Text between the definitions.
 
@@ -628,9 +643,9 @@ Autolink literals: ftp://example.com/file, [ https://example.com after a
 bracket, WWW.example.com, [a]www.example.com, https://example.com/a] and
 www.example.com] (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).
 === width 80, Break, Literal
 Constructs that change with the parser
 
@@ -641,8 +656,8 @@ undefined [text][nope].
 Reference image: [image: alt text] (https://example.com/image.png) and [image:
 img] (https://example.com/image.png) and undefined ![alt][nope].
 
-A footnote reference and another, referenced in reverse order of
-the definitions below.
+A footnote reference[1] and another[2], referenced in reverse order of
+the definitions below[2][1].
 
 Text between the definitions.
 
@@ -664,6 +679,6 @@ bracket,
 WWW.example.com, [a]www.example.com, https://example.com/a] and www.example.com]
 (http://www.example.com]).
 
-The first footnote, written first.
+[1] The first footnote, written first.
 
-The second footnote, with a link (https://example.com).
+[2] The second footnote, with a link (https://example.com).

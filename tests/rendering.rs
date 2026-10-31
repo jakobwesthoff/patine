@@ -2237,7 +2237,7 @@ fn list_in_a_footnote_definition_gets_a_blank_line() {
     // A footnote definition in an item renders at the end of the document.
     assert_eq!(
         plain_lines("- a\n\n  [^1]: - x\n\nb[^1]", 80),
-        ["• a", "", "b", "", "• x"]
+        ["• a", "", "b[1]", "", "[1] ", "  • x"]
     );
 }
 
@@ -3503,7 +3503,7 @@ fn a_collapsed_reference_image_renders_like_an_inline_image() {
 fn a_footnote_definition_renders_at_the_end_of_the_document() {
     assert_eq!(
         plain_lines("first\n\n[^1]: the note\n\nsecond[^1]", 80),
-        ["first", "", "second", "", "the note"]
+        ["first", "", "second[1]", "", "[1] the note"]
     );
 }
 
@@ -3514,8 +3514,78 @@ fn footnote_definitions_follow_the_order_of_their_first_reference() {
             "[^a]: defined first\n\n[^b]: defined second\n\nb[^b] then a[^a]",
             80
         ),
-        ["b then a", "", "defined second", "", "defined first"]
+        [
+            "b[1] then a[2]",
+            "",
+            "[1] defined second",
+            "",
+            "[2] defined first"
+        ]
     );
+}
+
+#[test]
+fn a_reference_shows_a_dimmed_number_after_its_text() {
+    assert_eq!(
+        render("See a guide[^1] and more.\n\n[^1]: The note."),
+        "See a guide[dim][1][] and more.\n\n[dim][1][] The note.\n"
+    );
+}
+
+#[test]
+fn a_repeated_reference_shows_the_same_number() {
+    assert_eq!(
+        plain_lines("a[^x] b[^x]\n\n[^x]: note", 80),
+        ["a[1] b[1]", "", "[1] note"]
+    );
+}
+
+#[test]
+fn numbers_follow_the_first_reference_whatever_the_label() {
+    assert_eq!(
+        plain_lines("[^a]: A\n\n[^perf]: P\n\nx[^perf] y[^a]", 80),
+        ["x[1] y[2]", "", "[1] P", "", "[2] A"]
+    );
+}
+
+#[test]
+fn a_note_wraps_and_continues_under_its_text() {
+    assert_eq!(
+        plain_lines(
+            "x[^1]\n\n[^1]: one two three four\n\n    second paragraph here",
+            12
+        ),
+        [
+            "x[1]",
+            "",
+            "[1] one two",
+            "    three",
+            "    four",
+            "",
+            "    second",
+            "    paragraph",
+            "    here"
+        ]
+    );
+}
+
+#[test]
+fn a_reference_without_a_definition_stays_text() {
+    assert_eq!(plain_lines("a[^missing]", 80), ["a[^missing]"]);
+}
+
+#[test]
+fn a_reference_inside_link_text_keeps_the_url_suffix() {
+    // The link text now reads `https://a.b[1]`, which is no longer the URL.
+    assert_eq!(
+        plain_lines("[https://a.b[^1]](https://a.b)\n\n[^1]: n", 80),
+        ["https://a.b[1] (https://a.b)", "", "[1] n"]
+    );
+}
+
+#[test]
+fn a_duplicate_unreferenced_definition_renders_in_place_without_a_number() {
+    assert_eq!(plain_lines("[^a]: one\n\n[^a]: two", 80), ["one"]);
 }
 
 #[test]

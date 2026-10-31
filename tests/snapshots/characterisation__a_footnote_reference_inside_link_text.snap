@@ -3,16 +3,16 @@ source: tests/characterisation.rs
 expression: "pinned_all(&[\"[a[^1]b](u)\\n\\n[^1]: n\", \"[a](u)[^1]\\n\\n[^1]: n\",\n\"[[^1]](u)\\n\\n[^1]: n\",], WIDTH, &default())"
 ---
 "[a[^1]b](u)\n\n[^1]: n"
-[underline]ab[][dim] (u)[]
+[underline]a[][dim,underline][1][][underline]b[][dim] (u)[]
 
-n
+[dim][1][] n
 ---
 "[a](u)[^1]\n\n[^1]: n"
-[underline]a[][dim] (u)[]
+[underline]a[][dim] (u)[1][]
 
-n
+[dim][1][] n
 ---
 "[[^1]](u)\n\n[^1]: n"
-[dim](u)[]
+[dim,underline][1][][dim] (u)[]
 
-n
+[dim][1][] n
