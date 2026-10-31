@@ -25,7 +25,7 @@ unmerged fixes.
 
 comrak 0.59.0 was released on 2026-10-26. It returns an AST and covers
 GitHub Flavored Markdown tables, strikethrough, task lists, autolinks and
-footnotes. The five inputs above parse with it without a panic.
+footnotes. The inputs above parse with it without a panic.
 
 ADR 2 chose markdown-rs over comrak for five reasons. Against comrak 0.59.0
 in patine:
