@@ -37,6 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   of 6 columns is always kept. Deeper levels keep the indent they
   reached. The prefix used to grow with every level, so a paragraph under
   deep nesting took one line per word.
+- On edge input where markdown-rs departed from CommonMark or GFM, the
+  output follows comrak: emphasis next to punctuation and the rule of 3
+  (`*a *b c**~ x`), tabs after a list marker in indented code
+  (`-\t\tcode`), a footnote reference inside link text
+  (`[a[^1]b](u)`) no longer prevents the link, entities in an angle
+  autolink are decoded (`<https://a.b/&amp;c>` shows `&`), a `1.` with
+  nothing after it is text (`-\n1.`), numeric references to control
+  characters decode to the character (`&#27;` is an escape character,
+  not U+FFFD), a pipe after a backslash pair in a table row is escaped
+  (`| a \\| b |`), and a byte order mark after front matter is dropped.
 - A document lays out 100,000 table cells at most. The parser fills every
   row up to the width of the header, so a table of a few kilobytes can
   have hundreds of thousands of cells. A table that would take the
@@ -46,6 +56,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- An indented code block that starts on the line of a list marker keeps
+  its lines together; a blank line used to separate them. A blank line
+  inside indented code in a quote carries the code's indent.
 - With `\r\n` or `\r` line endings, text on the line after an empty
   list marker belongs to the item, as it does with `\n`. It used to
   become a paragraph after an empty item.

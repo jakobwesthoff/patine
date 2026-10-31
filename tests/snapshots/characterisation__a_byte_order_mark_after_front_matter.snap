@@ -1,0 +1,25 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"---\\na: 1\\n---\\n\\u{feff}text\",\n\"---\\na: 1\\n---\\n\\u{feff}# After\", \"\\u{feff}# Title\", \"---\\n\\ntext\",], WIDTH,\n&default())"
+---
+"---\na: 1\n---\n\u{feff}text"
+  ---
+  [red]a[]: [yellow]1[]
+  ---
+
+text
+---
+"---\na: 1\n---\n\u{feff}# After"
+  ---
+  [red]a[]: [yellow]1[]
+  ---
+
+[bold,italic,double-underline]After[]
+---
+"\u{feff}# Title"
+[bold,italic,double-underline]Title[]
+---
+"---\n\ntext"
+────────────────────────────────────────────────────────────────────────────────
+
+text

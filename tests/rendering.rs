@@ -3658,3 +3658,11 @@ fn a_line_break_after_the_first_line_of_a_task_still_breaks() {
         ["☐ delta", "  beta"]
     );
 }
+
+#[test]
+fn a_scheme_in_capitals_is_a_link() {
+    assert_eq!(
+        render("HTTPS://example.com and Ftp://example.com"),
+        "[underline]HTTPS://example.com[] and [underline]Ftp://example.com[]\n"
+    );
+}

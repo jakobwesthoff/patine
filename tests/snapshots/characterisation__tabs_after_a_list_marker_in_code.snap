@@ -1,0 +1,16 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"-\\t\\tcode\", \"- a\\n\\n\\t\\tcode\", \"1.\\t\\tcode\"], WIDTH, &default())"
+---
+"-\t\tcode"
+• 
+    [yellow]  code[]
+---
+"- a\n\n\t\tcode"
+• a
+
+    [yellow]  code[]
+---
+"1.\t\tcode"
+1. 
+    [yellow] code[]

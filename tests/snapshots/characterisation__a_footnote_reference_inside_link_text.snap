@@ -1,0 +1,18 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"[a[^1]b](u)\\n\\n[^1]: n\", \"[a](u)[^1]\\n\\n[^1]: n\",\n\"[[^1]](u)\\n\\n[^1]: n\",], WIDTH, &default())"
+---
+"[a[^1]b](u)\n\n[^1]: n"
+[underline]ab[][dim] (u)[]
+
+n
+---
+"[a](u)[^1]\n\n[^1]: n"
+[underline]a[][dim] (u)[]
+
+n
+---
+"[[^1]](u)\n\n[^1]: n"
+[dim](u)[]
+
+n

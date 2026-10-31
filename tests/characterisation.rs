@@ -468,3 +468,146 @@ fn line_endings_inside_nodes() {
         assert!(!snapshot.is_empty());
     }
 }
+
+// =========================================================
+// Edge input
+// =========================================================
+
+/// Emphasis delimiters next to punctuation, and the rule of 3.
+#[test]
+fn emphasis_next_to_punctuation() {
+    assert_snapshot!(pinned_all(
+        &[
+            "*a *b c**~ x",
+            "~~**a b* c* d~~",
+            "a**_**.",
+            "*b**_. ",
+            "*a **b*c** d*",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+#[test]
+fn tabs_after_a_list_marker_in_code() {
+    assert_snapshot!(pinned_all(
+        &["-\t\tcode", "- a\n\n\t\tcode", "1.\t\tcode"],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// A footnote reference is no link text of its own, but it can stand inside
+/// the text of a link.
+#[test]
+fn a_footnote_reference_inside_link_text() {
+    assert_snapshot!(pinned_all(
+        &[
+            "[a[^1]b](u)\n\n[^1]: n",
+            "[a](u)[^1]\n\n[^1]: n",
+            "[[^1]](u)\n\n[^1]: n",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+#[test]
+fn entities_in_an_angle_autolink() {
+    assert_snapshot!(pinned_all(
+        &[
+            "<https://a.b/&amp;c>",
+            "<https://a.b/?q=1&amp;r=2>",
+            "<mailto:a@b.co>",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// A marker with nothing after it at the end of the document or before a
+/// line break.
+#[test]
+fn an_ordered_marker_without_text_at_the_end() {
+    assert_snapshot!(pinned_all(
+        &[
+            "1.",
+            "text\n1.",
+            "-\n1.",
+            "> 1.",
+            "> aa\n1.",
+            "> \\\n1.",
+            "a\\\n1. b",
+            "a  \n1. b",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// Control characters in the output are written as escapes, so that the
+/// snapshot holds none.
+#[test]
+fn numeric_references_to_control_characters() {
+    let inputs = [
+        "&#27;x",
+        "&#1;&#128;&#x9f;",
+        "&#0;",
+        "&#xD800;",
+        "&#x110000;",
+        "&#x7f;",
+    ];
+    let rendered: String = inputs
+        .iter()
+        .map(|markdown| {
+            let lines = patine::render_lines_with(markdown, WIDTH, &default());
+            let texts: Vec<String> = lines.iter().map(ToString::to_string).collect();
+            format!("{markdown:?}\n{texts:?}\n")
+        })
+        .collect();
+    assert_snapshot!(rendered);
+}
+
+#[test]
+fn a_backslash_before_the_pipe_of_a_table_cell() {
+    assert_snapshot!(pinned_all(
+        &[
+            "| a \\\\| b |\n|---|---|\n| c | d |",
+            "| a | b |\n|---|---|\n| c \\\\| d | e |",
+            "| a | b |\n|---|---|\n| c \\| d | e |",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+#[test]
+fn a_byte_order_mark_after_front_matter() {
+    assert_snapshot!(pinned_all(
+        &[
+            "---\na: 1\n---\n\u{feff}text",
+            "---\na: 1\n---\n\u{feff}# After",
+            "\u{feff}# Title",
+            "---\n\ntext",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// Indented code that starts on a line with a quote bar or a list marker.
+#[test]
+fn indented_code_that_starts_on_a_quote_or_list_line() {
+    assert_snapshot!(pinned_all(
+        &[
+            ">     code1\n>     code2",
+            ">     a\n>\n>     b",
+            "-     x = 1\n      y",
+            "1.     x\n       y",
+            "-     x\n\n      y",
+        ],
+        WIDTH,
+        &default()
+    ));
+}

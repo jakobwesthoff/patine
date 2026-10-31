@@ -122,8 +122,8 @@ inline link it stands for, with the URL of its definition. The
 definition line (`[ref]: url`) draws nothing, and a reference without a
 definition stays text.
 
-A bare address is a link when it starts with `http://`, `https://`,
-`ftp://` or `www.` in lowercase. It is not a link while a `[` before it
+A bare address is a link when it starts with `http://`, `https://` or
+`ftp://` in any letter case, or with `www.` in lowercase. It is not a link while a `[` before it
 is still open, and a `www.` address is not a link right after a `]`. A
 `]` straight after the address belongs to it.
 
@@ -329,9 +329,10 @@ area   pane
   wider than the width only where one grapheme, such as a wide
   character or an emoji, is wider than the room it gets.
 - **Empty cells**: an empty header cell has an empty name; when every
-  name is empty, values start at the left edge. A field whose cell is empty or missing shows its
-  name alone. Every record has the same lines in the same order, so a
-  field without a name or a value is a blank line.
+  name is empty, values start at the left edge. A field whose cell is
+  empty or missing shows its name alone. Every record has the same lines
+  in the same order, so a field without a name or a value is a blank
+  line.
 - **Header only**: a table without data rows shows its names, one per
   line.
 - **Alignment** from the delimiter row does not apply; names and values

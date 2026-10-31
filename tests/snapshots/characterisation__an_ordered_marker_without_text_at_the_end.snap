@@ -1,0 +1,34 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"1.\", \"text\\n1.\", \"-\\n1.\", \"> 1.\", \"> aa\\n1.\", \"> \\\\\\n1.\",\n\"a\\\\\\n1. b\", \"a  \\n1. b\",], WIDTH, &default())"
+---
+"1."
+1.
+---
+"text\n1."
+text 1.
+---
+"-\n1."
+• 
+
+1.
+---
+"> 1."
+[cyan]│ []1.
+---
+"> aa\n1."
+[cyan]│ []aa 1.
+---
+"> \\\n1."
+[cyan]│ []
+[cyan]│ []1.
+---
+"a\\\n1. b"
+a\
+
+1. b
+---
+"a  \n1. b"
+a
+
+1. b

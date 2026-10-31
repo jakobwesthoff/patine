@@ -1,0 +1,28 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\">     code1\\n>     code2\", \">     a\\n>\\n>     b\",\n\"-     x = 1\\n      y\", \"1.     x\\n       y\", \"-     x\\n\\n      y\",], WIDTH,\n&default())"
+---
+">     code1\n>     code2"
+[cyan]│ []  [yellow]code1[]
+[cyan]│ []  [yellow]code2[]
+---
+">     a\n>\n>     b"
+[cyan]│ []  [yellow]a[]
+[cyan]│ []  
+[cyan]│ []  [yellow]b[]
+---
+"-     x = 1\n      y"
+• 
+    [yellow]x = 1[]
+    [yellow]y[]
+---
+"1.     x\n       y"
+1. 
+    [yellow]x[]
+    [yellow]y[]
+---
+"-     x\n\n      y"
+• 
+    [yellow]x[]
+    
+    [yellow]y[]

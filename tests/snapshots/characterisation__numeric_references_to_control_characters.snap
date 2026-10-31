@@ -1,0 +1,16 @@
+---
+source: tests/characterisation.rs
+expression: rendered
+---
+"&#27;x"
+["\u{1b}x"]
+"&#1;&#128;&#x9f;"
+["\u{1}\u{80}\u{9f}"]
+"&#0;"
+["�"]
+"&#xD800;"
+["�"]
+"&#x110000;"
+["�"]
+"&#x7f;"
+["\u{7f}"]

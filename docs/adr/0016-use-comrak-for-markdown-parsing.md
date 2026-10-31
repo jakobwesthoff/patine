@@ -69,13 +69,14 @@ The renderer nests block quotes, list items and footnote definitions 64
 levels deep. Blocks below that depth render in document order at the indent
 they have reached, without a bar or bullet of their own, so their text is
 kept. The indent and the bars stop growing before a line is left with less
-than 20 columns of text, and a prefix of 6 columns is always kept. Inline content is walked with a stack of its own, not by recursion.
-A thread with a 2 MiB stack renders documents nested 100,000 block quotes
-deep or 20,000 emphasis levels deep.
+than 20 columns of text, and a prefix of 6 columns is always kept. Inline
+content is walked with a stack of its own, not by recursion. A thread with a
+2 MiB stack renders documents nested 100,000 block quotes deep or 20,000
+emphasis levels deep.
 
-Everything else renders as before. Soft breaks, code block languages,
-HTML handling, tables, wrapping, line endings and glued runs of inline
-content are unchanged.
+Documents that follow CommonMark and GFM render as before. On edge input
+where markdown-rs departed from CommonMark or GFM, the output now follows
+comrak (see the list below).
 
 ### Output that changes
 
@@ -106,6 +107,26 @@ content are unchanged.
   - A `www.` address is not a link right after a `]`, and is a link only
     in lowercase.
   - A `]` straight after an address belongs to its link.
+- Edge input where markdown-rs departed from CommonMark or GFM follows
+  comrak:
+  - Emphasis next to punctuation and the rule of 3 (`*a *b c**~ x`,
+    `~~**a b* c* d~~`).
+  - Tabs after a list marker in indented code (`-\t\tcode`).
+  - A footnote reference inside link text (`[a[^1]b](u)`) no longer
+    prevents the link.
+  - Entities in an angle autolink are decoded (`<https://a.b/&amp;c>`
+    shows `&`).
+  - A `1.` with nothing after it is text, not an empty list item
+    (`-\n1.`, `> aa\n1.`).
+  - Numeric references to control characters decode to the character
+    (`&#27;` is an escape character, not U+FFFD).
+  - In a table row, a pipe after a backslash pair (`\\|`) is escaped and
+    does not end the cell, so `| a \\| b |` over a two-column delimiter
+    row is no table.
+  - A byte order mark after front matter is dropped.
+- An indented code block that starts on the line of a list marker keeps
+  its lines together; a blank line used to separate them. A blank line
+  inside indented code in a quote carries the code's indent.
 - A list item that starts with an empty line in a document with `\r\n` or
   `\r` line endings (`-\r\n  text`) holds the text that follows, as it does
   with `\n` line endings. Before, the text became a paragraph after an
@@ -113,9 +134,12 @@ content are unchanged.
 
 ## Consequences
 
-- ADRs 3, 6, 7, 8, 9 and 14 describe markdown-rs and what it produced
-  when they were written. They are not edited.
-- comrak recognises no list item and no footnote definition on a line after
-  99 other containers (block quote markers or list markers) opened on
-  that line; `> > > ...` followed by `- x` with 99 or more `>` renders
-  `- x` as text.
+- ADRs 3, 6, 7, 8, 9 and 14 are not edited. Each describes markdown-rs
+  as it was when written:
+  - ADR 3 walks the tree markdown-rs returns and names its `Node` type.
+  - ADR 6 says markdown-rs reports syntax errors only for MDX.
+  - ADR 7 records what markdown-rs 1.0 produces for its inputs.
+  - ADR 8 describes markdown-rs making every inline element its own node.
+  - ADR 9 records what markdown-rs 1.0 produces for links.
+  - ADR 14 describes a column past the header's last cell, which comrak
+    drops.

@@ -1,0 +1,12 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"<https://a.b/&amp;c>\", \"<https://a.b/?q=1&amp;r=2>\",\n\"<mailto:a@b.co>\",], WIDTH, &default())"
+---
+"<https://a.b/&amp;c>"
+[underline]https://a.b/&c[]
+---
+"<https://a.b/?q=1&amp;r=2>"
+[underline]https://a.b/?q=1&r=2[]
+---
+"<mailto:a@b.co>"
+[underline]mailto:a@b.co[]

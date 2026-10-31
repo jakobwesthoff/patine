@@ -1,0 +1,18 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"*a *b c**~ x\", \"~~**a b* c* d~~\", \"a**_**.\", \"*b**_. \",\n\"*a **b*c** d*\",], WIDTH, &default())"
+---
+"*a *b c**~ x"
+[italic]a b c[]~ x
+---
+"~~**a b* c* d~~"
+[italic,strike]a b c[][strike] d[]
+---
+"a**_**."
+a**_**.
+---
+"*b**_. "
+[italic]b[]*_.
+---
+"*a **b*c** d*"
+[italic]a **b[]c** d*
