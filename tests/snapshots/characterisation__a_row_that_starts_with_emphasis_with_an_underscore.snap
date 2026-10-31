@@ -1,0 +1,17 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[&format!(\"H | O\\n--|--\\n{row}\"),\n&format!(\"| H | O |\\n|---|---|\\n{row}\"),], WIDTH, &default())"
+---
+"H | O\n--|--\n_x_ | y"
+┌───┬───┐
+│ [bold]H[] │ [bold]O[] │
+├───┼───┤
+│ [italic]x[] │ y │
+└───┴───┘
+---
+"| H | O |\n|---|---|\n_x_ | y"
+┌───┬───┐
+│ [bold]H[] │ [bold]O[] │
+├───┼───┤
+│ [italic]x[] │ y │
+└───┴───┘

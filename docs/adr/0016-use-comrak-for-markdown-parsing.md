@@ -124,6 +124,13 @@ comrak (see the list below).
     does not end the cell, so `| a \\| b |` over a two-column delimiter
     row is no table.
   - A byte order mark after front matter is dropped.
+- The text of an ATX heading keeps a `#` it starts with (`## #42: Fix`).
+  Before, it was dropped.
+- A row of a table without a pipe at its start that starts with inline
+  code, emphasis or strikethrough (`` `x` | y ``) stays in the table.
+  Before, it ended the table.
+- A bare address that ends in its domain right before the `_` that closes
+  emphasis is no link (`_https://example.com_`). Before, it was one.
 - An indented code block that starts on the line of a list marker keeps
   its lines together; a blank line used to separate them. A blank line
   inside indented code in a quote carries the code's indent.

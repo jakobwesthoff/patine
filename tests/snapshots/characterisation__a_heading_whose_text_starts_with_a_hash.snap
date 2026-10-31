@@ -1,0 +1,24 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"# #tag\", \"## #42: Fix the bug\", \"### # alone\", \"# C# and F#\",\n\"## #1 priority ##\", \"# #\", \"# foo #bar\",], WIDTH, &default())"
+---
+"# #tag"
+[bold,italic,double-underline]#tag[]
+---
+"## #42: Fix the bug"
+[bold,underline]#42: Fix the bug[]
+---
+"### # alone"
+[bold]# alone[]
+---
+"# C# and F#"
+[bold,italic,double-underline]C# and F#[]
+---
+"## #1 priority ##"
+[bold,underline]#1 priority[]
+---
+"# #"
+
+---
+"# foo #bar"
+[bold,italic,double-underline]foo #bar[]

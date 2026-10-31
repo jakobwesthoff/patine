@@ -56,6 +56,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- The text of an ATX heading keeps a `#` it starts with: `## #42: Fix`
+  showed `42: Fix`.
+- A row of a table that has no pipe at its start and starts with inline
+  code, emphasis or strikethrough (`*x* | y`, `~~x~~ | y`) stays in the
+  table. It used to end the table.
+- A bare address that ends in its domain right before the `_` that closes
+  emphasis is no link (`_https://example.com_`). It used to be one.
 - An indented code block that starts on the line of a list marker keeps
   its lines together; a blank line used to separate them. A blank line
   inside indented code in a quote carries the code's indent.

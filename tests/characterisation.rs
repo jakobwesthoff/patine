@@ -611,3 +611,64 @@ fn indented_code_that_starts_on_a_quote_or_list_line() {
         &default()
     ));
 }
+
+/// Text in an ATX heading that starts with `#`.
+#[test]
+fn a_heading_whose_text_starts_with_a_hash() {
+    assert_snapshot!(pinned_all(
+        &[
+            "# #tag",
+            "## #42: Fix the bug",
+            "### # alone",
+            "# C# and F#",
+            "## #1 priority ##",
+            "# #",
+            "# foo #bar",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// A bare address right before the `_` that closes emphasis.
+#[test]
+fn a_bare_address_before_a_closing_underscore() {
+    assert_snapshot!(pinned_all(
+        &[
+            "_https://z.com_",
+            "_https://z.com/path_",
+            "_www.z.com_",
+            "https://z.com_",
+            "_see https://z.com_",
+            "*https://z.com*",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// A row of a table without a pipe at its start that starts with inline
+/// code, emphasis or strikethrough: it belongs to the table, whichever
+/// character starts it.
+#[test]
+fn a_row_without_a_leading_pipe_that_starts_with_inline_markup() {
+    for (name, row) in [
+        ("code", "`x` | y"),
+        ("emphasis with a star", "*x* | y"),
+        ("strong", "**x** | y"),
+        ("emphasis with an underscore", "_x_ | y"),
+        ("strikethrough", "~~x~~ | y"),
+    ] {
+        assert_snapshot!(
+            format!("a_row_that_starts_with_{}", name.replace(' ', "_")),
+            pinned_all(
+                &[
+                    &format!("H | O\n--|--\n{row}"),
+                    &format!("| H | O |\n|---|---|\n{row}"),
+                ],
+                WIDTH,
+                &default()
+            )
+        );
+    }
+}

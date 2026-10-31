@@ -1,0 +1,21 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"_https://z.com_\", \"_https://z.com/path_\", \"_www.z.com_\",\n\"https://z.com_\", \"_see https://z.com_\", \"*https://z.com*\",], WIDTH,\n&default())"
+---
+"_https://z.com_"
+[italic]https://z.com[]
+---
+"_https://z.com/path_"
+[italic,underline]https://z.com/path[]
+---
+"_www.z.com_"
+[italic]www.z.com[]
+---
+"https://z.com_"
+https://z.com_
+---
+"_see https://z.com_"
+[italic]see https://z.com[]
+---
+"*https://z.com*"
+[italic,underline]https://z.com[]
