@@ -192,9 +192,10 @@ pub struct Renderer {
     pending_space: Option<TextStyle>,
 
     /// Stack of active inline styles. Styles are pushed when entering a
-    /// styled node and popped when leaving. Content written in between is
-    /// styled from the whole stack (see `current_style`).
-    style_stack: Vec<Style>,
+    /// styled node and popped when leaving. Each entry is the style of the
+    /// whole stack up to it, so the style for content written now is the
+    /// top entry (see `current_style`).
+    style_stack: Vec<TextStyle>,
 
     /// The blocks around the current position, outermost first. They make
     /// up the prefix of every line, its width and the continuation indent
@@ -1200,7 +1201,17 @@ impl Renderer {
     // =========================================================
 
     fn push_style(&mut self, style: Style) {
-        self.style_stack.push(style);
+        let mut folded = self.current_style();
+        match style {
+            Style::Bold => folded.bold = true,
+            Style::Italic => folded.italic = true,
+            Style::Underline => folded.underline = Underline::Single,
+            Style::DoubleUnderline => folded.underline = Underline::Double,
+            Style::Dim => folded.dim = true,
+            Style::Strikethrough => folded.strikethrough = true,
+            Style::ForegroundColor(color) => folded.foreground = Some(color),
+        }
+        self.style_stack.push(folded);
     }
 
     fn pop_style(&mut self) {
@@ -1214,19 +1225,7 @@ impl Renderer {
     /// entry wins: a link (single underline) inside an H1 (double underline)
     /// is single-underlined.
     fn current_style(&self) -> TextStyle {
-        let mut style = TextStyle::default();
-        for entry in &self.style_stack {
-            match *entry {
-                Style::Bold => style.bold = true,
-                Style::Italic => style.italic = true,
-                Style::Underline => style.underline = Underline::Single,
-                Style::DoubleUnderline => style.underline = Underline::Double,
-                Style::Dim => style.dim = true,
-                Style::Strikethrough => style.strikethrough = true,
-                Style::ForegroundColor(color) => style.foreground = Some(color),
-            }
-        }
-        style
+        self.style_stack.last().copied().unwrap_or_default()
     }
 }
 
