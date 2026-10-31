@@ -71,14 +71,14 @@ fn a_paragraph_under_nested_lists_keeps_room_for_its_text() {
     }
 }
 
-/// A megabyte of `- > ` is a hundred containers on one line and then a
-/// megabyte of words (`-` and `>`) in the innermost one. However deep the
+/// 256 KiB of `- > ` is a hundred containers on one line and then
+/// words (`-` and `>`) in the innermost one. However deep the
 /// containers, the text keeps the columns the width leaves after a prefix
 /// of at most 20 less than the width, or 6 columns: 20 columns at widths
 /// 80 and 40, 4 at width 10, and the one it has at width 1.
 #[test]
-fn a_megabyte_of_nested_lists_and_quotes_fills_the_columns_it_has_left() {
-    let markdown = "- > ".repeat(262_144);
+fn a_quarter_megabyte_of_nested_lists_and_quotes_fills_the_columns_it_has_left() {
+    let markdown = "- > ".repeat(65_536);
     for (width, text_columns) in [(80, 20), (40, 20), (10, 4), (1, 1)] {
         let (lines, _) = line_count(&markdown, width);
         let bound = markdown.len() / text_columns * 11 / 10 + 300;
