@@ -1207,8 +1207,8 @@ impl Renderer {
 
     /// The levels among the first `segments` of the line prefix that are
     /// drawn, with the width each is drawn at. The prefix stops growing
-    /// before it leaves less than [`MIN_TEXT_WIDTH`] columns of text, or
-    /// before it is wider than [`KEPT_PREFIX_WIDTH`], and a document nested
+    /// before it leaves less than [`MIN_TEXT_WIDTH`] columns of text, but
+    /// may always take up to [`KEPT_PREFIX_WIDTH`] columns, and a document nested
     /// deeper than that keeps the indent it has reached.
     fn drawn_prefix(&self, segments: usize) -> impl Iterator<Item = (Segment, usize)> + '_ {
         let limit = self
