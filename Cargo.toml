@@ -1,6 +1,6 @@
 [package]
 name = "patine"
-version = "1.9.0"
+version = "2.0.0"
 edition = "2024"
 # `time` 0.3.47, which syntect pulls in through plist, needs 1.88, and so
 # does a let chain in src/highlight.rs. comrak and its dependency

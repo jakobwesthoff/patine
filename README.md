@@ -75,7 +75,7 @@ The binary and its dependencies (`clap`, `crossterm`) sit behind the default `cl
 
 ```toml
 [dependencies]
-patine = { version = "1.6", default-features = false }
+patine = { version = "2.0", default-features = false }
 ```
 
 ```rust
