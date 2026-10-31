@@ -132,7 +132,13 @@ fn line_endings(markdown: &str) -> String {
                 ("break and literal", break_and_literal()),
             ] {
                 let title = format!("{name}, width {width}, {options_name}");
-                out.push_str(&titled(&title, &plain(&text, width, &options)));
+                let rendered = plain(&text, width, &options);
+                assert_eq!(
+                    rendered,
+                    plain(markdown, width, &options),
+                    "{title}: the line endings change the output"
+                );
+                out.push_str(&titled(&title, &rendered));
             }
         }
     }

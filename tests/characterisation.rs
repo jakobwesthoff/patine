@@ -425,3 +425,46 @@ fn soft_breaks_next_to_other_inline_content() {
     let break_ = pinned_all(&inputs, WIDTH, &break_and_literal());
     assert_snapshot!(format!("{join}=== soft breaks as breaks ===\n{break_}"));
 }
+
+// =========================================================
+// Line endings
+// =========================================================
+
+/// Inputs whose nodes hold the line ending of the source: a code span,
+/// raw HTML, link text and titles, alt text. Each renders the same with
+/// every kind of line ending, which `pinned` asserts.
+#[test]
+fn line_endings_inside_nodes() {
+    let inputs = [
+        "`a\nb`",
+        "`a\n\nb`",
+        "``\n*\n`` after",
+        "`` \nspaced\n `` after",
+        "- ``\ncode\n``",
+        "[^a]\n\n[^a]:\n\n    indented\n\nafter",
+        "[^a]\n\n[^a]: note\n\n    indented\n",
+        "x `a\nb` y",
+        "<span\nclass=\"x\">t</span>",
+        "[a\nb](u)",
+        "[a](u \"t\nx\")",
+        "![a\nb](u)",
+        "- `a\nb`\n- c",
+        "> `a\nb`",
+        "# heading `a b`",
+        "| `a b` | c |\n|---|---|\n| d | e |",
+        "text\\\nafter break",
+        "a  \nb",
+        "[ref]\n\n[ref]: /u\n\"title\"",
+        "<!-- c\nd -->",
+        "```\ncode\n```\ntext",
+        "    code\n    more",
+        "line one\nline two\n\nparagraph",
+        "-\n  text after an empty marker",
+        "1.\n   text after an empty marker",
+    ];
+    let break_and_literal = break_and_literal();
+    for options in [default(), break_and_literal] {
+        let snapshot = pinned_all(&inputs, WIDTH, &options);
+        assert!(!snapshot.is_empty());
+    }
+}

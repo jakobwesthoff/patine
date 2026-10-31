@@ -61,13 +61,31 @@ fn attribute_names(style: TextStyle) -> Vec<&'static str> {
     names
 }
 
+/// `markdown` with every line ending `\n`.
+pub fn with_lf(markdown: &str) -> String {
+    markdown.replace("\r\n", "\n").replace('\r', "\n")
+}
+
 /// The input as a Rust string literal, then the rendered lines in the
 /// canonical form, so a snapshot shows what was rendered next to its result.
+///
+/// The input renders the same with `\r\n` and with `\r` as with `\n` as
+/// its line endings.
 pub fn pinned(markdown: &str, width: usize, options: &RenderOptions) -> String {
-    format!(
-        "{markdown:?}\n{}",
-        serialize(&render_lines_with(markdown, width, options))
-    )
+    let rendered = serialize(&render_lines_with(markdown, width, options));
+    let lf = with_lf(markdown);
+    let expected = serialize(&render_lines_with(&lf, width, options));
+    for (name, text) in [
+        ("crlf", lf.replace('\n', "\r\n")),
+        ("cr", lf.replace('\n', "\r")),
+    ] {
+        assert_eq!(
+            serialize(&render_lines_with(&text, width, options)),
+            expected,
+            "{markdown:?} with {name} line endings"
+        );
+    }
+    format!("{markdown:?}\n{rendered}")
 }
 
 /// [`pinned`] for every input, one after the other, separated by a rule.

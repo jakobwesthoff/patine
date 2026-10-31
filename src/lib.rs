@@ -170,8 +170,13 @@ pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
 pub fn render_lines_with(input: &str, width: usize, options: &RenderOptions) -> Vec<StyledLine> {
     let (front_matter, markdown) = front_matter::split(input);
 
+    // The parser keeps the line ending of the source in some nodes, such as
+    // the text of a code span, so a document reads the same only once every
+    // line ending is the same one.
+    let markdown = line_endings::normalize_line_endings(markdown);
+
     let arena = comrak::Arena::new();
-    let root = comrak::parse_document(&arena, markdown, &parse_options());
+    let root = comrak::parse_document(&arena, &markdown, &parse_options());
 
     let mut renderer = render::Renderer::new(width, *options);
     if let Some(front_matter) = front_matter {

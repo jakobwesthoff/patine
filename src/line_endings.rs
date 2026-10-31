@@ -2,12 +2,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-//! CommonMark line endings: `\n`, `\r\n` and a lone `\r`. Raw HTML, code
-//! and front matter keep them in their values as they appear in the
-//! source, so every place that turns such a value into output lines splits
-//! at all three. A `\r` that reached a span would move the terminal's
-//! cursor back to the start of the line and let the rest of the line
-//! overwrite what came before it.
+//! CommonMark line endings: `\n`, `\r\n` and a lone `\r`. The parser reads
+//! a document with `\n` only (see [`normalize_line_endings`]). Front
+//! matter keeps its line endings as they appear in the source, and so does
+//! the code [`highlight`](crate::highlight) is given, so every place that
+//! turns such a text into output lines splits at all three. A `\r` that
+//! reached a span would move the terminal's cursor back to the start of
+//! the line and let the rest of the line overwrite what came before it.
+
+use std::borrow::Cow;
+
+/// `text` with every line ending written as `\n`. Text without a `\r` is
+/// returned as it is.
+pub(crate) fn normalize_line_endings(text: &str) -> Cow<'_, str> {
+    if text.contains('\r') {
+        Cow::Owned(text.replace("\r\n", "\n").replace('\r', "\n"))
+    } else {
+        Cow::Borrowed(text)
+    }
+}
 
 /// Split `text` at CommonMark line endings. Every line ending separates
 /// two pieces, so text that ends in one yields an empty last piece, and
@@ -69,6 +82,18 @@ mod tests {
 
     fn verbatim(text: &str) -> Vec<&str> {
         verbatim_lines(text).collect()
+    }
+
+    #[test]
+    fn normalize_writes_every_line_ending_as_a_line_feed() {
+        assert_eq!(
+            normalize_line_endings("a\r\nb\rc\nd\r\r\ne"),
+            "a\nb\nc\nd\n\ne"
+        );
+        assert!(matches!(
+            normalize_line_endings("a\nb"),
+            Cow::Borrowed("a\nb")
+        ));
     }
 
     #[test]
