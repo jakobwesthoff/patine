@@ -32,12 +32,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `[https://example.com]`, is not a link, and neither is a `www.`
   address right after a `]` or in capitals (`WWW.example.com`). A `]`
   straight after an address belongs to its link.
-- With `\r\n` or `\r` line endings, text on the line after an empty
-  list marker belongs to the item, as it does with `\n`. It used to
-  become a paragraph after an empty item.
 
 ### Fixed
 
+- With `\r\n` or `\r` line endings, text on the line after an empty
+  list marker belongs to the item, as it does with `\n`. It used to
+  become a paragraph after an empty item.
+- Deeply nested documents render within the stack of a 2 MiB thread, where
+  a stack overflow would abort the process. Block quotes, list items and
+  footnote definitions nest 64 levels deep; blocks below that depth render
+  at the indent of the 64th level, in document order, without a bar or
+  bullet of their own. Their text is kept. Emphasis, links and other
+  inline content nest as deep as the source does.
 - Markdown that made the parser panic no longer does: `[a]:b\n=\n=+\r-`,
   `1. ~~~\n*` and `---\n\n[^a]:` are examples. markdown-rs 1.0.0, the
   previous parser, panics on small inputs and is no longer maintained.

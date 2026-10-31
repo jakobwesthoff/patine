@@ -65,6 +65,13 @@ the first later line that is the same fence.
 Image alt text is the text of the image's children, as before. A hard
 break, a nested image and a footnote reference add nothing to it.
 
+The renderer nests block quotes, list items and footnote definitions 64
+levels deep. Blocks below that depth render in document order at the indent
+of the 64th level, without a bar or bullet of their own, so their text is
+kept. Inline content is walked with a stack of its own, not by recursion.
+A thread with a 2 MiB stack renders documents nested 100,000 block quotes
+deep or 20,000 emphasis levels deep.
+
 Everything else renders as before. Soft breaks, code block languages,
 HTML handling, tables, wrapping, line endings and glued runs of inline
 content are unchanged.
@@ -97,7 +104,7 @@ content are unchanged.
 - A list item that starts with an empty line in a document with `\r\n` or
   `\r` line endings (`-\r\n  text`) holds the text that follows, as it does
   with `\n` line endings. Before, the text became a paragraph after an
-  empty item.
+  empty item. Line endings no longer change how a document reads here.
 
 ## Consequences
 

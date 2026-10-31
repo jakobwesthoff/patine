@@ -11,6 +11,14 @@ use crate::line_endings::{split_line_endings, trim_final_line_ending, verbatim_l
 use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
 use crate::styled::{AnsiColor, StyledLine, TextStyle, Underline, text_width};
 
+/// How many block containers (block quotes, list items, footnote
+/// definitions) deep the renderer nests them. A container below that depth
+/// adds no bar, bullet or indent of its own: the blocks in it render at the
+/// indent of the container at the limit, in document order. Rendering
+/// recurses once per level, and a thread with a 2 MiB stack in a debug
+/// build holds well over this many.
+const MAX_BLOCK_DEPTH: usize = 64;
+
 /// A node of the parsed document. Both lifetimes are the arena's: the
 /// tree hands out nodes only as `&'a AstNode<'a>`.
 pub(crate) type Node<'a> = &'a AstNode<'a>;
@@ -198,6 +206,10 @@ pub struct Renderer {
 
     /// What happens to a word wider than the line.
     long_words: LongWords,
+
+    /// How many block containers the renderer is in, up to
+    /// [`MAX_BLOCK_DEPTH`].
+    block_depth: usize,
 }
 
 impl Renderer {
@@ -217,6 +229,7 @@ impl Renderer {
             prefix: Vec::new(),
             options,
             long_words: LongWords::Overflow,
+            block_depth: 0,
         }
     }
 
@@ -233,29 +246,25 @@ impl Renderer {
     // Node dispatch
     // =========================================================
 
+    /// Render a block of the document: the document itself, or a block in
+    /// it. Inline content renders from its block, in
+    /// [`render_inline_content`](Self::render_inline_content).
     pub fn render_node(&mut self, node: Node<'_>) {
         match &node.data.borrow().value {
             NodeValue::Heading(heading) => self.render_heading(node, heading.level),
             NodeValue::Paragraph => self.render_paragraph(node),
-            NodeValue::Text(text) => self.render_running_text(text),
-            NodeValue::SoftBreak => self.render_soft_break(),
-            NodeValue::Strong => self.render_strong(node),
-            NodeValue::Emph => self.render_emphasis(node),
-            NodeValue::LineBreak => self.write_hard_break(),
-            NodeValue::Code(code) => self.render_inline_code(&code.literal),
             NodeValue::List(list) => self.render_list(node, list, false),
-            NodeValue::BlockQuote => self.render_blockquote(node),
+            NodeValue::BlockQuote => self.nested(node, |renderer| renderer.render_blockquote(node)),
             NodeValue::CodeBlock(block) => self.render_code_block(block),
             NodeValue::Table(table) => self.render_table(node, &table.alignments),
             NodeValue::ThematicBreak => self.render_thematic_break(),
-            NodeValue::Link(link) => self.render_link(node, &link.url),
-            NodeValue::Strikethrough => self.render_strikethrough(node),
-            NodeValue::Image(image) => self.render_image(node, &image.url),
             NodeValue::HtmlBlock(html) => self.render_block_html(html),
-            NodeValue::HtmlInline(html) => self.render_inline_html(html),
-            // Everything else, such as the document, a footnote definition
-            // or an item outside a list, renders its children; a leaf we do
-            // not handle draws nothing.
+            NodeValue::FootnoteDefinition(_) => {
+                self.nested(node, |renderer| renderer.render_children(node));
+            }
+            // Everything else, such as the document or an item outside a
+            // list, renders its children; a leaf we do not handle draws
+            // nothing.
             _ => self.render_children(node),
         }
     }
@@ -263,6 +272,42 @@ impl Renderer {
     fn render_children(&mut self, parent: Node<'_>) {
         for child in parent.children() {
             self.render_node(child);
+        }
+    }
+
+    /// Render a block container with `render`, one level deeper. At
+    /// [`MAX_BLOCK_DEPTH`] it is rendered flat instead.
+    fn nested(&mut self, container: Node<'_>, render: impl FnOnce(&mut Self)) {
+        if self.block_depth >= MAX_BLOCK_DEPTH {
+            self.render_flat(container);
+            return;
+        }
+        self.block_depth += 1;
+        render(self);
+        self.block_depth -= 1;
+    }
+
+    /// Render the blocks below `container` one after the other, in
+    /// document order, without the bars, bullets and indents of the
+    /// containers between them and `container`. Walks the tree with a
+    /// stack of its own, so the depth of the content costs no recursion.
+    fn render_flat(&mut self, container: Node<'_>) {
+        let mut pending: Vec<Node<'_>> = container.reverse_children().collect();
+        while let Some(node) = pending.pop() {
+            let is_leaf_block = matches!(
+                node.data.borrow().value,
+                NodeValue::Heading(_)
+                    | NodeValue::Paragraph
+                    | NodeValue::CodeBlock(_)
+                    | NodeValue::Table(_)
+                    | NodeValue::ThematicBreak
+                    | NodeValue::HtmlBlock(_)
+            );
+            if is_leaf_block {
+                self.render_node(node);
+            } else {
+                pending.extend(node.reverse_children());
+            }
         }
     }
 
@@ -442,7 +487,9 @@ impl Renderer {
         }
         let ordered = details.list_type == ListType::Ordered;
         for (number, item) in (details.start..).zip(list.children()) {
-            self.render_list_item(item, ordered, number);
+            self.nested(item, |renderer| {
+                renderer.render_list_item(item, ordered, number);
+            });
         }
     }
 
@@ -620,8 +667,66 @@ impl Renderer {
     /// places the last buffered word. Everything after it (closing the
     /// line, block spacing, the next list bullet) reads `column` and the
     /// newline count, which are only right once that word is on the line.
+    ///
+    /// Walks the inline nodes with a stack of its own: styled content
+    /// nests as deep as the source does, and rendering it costs no
+    /// recursion.
     fn render_inline_content(&mut self, parent: Node<'_>) {
-        self.render_children(parent);
+        enum Step<'a> {
+            Enter(Node<'a>),
+            Exit(Node<'a>),
+        }
+
+        let mut steps: Vec<Step<'_>> = parent.reverse_children().map(Step::Enter).collect();
+        while let Some(step) = steps.pop() {
+            match step {
+                Step::Enter(node) => {
+                    let style = match &node.data.borrow().value {
+                        NodeValue::Text(text) => {
+                            self.render_running_text(text);
+                            continue;
+                        }
+                        NodeValue::SoftBreak => {
+                            self.render_soft_break();
+                            continue;
+                        }
+                        NodeValue::LineBreak => {
+                            self.write_hard_break();
+                            continue;
+                        }
+                        NodeValue::Code(code) => {
+                            self.render_inline_code(&code.literal);
+                            continue;
+                        }
+                        NodeValue::HtmlInline(html) => {
+                            self.render_inline_html(html);
+                            continue;
+                        }
+                        NodeValue::Image(image) => {
+                            self.render_image(node, &image.url);
+                            continue;
+                        }
+                        NodeValue::Strong => Some(Style::Bold),
+                        NodeValue::Emph => Some(Style::Italic),
+                        NodeValue::Strikethrough => Some(Style::Strikethrough),
+                        NodeValue::Link(_) => Some(Style::Underline),
+                        // Any other node renders its children.
+                        _ => None,
+                    };
+                    if let Some(style) = style {
+                        self.push_style(style);
+                        steps.push(Step::Exit(node));
+                    }
+                    steps.extend(node.reverse_children().map(Step::Enter));
+                }
+                Step::Exit(node) => {
+                    self.pop_style();
+                    if let NodeValue::Link(link) = &node.data.borrow().value {
+                        self.write_link_url_suffix(node, &link.url);
+                    }
+                }
+            }
+        }
         self.flush_word();
     }
 
@@ -704,24 +809,6 @@ impl Renderer {
         self.pending_space.get_or_insert(style);
     }
 
-    fn render_strong(&mut self, strong: Node<'_>) {
-        self.push_style(Style::Bold);
-        self.render_children(strong);
-        self.pop_style();
-    }
-
-    fn render_emphasis(&mut self, emphasis: Node<'_>) {
-        self.push_style(Style::Italic);
-        self.render_children(emphasis);
-        self.pop_style();
-    }
-
-    fn render_strikethrough(&mut self, deleted: Node<'_>) {
-        self.push_style(Style::Strikethrough);
-        self.render_children(deleted);
-        self.pop_style();
-    }
-
     fn render_image(&mut self, image: Node<'_>, url: &str) {
         let mut alt = String::new();
         push_alt_text(image, &mut alt);
@@ -740,7 +827,7 @@ impl Renderer {
         self.pop_style();
     }
 
-    /// Render a link as its underlined text followed by its URL suffix.
+    /// Write the URL suffix of a link, after its underlined text.
     ///
     /// A link whose text is its URL shows the URL already and gets no
     /// suffix. Autolinks are such links: `<https://example.com>` and a GFM
@@ -750,11 +837,7 @@ impl Renderer {
     /// text differs and it keeps the suffix. The text compared is the text
     /// the link draws, without its styling: raw HTML counts with
     /// [`Html::Literal`] and not with [`Html::Drop`].
-    fn render_link(&mut self, link: Node<'_>, url: &str) {
-        self.push_style(Style::Underline);
-        self.render_children(link);
-        self.pop_style();
-
+    fn write_link_url_suffix(&mut self, link: Node<'_>, url: &str) {
         let mut text = String::new();
         self.push_drawn_text(link, &mut text);
         let shows_its_url = text == url || url.strip_prefix("mailto:") == Some(text.as_str());
@@ -769,7 +852,8 @@ impl Renderer {
     /// line ending in it; a hard break, an image and a footnote reference
     /// add nothing.
     fn push_drawn_text(&self, parent: Node<'_>, text: &mut String) {
-        for node in parent.children() {
+        let mut pending: Vec<Node<'_>> = parent.reverse_children().collect();
+        while let Some(node) = pending.pop() {
             match &node.data.borrow().value {
                 NodeValue::Text(value) => text.push_str(value),
                 NodeValue::Code(code) => text.push_str(&code.literal),
@@ -781,7 +865,7 @@ impl Renderer {
                 | NodeValue::LineBreak
                 | NodeValue::Image(_)
                 | NodeValue::FootnoteReference(_) => {}
-                _ => self.push_drawn_text(node, text),
+                _ => pending.extend(node.reverse_children()),
             }
         }
     }
@@ -1190,14 +1274,15 @@ fn html_block_lines(block: &NodeHtmlBlock) -> &str {
 /// image and a footnote reference add nothing, and every other node adds
 /// what its children add.
 fn push_alt_text(parent: Node<'_>, text: &mut String) {
-    for node in parent.children() {
+    let mut pending: Vec<Node<'_>> = parent.reverse_children().collect();
+    while let Some(node) = pending.pop() {
         match &node.data.borrow().value {
             NodeValue::Text(value) => text.push_str(value),
             NodeValue::Code(code) => text.push_str(&code.literal),
             NodeValue::HtmlInline(html) => text.push_str(html),
             NodeValue::SoftBreak => text.push(' '),
             NodeValue::LineBreak | NodeValue::Image(_) | NodeValue::FootnoteReference(_) => {}
-            _ => push_alt_text(node, text),
+            _ => pending.extend(node.reverse_children()),
         }
     }
 }
