@@ -10,24 +10,23 @@ see [underline]www.example.com[][dim] (http://www.example.com)[] and [underline]
 [dim](http://www.example.com/path?q=1)[].
 ---
 "ftp://example.com/file and sftp://example.com"
-ftp://example.com/file and sftp://example.com
+[underline]ftp://example.com/file[] and sftp://example.com
 ---
 "[ https://example.com and [x www.example.com"
-[ [underline]https://example.com[] and [x [underline]www.example.com[][dim] (http://www.example.com)[]
+[ https://example.com and [x www.example.com
 ---
 "[https://example.com] and [www.example.com]"
-[[underline]https://example.com[]] and [[underline]www.example.com[][dim] (http://www.example.com)[]]
+[https://example.com] and [www.example.com]
 ---
 "WWW.example.com and Www.example.com"
-[underline]WWW.example.com[][dim] (http://WWW.example.com)[] and [underline]Www.example.com[]
-[dim](http://Www.example.com)[]
+WWW.example.com and Www.example.com
 ---
 "[a]www.example.com and (www.example.com) and *www.example.com*"
-[a][underline]www.example.com[][dim] (http://www.example.com)[] and ([underline]www.example.com[]
-[dim](http://www.example.com)[]) and [italic,underline]www.example.com[][dim,italic] (http://www.example.com)[]
+[a]www.example.com and ([underline]www.example.com[][dim] (http://www.example.com)[]) and
+[italic,underline]www.example.com[][dim,italic] (http://www.example.com)[]
 ---
 "x https://example.com/a] y and x www.example.com] y"
-x [underline]https://example.com/a[]] y and x [underline]www.example.com[][dim] (http://www.example.com)[]] y
+x [underline]https://example.com/a][] y and x [underline]www.example.com][][dim] (http://www.example.com])[] y
 ---
 "https://example.com/a_b_ and https://example.com/a&amp;b and https://example.com/a&copy;"
 [underline]https://example.com/a_b[]_ and [underline]https://example.com/a&amp;b[] and

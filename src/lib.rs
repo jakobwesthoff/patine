@@ -46,6 +46,7 @@
 #![warn(missing_docs)]
 
 mod ansi;
+mod front_matter;
 mod highlight;
 mod line_endings;
 mod options;
@@ -167,25 +168,34 @@ pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
 /// assert_eq!(lines[1].to_string(), "See below.");
 /// ```
 pub fn render_lines_with(input: &str, width: usize, options: &RenderOptions) -> Vec<StyledLine> {
-    // GFM plus frontmatter: `Constructs::gfm()` does not enable the
-    // frontmatter construct, so a `---`/`+++` block at the document start
-    // would otherwise be parsed as ordinary markdown (setext heading,
-    // thematic break) and mangle the metadata.
-    let parse_options = markdown::ParseOptions {
-        constructs: markdown::Constructs {
-            frontmatter: true,
-            ..markdown::Constructs::gfm()
-        },
-        ..markdown::ParseOptions::gfm()
-    };
-    // markdown-rs reports syntax errors only for MDX constructs, which
-    // these options leave disabled.
-    let tree = markdown::to_mdast(input, &parse_options)
-        .expect("Markdown without MDX has no syntax errors");
+    let (front_matter, markdown) = front_matter::split(input);
+
+    let arena = comrak::Arena::new();
+    let root = comrak::parse_document(&arena, markdown, &parse_options());
 
     let mut renderer = render::Renderer::new(width, *options);
-    renderer.render_node(&tree);
+    if let Some(front_matter) = front_matter {
+        renderer.render_frontmatter(
+            front_matter.body,
+            front_matter.fence.marker(),
+            front_matter.fence.language(),
+        );
+    }
+    renderer.render_node(root);
     renderer.finish()
+}
+
+/// The CommonMark parser with the GitHub extensions patine renders. Front
+/// matter is not among them: [`front_matter::split`] takes it off first,
+/// as comrak's own rules for it differ from the ones patine keeps.
+fn parse_options() -> comrak::Options<'static> {
+    let mut options = comrak::Options::default();
+    options.extension.strikethrough = true;
+    options.extension.table = true;
+    options.extension.autolink = true;
+    options.extension.tasklist = true;
+    options.extension.footnotes = true;
+    options
 }
 
 /// Syntax-highlight source code the way patine highlights fenced code

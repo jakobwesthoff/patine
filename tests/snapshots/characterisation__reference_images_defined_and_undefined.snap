@@ -3,4 +3,5 @@ source: tests/characterisation.rs
 expression: "pinned(\"full ![alt][r], collapsed ![r][], shortcut ![r], undefined ![alt][nope].\\n\\n[r]: /u.png\",\nWIDTH, &default())"
 ---
 "full ![alt][r], collapsed ![r][], shortcut ![r], undefined ![alt][nope].\n\n[r]: /u.png"
-full , collapsed , shortcut , undefined ![alt][nope].
+full [image: alt][dim] (/u.png)[], collapsed [image: r][dim] (/u.png)[], shortcut [image: r]
+[dim](/u.png)[], undefined ![alt][nope].

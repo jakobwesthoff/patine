@@ -2,11 +2,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-//! CommonMark line endings: `\n`, `\r\n` and a lone `\r`. markdown-rs keeps
-//! them in node values as they appear in the source, so every place that
-//! turns a value into output lines splits at all three. A `\r` that
-//! reached a span would move the terminal's cursor back to the start of
-//! the line and let the rest of the line overwrite what came before it.
+//! CommonMark line endings: `\n`, `\r\n` and a lone `\r`. Raw HTML, code
+//! and front matter keep them in their values as they appear in the
+//! source, so every place that turns such a value into output lines splits
+//! at all three. A `\r` that reached a span would move the terminal's
+//! cursor back to the start of the line and let the rest of the line
+//! overwrite what came before it.
 
 /// Split `text` at CommonMark line endings. Every line ending separates
 /// two pieces, so text that ends in one yields an empty last piece, and
@@ -29,6 +30,14 @@ pub(crate) fn split_line_endings(text: &str) -> impl Iterator<Item = &str> {
         rest = Some(&current[end + ending_width..]);
         Some(&current[..end])
     })
+}
+
+/// `text` without the line ending that closes its last line, if it ends in
+/// one. Only that one ending goes: a blank last line stays.
+pub(crate) fn trim_final_line_ending(text: &str) -> &str {
+    text.strip_suffix("\r\n")
+        .or_else(|| text.strip_suffix(['\n', '\r']))
+        .unwrap_or(text)
 }
 
 /// The lines of verbatim text such as a code block, the way [`str::lines`]
@@ -76,6 +85,18 @@ mod tests {
         assert_eq!(split("\r\n"), ["", ""]);
         assert_eq!(split("\n\r"), ["", "", ""]);
         assert_eq!(split("a\r\rb"), ["a", "", "b"]);
+    }
+
+    #[test]
+    fn trim_final_line_ending_removes_one_ending_of_any_kind() {
+        assert_eq!(trim_final_line_ending("a\n"), "a");
+        assert_eq!(trim_final_line_ending("a\r\n"), "a");
+        assert_eq!(trim_final_line_ending("a\r"), "a");
+        assert_eq!(trim_final_line_ending("a\n\n"), "a\n");
+        assert_eq!(trim_final_line_ending("a\r\n\r\n"), "a\r\n");
+        assert_eq!(trim_final_line_ending("a\n\r"), "a\n");
+        assert_eq!(trim_final_line_ending("a"), "a");
+        assert_eq!(trim_final_line_ending(""), "");
     }
 
     #[test]

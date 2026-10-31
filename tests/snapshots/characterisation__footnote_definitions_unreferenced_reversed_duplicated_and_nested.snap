@@ -4,33 +4,31 @@ expression: "pinned_all(&[\"text\\n\\n[^unused]: nobody refers to this\",\n\"[^a
 ---
 "text\n\n[^unused]: nobody refers to this"
 text
-
-nobody refers to this
 ---
 "[^a]: first defined\n\n[^b]: second defined\n\nrefers to b[^b] and then a[^a]"
-first defined
+refers to b and then a
 
 second defined
 
-refers to b and then a
+first defined
 ---
 "[^a]: one\n\n[^a]: two\n\nrefers[^a]"
 one
 
-two
-
 refers
+
+two
 ---
 "- item[^n]\n\n  [^n]: note in an item\n\nafter"
 • item
 
-  note in an item
-
 after
+
+note in an item
 ---
 "> quote[^n]\n>\n> [^n]: note in a quote\n\nafter"
 [cyan]│ []quote
-[cyan]│ []
-[cyan]│ []note in a quote
 
 after
+
+note in a quote

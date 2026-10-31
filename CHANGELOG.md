@@ -9,8 +9,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The package declares the Rust version it needs, 1.88, and leaves out
+- The package declares the Rust version it needs, 1.89, and leaves out
   the ADRs, todos and CI files.
+- patine parses Markdown with comrak 0.59.0 instead of markdown-rs. The
+  public API does not change. The new dependency needs Rust 1.89.
+- Reference links and images render as inline ones do: `[text][ref]`,
+  `[ref][]` and `[ref]` are underlined with the dimmed URL after them,
+  and `![alt][ref]` is `[image: alt] (url)`. They used to render as
+  their plain text, and a reference image disappeared. Definition lines
+  stay invisible.
+- Footnote definitions render at the end of the document, in the order
+  of the first references to them, wherever they are written. A
+  definition that no reference points to is no longer shown.
+- A table row has as many cells as the delimiter row has columns, as the
+  GFM specification says. A cell past the last column is dropped; it
+  used to get a column of its own.
+- A task marker with no text, `- [x]` or `- [ ]`, is an empty task item
+  and shows the box alone. It used to be a plain item with the marker as
+  text.
+- Bare addresses follow comrak's rules at their edges. `ftp://` addresses
+  are links. An address after a `[` that is still open, such as
+  `[https://example.com]`, is not a link, and neither is a `www.`
+  address right after a `]` or in capitals (`WWW.example.com`). A `]`
+  straight after an address belongs to its link.
+- With `\r\n` or `\r` line endings, text on the line after an empty
+  list marker belongs to the item, as it does with `\n`. It used to
+  become a paragraph after an empty item.
+
+### Fixed
+
+- Markdown that made the parser panic no longer does: `[a]:b\n=\n=+\r-`,
+  `1. ~~~\n*` and `---\n\n[^a]:` are examples. markdown-rs 1.0.0, the
+  previous parser, panics on small inputs and is no longer maintained.
 
 ## [1.9.0] - 2026-10-30
 

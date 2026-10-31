@@ -12,9 +12,7 @@ expression: line_endings(& markdown)
 
 • 
 • empty bullet above
-• 
-
-continuation after empty
+• continuation after empty
 
 • 
 
@@ -59,9 +57,7 @@ end.
 
 • 
 • empty bullet above
-• 
-
-continuation after empty
+• continuation after empty
 
 • 
 
@@ -112,10 +108,9 @@ end.
 • empty
   bullet
   above
-• 
-
-continuation
-after empty
+• continuation
+  after
+  empty
 
 • 
 
@@ -181,10 +176,9 @@ end.
 • empty
   bullet
   above
-• 
-
-continuation
-after empty
+• continuation
+  after
+  empty
 
 • 
 

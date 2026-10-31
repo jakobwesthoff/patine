@@ -3,17 +3,17 @@ source: tests/characterisation.rs
 expression: "pinned_all(&[\"- [x]\", \"- [ ]\", \"- [ ] \", \"1. [x]\", \"- [x]\\n- [ ] text\"],\nWIDTH, &default())"
 ---
 "- [x]"
-• [x]
+[dim]☑ []
 ---
 "- [ ]"
-• [ ]
+☐ 
 ---
 "- [ ] "
-• [ ]
+☐ 
 ---
 "1. [x]"
-1. [x]
+[dim]1. ☑ []
 ---
 "- [x]\n- [ ] text"
-• [x]
+[dim]☑ []
 ☐ text

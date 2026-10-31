@@ -2,12 +2,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-use markdown::mdast::Node;
+use comrak::nodes::{
+    AstNode, ListType, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeValue, TableAlignment,
+};
 use unicode_segmentation::UnicodeSegmentation;
 
-use crate::line_endings::{split_line_endings, verbatim_lines};
+use crate::line_endings::{split_line_endings, trim_final_line_ending, verbatim_lines};
 use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
 use crate::styled::{AnsiColor, StyledLine, TextStyle, Underline, text_width};
+
+/// A node of the parsed document. Both lifetimes are the arena's: the
+/// tree hands out nodes only as `&'a AstNode<'a>`.
+pub(crate) type Node<'a> = &'a AstNode<'a>;
 
 /// Columns of indent for one level of nesting: a code block, or a block
 /// nested in a list item.
@@ -83,12 +89,12 @@ pub(crate) enum LongWords {
     Break,
 }
 
-/// Lay out inline content, such as the content of a table cell, as
+/// Lay out the inline content of `parent`, such as a table cell, as
 /// running text `width` columns wide, with `long_words` deciding what
 /// happens to a word wider than that. Content that draws nothing yields
 /// no lines.
 pub(crate) fn render_inline_lines(
-    children: &[Node],
+    parent: Node<'_>,
     width: usize,
     options: RenderOptions,
     long_words: LongWords,
@@ -105,7 +111,7 @@ pub(crate) fn render_inline_lines(
     };
     let mut renderer = Renderer::new(width, options);
     renderer.long_words = long_words;
-    renderer.render_inline_content(children);
+    renderer.render_inline_content(parent);
     renderer.finish()
 }
 
@@ -160,8 +166,8 @@ pub struct Renderer {
     /// blank line.
     at_start: bool,
 
-    /// The word under construction, not yet placed on a line. markdown-rs
-    /// makes every inline element its own node, so `foo**bar**`, `Vec`
+    /// The word under construction, not yet placed on a line. Every inline
+    /// element is its own node, so `foo**bar**`, `Vec`
     /// followed by inline HTML `<String>` or link text followed by its
     /// `(url)` suffix arrive as separate pieces. They collect here, each in
     /// its own style, until whitespace or the end of the line closes the
@@ -190,11 +196,6 @@ pub struct Renderer {
     /// How soft line breaks and raw HTML render.
     options: RenderOptions,
 
-    /// True while the inline content of a paragraph or heading renders.
-    /// markdown-rs represents inline and block HTML as the same node
-    /// type, so only the place in the tree tells them apart.
-    in_inline_content: bool,
-
     /// What happens to a word wider than the line.
     long_words: LongWords,
 }
@@ -215,7 +216,6 @@ impl Renderer {
             style_stack: Vec::new(),
             prefix: Vec::new(),
             options,
-            in_inline_content: false,
             long_words: LongWords::Overflow,
         }
     }
@@ -233,39 +233,35 @@ impl Renderer {
     // Node dispatch
     // =========================================================
 
-    pub fn render_node(&mut self, node: &Node) {
-        match node {
-            Node::Root(root) => self.render_children(&root.children),
-            Node::Heading(h) => self.render_heading(h),
-            Node::Paragraph(p) => self.render_paragraph(p),
-            Node::Text(t) => self.render_running_text(&t.value),
-            Node::Strong(s) => self.render_strong(&s.children),
-            Node::Emphasis(e) => self.render_emphasis(&e.children),
-            Node::Break(_) => self.write_hard_break(),
-            Node::InlineCode(c) => self.render_inline_code(&c.value),
-            Node::List(l) => self.render_list(l, false),
-            Node::Blockquote(bq) => self.render_blockquote(&bq.children),
-            Node::Code(c) => self.render_fenced_text(&c.value, c.lang.as_deref()),
-            Node::Yaml(y) => self.render_frontmatter(&y.value, "---", "yaml"),
-            Node::Toml(t) => self.render_frontmatter(&t.value, "+++", "toml"),
-            Node::Table(t) => self.render_table(t),
-            Node::ThematicBreak(_) => self.render_thematic_break(),
-            Node::Link(l) => self.render_link(l),
-            Node::Delete(d) => self.render_strikethrough(&d.children),
-            Node::Image(img) => self.render_image(img),
-            Node::Html(html) => self.render_html(&html.value),
-            // Fallback: render children if the node has any, silently skip
-            // leaf nodes we don't handle yet.
-            other => {
-                if let Some(children) = other.children() {
-                    self.render_children(children);
-                }
-            }
+    pub fn render_node(&mut self, node: Node<'_>) {
+        match &node.data.borrow().value {
+            NodeValue::Heading(heading) => self.render_heading(node, heading.level),
+            NodeValue::Paragraph => self.render_paragraph(node),
+            NodeValue::Text(text) => self.render_running_text(text),
+            NodeValue::SoftBreak => self.render_soft_break(),
+            NodeValue::Strong => self.render_strong(node),
+            NodeValue::Emph => self.render_emphasis(node),
+            NodeValue::LineBreak => self.write_hard_break(),
+            NodeValue::Code(code) => self.render_inline_code(&code.literal),
+            NodeValue::List(list) => self.render_list(node, list, false),
+            NodeValue::BlockQuote => self.render_blockquote(node),
+            NodeValue::CodeBlock(block) => self.render_code_block(block),
+            NodeValue::Table(table) => self.render_table(node, &table.alignments),
+            NodeValue::ThematicBreak => self.render_thematic_break(),
+            NodeValue::Link(link) => self.render_link(node, &link.url),
+            NodeValue::Strikethrough => self.render_strikethrough(node),
+            NodeValue::Image(image) => self.render_image(node, &image.url),
+            NodeValue::HtmlBlock(html) => self.render_block_html(html),
+            NodeValue::HtmlInline(html) => self.render_inline_html(html),
+            // Everything else, such as the document, a footnote definition
+            // or an item outside a list, renders its children; a leaf we do
+            // not handle draws nothing.
+            _ => self.render_children(node),
         }
     }
 
-    fn render_children(&mut self, children: &[Node]) {
-        for child in children {
+    fn render_children(&mut self, parent: Node<'_>) {
+        for child in parent.children() {
             self.render_node(child);
         }
     }
@@ -274,7 +270,7 @@ impl Renderer {
     // Block-level rendering
     // =========================================================
 
-    fn render_heading(&mut self, heading: &markdown::mdast::Heading) {
+    fn render_heading(&mut self, heading: Node<'_>, level: u8) {
         self.ensure_block_spacing();
         self.write_indent();
 
@@ -283,7 +279,7 @@ impl Renderer {
         // H1 additionally uses italic so it remains distinct from H2 even
         // on terminals that fall back from `4:2` (double underline) to a
         // plain single underline.
-        let styles: &[Style] = match heading.depth {
+        let styles: &[Style] = match level {
             1 => &[Style::Bold, Style::Italic, Style::DoubleUnderline],
             2 => &[Style::Bold, Style::Underline],
             _ => &[Style::Bold],
@@ -291,12 +287,24 @@ impl Renderer {
         for &style in styles {
             self.push_style(style);
         }
-        self.render_inline_content(&heading.children);
+        self.render_inline_content(heading);
         for _ in styles {
             self.pop_style();
         }
 
         self.write_newline();
+    }
+
+    /// Render a code block: its language is the first word of the info
+    /// string, and its text is the literal without the line ending that
+    /// closes its last line.
+    fn render_code_block(&mut self, block: &NodeCodeBlock) {
+        let language = block
+            .info
+            .split([' ', '\t'])
+            .next()
+            .filter(|language| !language.is_empty());
+        self.render_fenced_text(trim_final_line_ending(&block.literal), language);
     }
 
     /// Render verbatim text as a code-block-shaped element. Serves both
@@ -332,11 +340,11 @@ impl Renderer {
     /// syntax-highlighted verbatim block, visually identical to a fenced
     /// code block of that language.
     ///
-    /// The mdast node value carries only the content between the fences;
-    /// the fence lines are reconstructed around it so the rendered block
-    /// mirrors the source document. Empty frontmatter carries no metadata
-    /// and renders nothing at all.
-    fn render_frontmatter(&mut self, value: &str, fence: &str, lang: &str) {
+    /// `value` is the content between the fences; the fence lines are
+    /// reconstructed around it so the rendered block mirrors the source
+    /// document. Empty frontmatter carries no metadata and renders nothing
+    /// at all.
+    pub fn render_frontmatter(&mut self, value: &str, fence: &str, lang: &str) {
         if value.trim().is_empty() {
             return;
         }
@@ -376,7 +384,7 @@ impl Renderer {
         }
     }
 
-    fn render_table(&mut self, table: &markdown::mdast::Table) {
+    fn render_table(&mut self, table: Node<'_>, alignments: &[TableAlignment]) {
         self.ensure_block_spacing();
 
         // The table module lays out the table as a list of styled content
@@ -389,10 +397,12 @@ impl Renderer {
         // under its own.
         let base = self.current_style();
         let options = self.options;
-        let lines =
-            crate::table::layout_table(table, self.effective_width(), |cell, width, long_words| {
-                render_inline_lines(cell, width, options, long_words)
-            });
+        let lines = crate::table::layout_table(
+            table,
+            alignments,
+            self.effective_width(),
+            |cell, width, long_words| render_inline_lines(cell, width, options, long_words),
+        );
         for line in lines {
             self.write_indent();
             for span in &line.spans {
@@ -408,7 +418,7 @@ impl Renderer {
         }
     }
 
-    fn render_blockquote(&mut self, children: &[Node]) {
+    fn render_blockquote(&mut self, quote: Node<'_>) {
         // Block spacing must be ensured BEFORE entering the blockquote
         // context. Otherwise the blank separator line would get the │ bar
         // prefix, which visually belongs inside the blockquote, not between
@@ -417,7 +427,7 @@ impl Renderer {
         // The quoted text keeps the style around it; only the bars mark
         // the quote.
         self.with_segment(Segment::Quote, |renderer| {
-            renderer.render_children(children);
+            renderer.render_children(quote);
         });
     }
 
@@ -426,29 +436,27 @@ impl Renderer {
     /// blank line: the item's content already ended with a line break.
     /// Every other list, such as one in a quote or footnote that itself
     /// sits in a list item, is spaced from what comes before it.
-    fn render_list(&mut self, list: &markdown::mdast::List, directly_in_item: bool) {
+    fn render_list(&mut self, list: Node<'_>, details: &NodeList, directly_in_item: bool) {
         if !directly_in_item {
             self.ensure_block_spacing();
         }
-        let mut number = list.start.unwrap_or(1);
-
-        for child in &list.children {
-            if let Node::ListItem(item) = child {
-                self.render_list_item(item, list.ordered, number);
-                number += 1;
-            }
+        let ordered = details.list_type == ListType::Ordered;
+        for (number, item) in (details.start..).zip(list.children()) {
+            self.render_list_item(item, ordered, number);
         }
     }
 
-    fn render_list_item(&mut self, item: &markdown::mdast::ListItem, ordered: bool, number: u32) {
+    fn render_list_item(&mut self, item: Node<'_>, ordered: bool, number: usize) {
         self.ensure_line_break();
         self.write_indent();
 
         // Write the bullet or number prefix. A task item shows its box in
         // place of the bullet, or after the number of an ordered item.
-        let task_box = item
-            .checked
-            .map(|done| if done { TASK_DONE } else { TASK_OPEN });
+        let checked = match &item.data.borrow().value {
+            NodeValue::TaskItem(task) => Some(task.symbol.is_some()),
+            _ => None,
+        };
+        let task_box = checked.map(|done| if done { TASK_DONE } else { TASK_OPEN });
         let prefix = match (ordered, task_box) {
             (false, None) => format!("{BULLET} "),
             (false, Some(task_box)) => format!("{task_box} "),
@@ -458,7 +466,7 @@ impl Renderer {
 
         // A done task recedes: its whole line, number and box included,
         // is dim.
-        let done = item.checked == Some(true);
+        let done = checked == Some(true);
         if done {
             self.push_style(Style::Dim);
         }
@@ -478,7 +486,7 @@ impl Renderer {
             bare: true,
         };
         self.with_segment(segment, |renderer| {
-            renderer.render_list_item_children(&item.children, done);
+            renderer.render_list_item_children(item, done);
         });
         self.ensure_line_break();
     }
@@ -486,7 +494,7 @@ impl Renderer {
     /// Render the blocks of a list item. Everything in a `done` task is
     /// dim except its nested lists: each item in them shows its own state,
     /// so an open sub-task does not look done.
-    fn render_list_item_children(&mut self, children: &[Node], done: bool) {
+    fn render_list_item_children(&mut self, item: Node<'_>, done: bool) {
         // Render item content. ListItem children are typically Paragraph
         // nodes. We render the first paragraph's inline children
         // directly so that the text starts immediately after the
@@ -506,13 +514,14 @@ impl Renderer {
         // the paragraph follows the bullet on the next line without a
         // blank line, as a block in that place does.
         let mut is_first = true;
-        for child in children {
-            let dim = done && !matches!(child, Node::List(_));
+        for child in item.children() {
+            let is_list = matches!(child.data.borrow().value, NodeValue::List(_));
+            let dim = done && !is_list;
             if dim {
                 self.push_style(Style::Dim);
             }
-            match child {
-                Node::Paragraph(p) => {
+            match &child.data.borrow().value {
+                NodeValue::Paragraph => {
                     if !is_first {
                         if self.innermost_item_is_bare() {
                             self.ensure_line_break();
@@ -526,7 +535,7 @@ impl Renderer {
                             self.at_start = false;
                         }
                     }
-                    self.render_inline_content(&p.children);
+                    self.render_inline_content(child);
                 }
                 // Nested lists and other block content get their own indent.
                 // Ensure we're on a new line before starting nested content.
@@ -544,7 +553,7 @@ impl Renderer {
                 // the line holds then (the bullet, or the continuation
                 // indent after a break in text that drew nothing) is closed
                 // first, so the block's prefix starts a line of its own.
-                other => {
+                block => {
                     if self.innermost_item_is_bare() {
                         if !self.line.spans.is_empty() {
                             self.write_newline();
@@ -553,9 +562,9 @@ impl Renderer {
                     } else {
                         self.ensure_line_break();
                     }
-                    self.with_segment(Segment::Nest(NEST_INDENT_WIDTH), |renderer| match other {
-                        Node::List(list) => renderer.render_list(list, true),
-                        _ => renderer.render_node(other),
+                    self.with_segment(Segment::Nest(NEST_INDENT_WIDTH), |renderer| match block {
+                        NodeValue::List(details) => renderer.render_list(child, details, true),
+                        _ => renderer.render_node(child),
                     });
                     // A block that draws nothing leaves `at_start` set,
                     // but the bullet above is output that a later block
@@ -580,10 +589,10 @@ impl Renderer {
         self.write_newline();
     }
 
-    fn render_paragraph(&mut self, paragraph: &markdown::mdast::Paragraph) {
+    fn render_paragraph(&mut self, paragraph: Node<'_>) {
         self.ensure_block_spacing();
         self.write_indent();
-        self.render_inline_content(&paragraph.children);
+        self.render_inline_content(paragraph);
         self.write_newline();
     }
 
@@ -605,24 +614,20 @@ impl Renderer {
     // Inline rendering
     // =========================================================
 
-    /// Render the inline children of a paragraph or heading. Paragraphs
-    /// and headings never nest inside inline content, so the flag is
-    /// simply off again afterwards.
+    /// Render the inline children of a paragraph or heading.
     ///
     /// Inline content is the only place words are written, so its end
     /// places the last buffered word. Everything after it (closing the
     /// line, block spacing, the next list bullet) reads `column` and the
     /// newline count, which are only right once that word is on the line.
-    fn render_inline_content(&mut self, children: &[Node]) {
-        self.in_inline_content = true;
-        self.render_children(children);
+    fn render_inline_content(&mut self, parent: Node<'_>) {
+        self.render_children(parent);
         self.flush_word();
-        self.in_inline_content = false;
     }
 
     /// Render running text, from a text node or inline HTML. A line
-    /// ending in it is a soft break, which [`SoftBreaks`] turns into a
-    /// space or a line break.
+    /// ending in inline HTML is a soft break, which [`SoftBreaks`] turns
+    /// into a space or a line break.
     fn render_running_text(&mut self, text: &str) {
         match self.options.soft_breaks {
             SoftBreaks::Join => self.render_text(text),
@@ -637,11 +642,26 @@ impl Renderer {
         }
     }
 
-    fn render_html(&mut self, html: &str) {
+    /// Render the soft break between two lines of running text as a space
+    /// or, with [`SoftBreaks::Break`], as a line break.
+    fn render_soft_break(&mut self) {
+        match self.options.soft_breaks {
+            SoftBreaks::Join => self.request_space(),
+            SoftBreaks::Break => self.write_hard_break(),
+        }
+    }
+
+    fn render_inline_html(&mut self, html: &str) {
         match self.options.html {
             Html::Drop => {}
-            Html::Literal if self.in_inline_content => self.render_running_text(html),
-            Html::Literal => self.render_html_block(html),
+            Html::Literal => self.render_running_text(html),
+        }
+    }
+
+    fn render_block_html(&mut self, html: &NodeHtmlBlock) {
+        match self.options.html {
+            Html::Drop => {}
+            Html::Literal => self.render_html_block(html_block_lines(html)),
         }
     }
 
@@ -684,32 +704,34 @@ impl Renderer {
         self.pending_space.get_or_insert(style);
     }
 
-    fn render_strong(&mut self, children: &[Node]) {
+    fn render_strong(&mut self, strong: Node<'_>) {
         self.push_style(Style::Bold);
-        self.render_children(children);
+        self.render_children(strong);
         self.pop_style();
     }
 
-    fn render_emphasis(&mut self, children: &[Node]) {
+    fn render_emphasis(&mut self, emphasis: Node<'_>) {
         self.push_style(Style::Italic);
-        self.render_children(children);
+        self.render_children(emphasis);
         self.pop_style();
     }
 
-    fn render_strikethrough(&mut self, children: &[Node]) {
+    fn render_strikethrough(&mut self, deleted: Node<'_>) {
         self.push_style(Style::Strikethrough);
-        self.render_children(children);
+        self.render_children(deleted);
         self.pop_style();
     }
 
-    fn render_image(&mut self, image: &markdown::mdast::Image) {
-        let marker = if image.alt.is_empty() {
+    fn render_image(&mut self, image: Node<'_>, url: &str) {
+        let mut alt = String::new();
+        push_alt_text(image, &mut alt);
+        let marker = if alt.is_empty() {
             "[image]".to_string()
         } else {
-            format!("[image: {}]", image.alt)
+            format!("[image: {alt}]")
         };
         self.render_text(&marker);
-        self.write_dimmed_url_suffix(&image.url);
+        self.write_dimmed_url_suffix(url);
     }
 
     fn render_inline_code(&mut self, code: &str) {
@@ -728,31 +750,38 @@ impl Renderer {
     /// text differs and it keeps the suffix. The text compared is the text
     /// the link draws, without its styling: raw HTML counts with
     /// [`Html::Literal`] and not with [`Html::Drop`].
-    fn render_link(&mut self, link: &markdown::mdast::Link) {
+    fn render_link(&mut self, link: Node<'_>, url: &str) {
         self.push_style(Style::Underline);
-        self.render_children(&link.children);
+        self.render_children(link);
         self.pop_style();
 
         let mut text = String::new();
-        self.push_drawn_text(&link.children, &mut text);
-        let shows_its_url =
-            text == link.url || link.url.strip_prefix("mailto:") == Some(text.as_str());
+        self.push_drawn_text(link, &mut text);
+        let shows_its_url = text == url || url.strip_prefix("mailto:") == Some(text.as_str());
         if !shows_its_url {
-            self.write_dimmed_url_suffix(&link.url);
+            self.write_dimmed_url_suffix(url);
         }
     }
 
-    /// Append the source text of `nodes` that rendering draws to `text`:
-    /// the value of every text, inline code and raw HTML node, except raw
-    /// HTML that [`Html::Drop`] leaves out.
-    fn push_drawn_text(&self, nodes: &[Node], text: &mut String) {
-        for node in nodes {
-            match node {
-                Node::Html(_) if self.options.html == Html::Drop => {}
-                _ => match node.children() {
-                    Some(children) => self.push_drawn_text(children, text),
-                    None => text.push_str(&node.to_string()),
-                },
+    /// Append the source text below `parent` that rendering draws to
+    /// `text`: the value of every text, inline code and raw HTML node,
+    /// except raw HTML that [`Html::Drop`] leaves out. A soft break is a
+    /// line ending in it; a hard break, an image and a footnote reference
+    /// add nothing.
+    fn push_drawn_text(&self, parent: Node<'_>, text: &mut String) {
+        for node in parent.children() {
+            match &node.data.borrow().value {
+                NodeValue::Text(value) => text.push_str(value),
+                NodeValue::Code(code) => text.push_str(&code.literal),
+                NodeValue::HtmlInline(html) if self.options.html == Html::Literal => {
+                    text.push_str(html);
+                }
+                NodeValue::SoftBreak => text.push('\n'),
+                NodeValue::HtmlInline(_)
+                | NodeValue::LineBreak
+                | NodeValue::Image(_)
+                | NodeValue::FootnoteReference(_) => {}
+                _ => self.push_drawn_text(node, text),
             }
         }
     }
@@ -1118,6 +1147,62 @@ impl Renderer {
 }
 
 // =========================================================
+// HTML blocks
+// =========================================================
+
+/// The text of an HTML block, whose lines are shown as written. The
+/// literal ends with the line ending of its last line, which is no line of
+/// its own. A block of kind 1 to 5 ends at a line with its end condition,
+/// and one without such a line runs to the end of the document, where
+/// every line ending belongs to it.
+fn html_block_lines(block: &NodeHtmlBlock) -> &str {
+    let literal = block.literal.as_str();
+    let last_line = trim_final_line_ending(literal)
+        .rsplit(['\n', '\r'])
+        .next()
+        .unwrap_or_default();
+    let ends_in_its_last_line = match block.block_type {
+        1 => {
+            let last_line = last_line.to_ascii_lowercase();
+            ["</script>", "</pre>", "</style>", "</textarea>"]
+                .iter()
+                .any(|end| last_line.contains(end))
+        }
+        2 => last_line.contains("-->"),
+        3 => last_line.contains("?>"),
+        4 => last_line.contains('>'),
+        5 => last_line.contains("]]>"),
+        _ => true,
+    };
+    if ends_in_its_last_line {
+        trim_final_line_ending(literal)
+    } else {
+        literal
+    }
+}
+
+// =========================================================
+// Image alt text
+// =========================================================
+
+/// Append the alt text of an image to `text`: the text of its children
+/// without their styling. A soft break is a space. A hard break, a nested
+/// image and a footnote reference add nothing, and every other node adds
+/// what its children add.
+fn push_alt_text(parent: Node<'_>, text: &mut String) {
+    for node in parent.children() {
+        match &node.data.borrow().value {
+            NodeValue::Text(value) => text.push_str(value),
+            NodeValue::Code(code) => text.push_str(&code.literal),
+            NodeValue::HtmlInline(html) => text.push_str(html),
+            NodeValue::SoftBreak => text.push(' '),
+            NodeValue::LineBreak | NodeValue::Image(_) | NodeValue::FootnoteReference(_) => {}
+            _ => push_alt_text(node, text),
+        }
+    }
+}
+
+// =========================================================
 // Breaking words
 // =========================================================
 
@@ -1136,21 +1221,21 @@ fn break_units(text: &str) -> Vec<&str> {
 
 #[cfg(test)]
 mod tests {
-    use markdown::mdast::{Strong, Text};
+    use comrak::{Arena, Options, parse_document};
 
     use super::*;
 
-    fn text(value: &str) -> Node {
-        Node::Text(Text {
-            value: value.to_string(),
-            position: None,
-        })
+    /// Lay out the first paragraph of `markdown` as a table cell would.
+    fn cell_lines(markdown: &str, width: usize) -> Vec<StyledLine> {
+        let arena = Arena::new();
+        let root = parse_document(&arena, markdown, &Options::default());
+        let paragraph = root.first_child().expect("the document has a paragraph");
+        render_inline_lines(paragraph, width, RenderOptions::default(), LongWords::Break)
     }
 
     #[test]
     fn a_word_breaks_between_the_letters_of_a_ligature() {
-        let lines =
-            render_inline_lines(&[text("لا")], 1, RenderOptions::default(), LongWords::Break);
+        let lines = cell_lines("لا", 1);
         let texts: Vec<String> = lines.iter().map(ToString::to_string).collect();
         assert_eq!(texts, ["ل", "ا"]);
     }
@@ -1159,14 +1244,7 @@ mod tests {
     fn broken_word_stays_within_the_line_across_styles() {
         // A word broken across styles is measured span by span, as its
         // lines are drawn: each span on its own, grapheme by grapheme.
-        let word = [
-            Node::Strong(Strong {
-                children: vec![text("ل")],
-                position: None,
-            }),
-            text("اب"),
-        ];
-        let lines = render_inline_lines(&word, 2, RenderOptions::default(), LongWords::Break);
+        let lines = cell_lines("**ل**اب", 2);
         assert!(lines.iter().all(|line| line.width() <= 2), "{lines:?}");
     }
 }

@@ -667,9 +667,23 @@ fn task_in_a_quote_keeps_the_bar_style() {
 }
 
 #[test]
-fn an_item_with_only_a_check_is_no_task() {
-    // markdown-rs wants text after the check, so this stays a plain item.
-    assert_eq!(plain_lines("- [x]", 80), ["• [x]"]);
+fn an_item_with_only_a_done_check_is_an_empty_task() {
+    assert_eq!(plain_lines("- [x]", 80), ["☑ "]);
+}
+
+#[test]
+fn an_item_with_only_an_open_check_is_an_empty_task() {
+    assert_eq!(plain_lines("- [ ]", 80), ["☐ "]);
+}
+
+#[test]
+fn an_item_with_only_an_open_check_and_a_space_is_an_empty_task() {
+    assert_eq!(plain_lines("- [ ] ", 80), ["☐ "]);
+}
+
+#[test]
+fn a_numbered_item_with_only_a_check_is_an_empty_task() {
+    assert_eq!(plain_lines("1. [x]", 80), ["1. ☑ "]);
 }
 
 #[test]
@@ -1091,12 +1105,26 @@ fn header_padding_of_an_aligned_column_is_bold() {
 }
 
 #[test]
-fn cells_past_the_delimiter_row_render_unaligned() {
-    // markdown-rs keeps a cell that has no column in the delimiter row,
-    // and the table gives it a column without an alignment.
+fn a_cell_past_the_delimiter_row_is_dropped() {
+    // A row has as many cells as the delimiter row has columns; the table
+    // has no column for the rest.
     assert_eq!(
         table_rows("| aaa |\n|--:|\n| b | c |", 80),
-        ["│ aaa │   │", "│   b │ c │"]
+        ["│ aaa │", "│   b │"]
+    );
+}
+
+#[test]
+fn a_cell_past_the_delimiter_row_of_a_wider_table_is_dropped() {
+    assert_eq!(
+        plain_lines("| a | b |\n|-|-|\n| 1 | 2 | 3 |", 80),
+        [
+            "┌───┬───┐",
+            "│ a │ b │",
+            "├───┼───┤",
+            "│ 1 │ 2 │",
+            "└───┴───┘"
+        ]
     );
 }
 
@@ -1386,11 +1414,8 @@ fn an_empty_header_cell_gives_an_empty_name() {
 }
 
 #[test]
-fn a_cell_past_the_header_has_an_empty_name() {
-    assert_eq!(
-        plain_lines("| a |\n|--|\n| xxxxx | yy |", 8),
-        ["a  xxxxx", "   yy"]
-    );
+fn a_cell_past_the_delimiter_row_is_no_field_of_a_record() {
+    assert_eq!(plain_lines("| a |\n|--|\n| xxxxx | yy |", 8), ["a  xxxxx"]);
 }
 
 #[test]
@@ -2177,7 +2202,7 @@ fn second_paragraph_of_an_item_keeps_its_blank_line() {
 
 // A list nested directly in a list item follows the item's text without
 // a blank line. Any other list gets the blank line before it, also when
-// a quote or footnote around it sits in a list item.
+// a quote around it sits in a list item.
 
 #[test]
 fn list_directly_in_an_item_follows_its_text() {
@@ -2208,11 +2233,11 @@ fn quote_in_an_item_spaces_a_list_like_a_top_level_quote() {
 }
 
 #[test]
-fn list_in_a_footnote_definition_in_an_item_gets_a_blank_line() {
-    // At the top level, `a\n\n[^1]: - x` already gets the blank line.
+fn list_in_a_footnote_definition_gets_a_blank_line() {
+    // A footnote definition in an item renders at the end of the document.
     assert_eq!(
         plain_lines("- a\n\n  [^1]: - x\n\nb[^1]", 80),
-        ["• a", "", "  • x", "", "b"]
+        ["• a", "", "b", "", "• x"]
     );
 }
 
@@ -2636,9 +2661,8 @@ fn empty_code_block_then_following_content_still_renders() {
 // Line endings in verbatim blocks
 // =========================================================
 
-// CommonMark ends a line at `\n`, `\r\n` or a lone `\r`, and markdown-rs
-// keeps whichever the source used in the value of a code block or
-// frontmatter. Every one of them starts a new output line.
+// CommonMark ends a line at `\n`, `\r\n` or a lone `\r`. In a code block
+// or frontmatter, every one of them starts a new output line.
 
 #[test]
 fn code_block_lines_end_at_every_line_ending() {
@@ -3146,7 +3170,7 @@ fn dropped_html_leaves_its_line_empty_when_soft_breaks_break() {
 // Glued inline pieces wrap as one word
 // =========================================================
 
-// markdown-rs makes each inline element its own node, so `foo**bar**` is
+// Each inline element is its own node, so `foo**bar**` is
 // two nodes without whitespace between them. A line may only break where
 // the source has whitespace or a line break. Each test below picks the
 // width at which "aaaa" plus the first glued piece fits exactly, so the
@@ -3406,4 +3430,196 @@ fn a_first_line_width_wider_than_the_width_changes_nothing() {
         first_line_lines(&words(12), 20, 40),
         plain_lines(&words(12), 20)
     );
+}
+
+// =========================================================
+// Reference links and images
+// =========================================================
+
+// A reference renders like the inline link or image it stands for. The
+// definition line draws nothing.
+
+#[test]
+fn a_full_reference_link_renders_like_an_inline_link() {
+    assert_eq!(
+        render("see [text][r] end\n\n[r]: /u"),
+        "see [underline]text[][dim] (/u)[] end\n"
+    );
+}
+
+#[test]
+fn a_collapsed_reference_link_renders_like_an_inline_link() {
+    assert_eq!(
+        render("see [text][] end\n\n[text]: /u"),
+        "see [underline]text[][dim] (/u)[] end\n"
+    );
+}
+
+#[test]
+fn a_shortcut_reference_link_renders_like_an_inline_link() {
+    assert_eq!(
+        render("see [text] end\n\n[text]: /u"),
+        "see [underline]text[][dim] (/u)[] end\n"
+    );
+}
+
+#[test]
+fn a_reference_link_renders_as_its_inline_form() {
+    assert_eq!(
+        render("see [text][r] end\n\n[r]: /u \"title\""),
+        render("see [text](/u \"title\") end")
+    );
+}
+
+#[test]
+fn an_undefined_reference_stays_text() {
+    assert_eq!(
+        render("see [text][nope] and [nope]"),
+        "see [text][nope] and [nope]\n"
+    );
+}
+
+#[test]
+fn a_reference_image_renders_like_an_inline_image() {
+    assert_eq!(
+        render("![alt][r]\n\n[r]: /u.png"),
+        "[image: alt][dim] (/u.png)[]\n"
+    );
+}
+
+#[test]
+fn a_collapsed_reference_image_renders_like_an_inline_image() {
+    assert_eq!(
+        render("![alt][]\n\n[alt]: /u.png"),
+        "[image: alt][dim] (/u.png)[]\n"
+    );
+}
+
+// =========================================================
+// Footnote definitions
+// =========================================================
+
+#[test]
+fn a_footnote_definition_renders_at_the_end_of_the_document() {
+    assert_eq!(
+        plain_lines("first\n\n[^1]: the note\n\nsecond[^1]", 80),
+        ["first", "", "second", "", "the note"]
+    );
+}
+
+#[test]
+fn footnote_definitions_follow_the_order_of_their_first_reference() {
+    assert_eq!(
+        plain_lines(
+            "[^a]: defined first\n\n[^b]: defined second\n\nb[^b] then a[^a]",
+            80
+        ),
+        ["b then a", "", "defined second", "", "defined first"]
+    );
+}
+
+#[test]
+fn an_unreferenced_footnote_definition_is_dropped() {
+    assert_eq!(
+        plain_lines("text\n\n[^unused]: nobody refers to this", 80),
+        ["text"]
+    );
+}
+
+// =========================================================
+// Autolink literals
+// =========================================================
+
+#[test]
+fn an_ftp_literal_is_a_link() {
+    assert_eq!(
+        render("get ftp://example.com/file"),
+        "get [underline]ftp://example.com/file[]\n"
+    );
+}
+
+#[test]
+fn a_literal_after_an_unmatched_bracket_stays_text() {
+    assert_eq!(render("[ https://example.com"), "[ https://example.com\n");
+}
+
+#[test]
+fn a_literal_in_square_brackets_stays_text() {
+    assert_eq!(render("[https://example.com]"), "[https://example.com]\n");
+}
+
+#[test]
+fn a_www_literal_in_capitals_stays_text() {
+    assert_eq!(render("WWW.example.com"), "WWW.example.com\n");
+}
+
+#[test]
+fn a_www_literal_after_a_closing_bracket_stays_text() {
+    assert_eq!(render("[a]www.example.com"), "[a]www.example.com\n");
+}
+
+#[test]
+fn a_closing_bracket_after_a_url_literal_belongs_to_the_link() {
+    assert_eq!(
+        render("x https://example.com/a] y"),
+        "x [underline]https://example.com/a][] y\n"
+    );
+}
+
+// =========================================================
+// HTML blocks of every kind
+// =========================================================
+
+// A block that closes shows its lines as written. A block that runs to
+// the end of the document keeps every line ending it has.
+
+#[test]
+fn closed_html_blocks_of_every_kind_show_their_lines() {
+    for markdown in [
+        "<script>\nvar x;\n</SCRIPT>\n\nafter",
+        "<!-- c -->\n\nafter",
+        "<?php echo 1; ?>\n\nafter",
+        "<!DOCTYPE html>\n\nafter",
+        "<![CDATA[x]]>\n\nafter",
+        "<div>\nx\n\nafter",
+    ] {
+        let lines = plain_lines_with(markdown, 80, LITERAL);
+        assert_eq!(
+            lines.last().map(String::as_str),
+            Some("after"),
+            "{markdown:?}"
+        );
+        assert_eq!(lines[lines.len() - 2], "", "{markdown:?}");
+        assert_ne!(lines[lines.len() - 3], "", "{markdown:?}");
+    }
+}
+
+#[test]
+fn html_blocks_without_their_end_keep_every_line_ending() {
+    assert_eq!(
+        plain_lines_with("<script>\nvar x;\n", 80, LITERAL),
+        ["<script>", "var x;", ""]
+    );
+    assert_eq!(
+        plain_lines_with("<!-- open\n\n\n", 80, LITERAL),
+        ["<!-- open", "", "", ""]
+    );
+    assert_eq!(
+        plain_lines_with("<?php open\ntext\n", 80, LITERAL),
+        ["<?php open", "text", ""]
+    );
+    assert_eq!(
+        plain_lines_with("<!DOCTYPE open\ntext\n", 80, LITERAL),
+        ["<!DOCTYPE open", "text", ""]
+    );
+    assert_eq!(
+        plain_lines_with("<![CDATA[ open\ntext\n", 80, LITERAL),
+        ["<![CDATA[ open", "text", ""]
+    );
+}
+
+#[test]
+fn link_text_of_inline_code_counts_as_its_url() {
+    assert_eq!(plain_lines("[`a`](a)", 80), ["a"]);
+    assert_eq!(plain_lines("[`a`](b)", 80), ["a (b)"]);
 }

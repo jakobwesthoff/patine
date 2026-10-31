@@ -2,9 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-use markdown::mdast::{AlignKind, Node};
+use comrak::nodes::TableAlignment;
 
-use crate::render::LongWords;
+use crate::render::{LongWords, Node};
 use crate::styled::{StyledLine, TextStyle};
 
 // =========================================================
@@ -48,13 +48,9 @@ const UNLIMITED: usize = usize::MAX;
 // Cells
 // =========================================================
 
-/// The inline content of each cell in a row.
-fn row_cells(row: &Node) -> Vec<&[Node]> {
-    row.children()
-        .into_iter()
-        .flatten()
-        .map(|cell| cell.children().map(Vec::as_slice).unwrap_or_default())
-        .collect()
+/// The cells of a row, whose children are their inline content.
+fn row_cells<'a>(row: Node<'a>) -> Vec<Node<'a>> {
+    row.children().collect()
 }
 
 /// Display width of the widest of `lines`, 0 for none.
@@ -79,7 +75,8 @@ fn widest(lines: &[StyledLine]) -> usize {
 /// when a column would get narrower than the widest word of its cells,
 /// the table is laid out as records instead (see [`layout_records`]).
 ///
-/// `render_cell` lays out the inline content of a cell as running text
+/// `alignments` holds the alignment of each column from the delimiter row.
+/// `render_cell` lays out the inline content of a cell node as running text
 /// of the given width, so a cell keeps its inline styles and wraps where
 /// running text would; its [`LongWords`] argument says whether a word
 /// wider than that width overflows or breaks. Header cells add bold on
@@ -101,12 +98,13 @@ fn widest(lines: &[StyledLine]) -> usize {
 ///
 /// An empty table (no rows) yields an empty `Vec`; the caller is
 /// expected to treat that as "nothing to render".
-pub fn layout_table(
-    table: &markdown::mdast::Table,
+pub fn layout_table<'a>(
+    table: Node<'a>,
+    alignments: &[TableAlignment],
     available_width: usize,
-    render_cell: impl Fn(&[Node], usize, LongWords) -> Vec<StyledLine>,
+    render_cell: impl Fn(Node<'a>, usize, LongWords) -> Vec<StyledLine>,
 ) -> Vec<StyledLine> {
-    let rows: Vec<Vec<&[Node]>> = table.children.iter().map(row_cells).collect();
+    let rows: Vec<Vec<Node<'a>>> = table.children().map(row_cells).collect();
     if rows.is_empty() {
         return Vec::new();
     }
@@ -188,7 +186,7 @@ pub fn layout_table(
                 line_idx,
                 &col_widths,
                 is_header,
-                &table.align,
+                alignments,
             ));
         }
         if row_idx < wrapped_rows.len() - 1 {
@@ -342,14 +340,14 @@ const STACKED_INDENT: usize = 2;
 ///
 /// A line is wider than `width` only where one unit a word breaks into
 /// (see `break_units` in `render.rs`) is wider than the room it gets.
-fn layout_records(
-    rows: &[Vec<&[Node]>],
+fn layout_records<'a>(
+    rows: &[Vec<Node<'a>>],
     num_cols: usize,
     width: usize,
-    render_cell: &impl Fn(&[Node], usize, LongWords) -> Vec<StyledLine>,
+    render_cell: &impl Fn(Node<'a>, usize, LongWords) -> Vec<StyledLine>,
 ) -> Vec<StyledLine> {
     let header = &rows[0];
-    let records: Vec<Vec<&[Node]>> = if rows.len() > 1 {
+    let records: Vec<Vec<Node<'a>>> = if rows.len() > 1 {
         rows[1..].to_vec()
     } else {
         vec![Vec::new()]
@@ -467,15 +465,13 @@ fn append(line: &mut StyledLine, tail: &StyledLine) {
 /// shorter than the current row's height contributes an empty line on
 /// the overflow lines.
 ///
-/// `align` holds the alignment of each column from the delimiter row. A
-/// row may have more cells than the delimiter row has columns; those
-/// cells render as unaligned.
+/// `align` holds the alignment of each column from the delimiter row.
 fn row_line(
     wrapped: &[Vec<StyledLine>],
     line_idx: usize,
     col_widths: &[usize],
     is_header: bool,
-    align: &[AlignKind],
+    align: &[TableAlignment],
 ) -> StyledLine {
     let plain = TextStyle::default();
     let empty = StyledLine::default();
@@ -495,13 +491,13 @@ fn row_line(
         // A column without an alignment centers its header and puts its
         // data on the left. A centered cell gives the extra column of an
         // odd padding to the right.
-        let alignment = align.get(col).copied().unwrap_or(AlignKind::None);
+        let alignment = align.get(col).copied().unwrap_or(TableAlignment::None);
         let (left_pad, right_pad) = match (alignment, is_header) {
-            (AlignKind::Right, _) => (padding, 0),
-            (AlignKind::Center, _) | (AlignKind::None, true) => {
+            (TableAlignment::Right, _) => (padding, 0),
+            (TableAlignment::Center, _) | (TableAlignment::None, true) => {
                 (padding / 2, padding - padding / 2)
             }
-            (AlignKind::Left, _) | (AlignKind::None, false) => (0, padding),
+            (TableAlignment::Left, _) | (TableAlignment::None, false) => (0, padding),
         };
         // A header cell is bold on top of its own styles, and its
         // alignment padding is part of the bold.

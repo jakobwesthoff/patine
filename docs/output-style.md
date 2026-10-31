@@ -111,6 +111,16 @@ See https://example.com for details.
     underlined
 ```
 
+A reference link (`[text][ref]`, `[ref][]` or `[ref]`) renders as the
+inline link it stands for, with the URL of its definition. The
+definition line (`[ref]: url`) draws nothing, and a reference without a
+definition stays text.
+
+A bare address is a link when it starts with `http://`, `https://`,
+`ftp://` or `www.` in lowercase. It is not a link while a `[` before it
+is still open, and a `www.` address is not a link right after a `]`. A
+`]` straight after the address belongs to it.
+
 The dimmed `(url)` block is treated as one atomic unit when wrapping. If
 it doesn't fit alongside the link text on the current line, the whole
 `(url)` block moves to a fresh line — the URL itself is never broken
@@ -147,7 +157,9 @@ show a box instead (see Task Lists).
 
 A task list item (`- [ ]`, `- [x]`) shows a box in place of its bullet:
 `☐` for an open task, `☑` for a done one. A numbered task keeps its
-number, with the box after it (`1. ☐`). The boxes have no color.
+number, with the box after it (`1. ☐`). The boxes have no color. A
+marker with no text after it (`- [x]`) is an empty task item: the box
+alone.
 
 A done task recedes: its line, number and box included, is dimmed, and
 so is everything else in the item except nested lists. Each item of a
@@ -186,8 +198,8 @@ All nesting levels use the same `•` bullet character; task items show a
 box instead (see Task Lists).
 
 A list nested directly in a list item follows the item's text without a
-blank line. A list inside a quote or footnote gets the blank line it
-gets anywhere else, also when the quote or footnote sits in a list item.
+blank line. A list inside a quote gets the blank line it gets anywhere
+else, also when the quote sits in a list item.
 
 A single list item may contain multiple paragraphs (a "loose" list).
 Subsequent paragraphs are separated from the first by a blank line and
@@ -213,6 +225,8 @@ instead (see Records).
   wraps across multiple lines.
 - **Header row**: rendered **bold**, on top of each cell's own inline
   styles.
+- **Cells**: a row has as many cells as the delimiter row has columns. A
+  cell past the last column is dropped, and a missing cell is empty.
 - **Cell text**: inline formatting renders as in running text (see
   Inline Formatting): bold, italic, strikethrough, inline code in its
   color, links underlined with their dimmed `(url)`, images as
@@ -303,9 +317,8 @@ area   pane
   and keeps its styles on every line, so a URL stays dim. A line is
   wider than the width only where one grapheme, such as a wide
   character or an emoji, is wider than the room it gets.
-- **Empty cells**: an empty header cell, or a column past the header's
-  last cell, has an empty name; when every name is empty, values start
-  at the left edge. A field whose cell is empty or missing shows its
+- **Empty cells**: an empty header cell has an empty name; when every
+  name is empty, values start at the left edge. A field whose cell is empty or missing shows its
   name alone. Every record has the same lines in the same order, so a
   field without a name or a value is a blank line.
 - **Header only**: a table without data rows shows its names, one per
@@ -394,6 +407,14 @@ inside a list item sits after the item's indent:
   │ Quote in the item
 ```
 
+## Footnotes
+
+A footnote reference (`[^1]`) draws nothing. The definition (`[^1]: text`)
+renders as paragraphs at the end of the document, wherever it is written,
+in the order of the first references to the definitions. A definition that
+no reference points to is not shown. A reference without a definition stays
+text.
+
 ## Horizontal Rules
 
 Rendered as a line of `─` characters spanning the full terminal width.
@@ -418,6 +439,9 @@ If no alt text is provided:
 ```
 [image] (./docs/screenshot.png)
 ```
+
+A reference image (`![alt][ref]`) renders as the inline image it stands
+for, with the URL of its definition.
 
 The dimmed `(url)` block follows the same atomic-wrapping rule as for
 links: if it doesn't fit alongside the image marker on the current

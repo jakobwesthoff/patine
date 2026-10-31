@@ -3,8 +3,8 @@ source: tests/characterisation.rs
 expression: "pinned(\"| a | b |\\n|-|-|\\n| 1 | 2 | 3 |\", WIDTH, &default())"
 ---
 "| a | b |\n|-|-|\n| 1 | 2 | 3 |"
-┌───┬───┬───┐
-│ [bold]a[] │ [bold]b[] │ [bold] [] │
-├───┼───┼───┤
-│ 1 │ 2 │ 3 │
-└───┴───┴───┘
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ 1 │ 2 │
+└───┴───┘

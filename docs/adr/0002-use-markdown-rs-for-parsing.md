@@ -6,6 +6,8 @@ Date: 2026-04-09
 
 Accepted
 
+Superseded by [16. Use comrak for Markdown parsing](0016-use-comrak-for-markdown-parsing.md)
+
 ## Context
 
 Patine needs to parse Markdown (including GFM extensions like tables) and walk
