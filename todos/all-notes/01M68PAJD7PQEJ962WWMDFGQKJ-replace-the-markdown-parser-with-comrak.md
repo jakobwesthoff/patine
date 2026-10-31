@@ -2,7 +2,6 @@
 title: "Replace the markdown parser with comrak"
 kind: bug
 component: render
-status: needs-discussion
 impact: high
 origin: upstream
 ---
@@ -98,7 +97,7 @@ break, tabs kept, ordered start, closing `#` of ATX headings, setext H1,
 mismatched delimiter rows (no table), `~x~` and `~~y~~`, inline and block
 HTML, autolinks.
 
-### Output changes that need a decision
+### Output changes
 
 1. **Reference links and images.** Today `[text][r]` with `[r]: /u`
    renders as plain `text`, and `![x][r]` disappears. comrak resolves
@@ -119,6 +118,31 @@ HTML, autolinks.
    it needs a split of `+++` blocks before parsing, or a second parse.
 6. **Image alt** stays the same only if the flattening matches mdast's
    `alt` string.
+
+### Decisions on the output changes (Jakob, 2026-10-31, in the chat)
+
+1. Reference links and images render as inline links and images do:
+   the link text underlined with the URL suffix, the image as
+   `[image: alt] (url)`. The definition lines stay invisible and nothing
+   moves; only text written in reference syntax changes. Rejected:
+   rebuilding today's plain text.
+2. Footnote definitions go to the end of the document, as comrak and
+   GitHub place them. Rejected: keeping source order.
+3. Cells past the delimiter row are dropped, as GFM specifies. Rejected:
+   rebuilding the extra columns.
+4. A task marker with no text is an empty task item, as comrak and
+   GitHub render it; `tests/rendering.rs:670` changes with it. Rejected
+   (the lead's recommendation): keeping it a plain item.
+5. TOML front matter stays: patine splits a leading `+++` block off
+   before parsing and renders it as today. Rejected: YAML only.
+6. Image alt text (the lead's call): flatten the children so the output
+   stays as today.
+
+Before the switch, besides the characterisation tests below, a batch of
+whole-document tests: varied example documents, each with its input and
+its rendered output pinned, run across the rendering variants (options,
+line endings, widths that force wrapping and overflow) (Jakob,
+2026-10-31, in the chat).
 
 ### comrak facts (2026-10-31)
 
