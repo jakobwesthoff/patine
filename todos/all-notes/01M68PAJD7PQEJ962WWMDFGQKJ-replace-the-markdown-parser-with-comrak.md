@@ -146,6 +146,12 @@ HTML, autolinks.
    endings, the earliest closing line, an empty block), with comrak's
    front-matter option off (the lead's call: comrak's option cannot keep
    today's output).
+9. Autolinks follow comrak and cmark-gfm on edge input: `ftp://` URLs
+   become links, a literal right after an unmatched `[` stays plain, and
+   an uppercase `WWW.` stays plain (Jakob, asked when the plan review
+   found them). Further edge differences of this kind are accepted the
+   same way and listed in the change; a difference in common documents
+   is asked first.
 
 Before the switch, besides the characterisation tests below, a batch of
 whole-document tests: varied example documents, each with its input and
