@@ -37,6 +37,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   of 6 columns is always kept. Deeper levels keep the indent they
   reached. The prefix used to grow with every level, so a paragraph under
   deep nesting took one line per word.
+- A document lays out 100,000 table cells at most. The parser fills every
+  row up to the width of the header, so a table of a few kilobytes can
+  have hundreds of thousands of cells. A table that would take the
+  document past that renders one line of text per row, wrapped like
+  running text, with ` | ` between the cells and the empty cells at the
+  end of a row left out.
 
 ### Fixed
 

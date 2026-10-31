@@ -95,6 +95,10 @@ content are unchanged.
   Before, such a cell got a column of its own.
 - A task marker with no text (`- [x]`, `- [ ]`) is an empty task item: the
   box alone. Before, it was a plain item with the marker as text.
+- A document lays out 100,000 table cells at most, the cells the parser
+  fills in to complete a row included. A table that would take it past that
+  renders one line of text per row, wrapped like running text, with ` | `
+  between the cells and the empty cells at the end of a row left out.
 - Autolink literals follow comrak's rules at their edges:
   - `ftp://` addresses are links.
   - An address is not a link while a `[` before it is still open

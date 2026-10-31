@@ -233,6 +233,11 @@ instead (see Records).
   styles.
 - **Cells**: a row has as many cells as the delimiter row has columns. A
   cell past the last column is dropped, and a missing cell is empty.
+- **Cell budget**: a document lays out 100,000 table cells at most, the
+  empty cells that complete a row included. A table past that renders one
+  line of text per row instead, wrapped like running text, with ` | `
+  between the cells and the empty cells at the end of a row left out. The
+  header row is bold.
 - **Cell text**: inline formatting renders as in running text (see
   Inline Formatting): bold, italic, strikethrough, inline code in its
   color, links underlined with their dimmed `(url)`, images as

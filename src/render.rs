@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 use comrak::nodes::{
-    AstNode, ListType, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeValue, TableAlignment,
+    AstNode, ListType, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
 };
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -18,6 +18,13 @@ use crate::styled::{AnsiColor, StyledLine, TextStyle, Underline, text_width};
 /// recurses once per level, and a thread with a 2 MiB stack in a debug
 /// build holds well over this many.
 const MAX_BLOCK_DEPTH: usize = 64;
+
+/// How many table cells a document lays out, the cells the parser fills
+/// in to complete a row included. Laying out a table takes time and lines
+/// in proportion to its cells, and the parser completes every row to the
+/// width of the header, so a few kilobytes can make hundreds of thousands
+/// of cells.
+const MAX_TABLE_CELLS: usize = 100_000;
 
 /// A node of the parsed document. Both lifetimes are the arena's: the
 /// tree hands out nodes only as `&'a AstNode<'a>`.
@@ -219,6 +226,10 @@ pub struct Renderer {
     /// How many block containers the renderer is in, up to
     /// [`MAX_BLOCK_DEPTH`].
     block_depth: usize,
+
+    /// How many more table cells the document may lay out in tables. A
+    /// table with more cells than that renders as rows of running text.
+    table_cells_left: usize,
 }
 
 impl Renderer {
@@ -239,6 +250,7 @@ impl Renderer {
             options,
             long_words: LongWords::Overflow,
             block_depth: 0,
+            table_cells_left: MAX_TABLE_CELLS,
         }
     }
 
@@ -265,7 +277,7 @@ impl Renderer {
             NodeValue::List(list) => self.render_list(node, list, false),
             NodeValue::BlockQuote => self.nested(node, |renderer| renderer.render_blockquote(node)),
             NodeValue::CodeBlock(block) => self.render_code_block(block),
-            NodeValue::Table(table) => self.render_table(node, &table.alignments),
+            NodeValue::Table(table) => self.render_table(node, table),
             NodeValue::ThematicBreak => self.render_thematic_break(),
             NodeValue::HtmlBlock(html) => self.render_block_html(html),
             NodeValue::FootnoteDefinition(_) => {
@@ -438,8 +450,15 @@ impl Renderer {
         }
     }
 
-    fn render_table(&mut self, table: Node<'_>, alignments: &[TableAlignment]) {
+    fn render_table(&mut self, table: Node<'_>, details: &NodeTable) {
         self.ensure_block_spacing();
+
+        let cells = details.num_rows.saturating_mul(details.num_columns);
+        if cells > self.table_cells_left {
+            self.render_table_as_rows(table);
+            return;
+        }
+        self.table_cells_left -= cells;
 
         // The table module lays out the table as a list of styled content
         // lines (box-drawing characters, cell text, bold headers, or the
@@ -453,7 +472,7 @@ impl Renderer {
         let options = self.options;
         let lines = crate::table::layout_table(
             table,
-            alignments,
+            &details.alignments,
             self.effective_width(),
             |cell, width, long_words| render_inline_lines(cell, width, options, long_words),
         );
@@ -467,6 +486,38 @@ impl Renderer {
             // so `write_newline` can terminate the row cleanly. The
             // subsequent `write_newline` resets `column` back to 0.
             self.column = 0;
+            self.mark_drawn();
+            self.write_newline();
+        }
+    }
+
+    /// Render a table past the budget of cells as one paragraph per row:
+    /// the text of its cells, in bold in the header, with ` | ` between
+    /// them. The empty cells that end a row are left out, as the parser
+    /// fills them in.
+    fn render_table_as_rows(&mut self, table: Node<'_>) {
+        for (index, row) in table.children().enumerate() {
+            let kept = row.children().count()
+                - row
+                    .reverse_children()
+                    .take_while(|cell| cell.first_child().is_none())
+                    .count();
+            self.write_indent();
+            let header = index == 0;
+            if header {
+                self.push_style(Style::Bold);
+            }
+            for (position, cell) in row.children().take(kept).enumerate() {
+                if position > 0 {
+                    self.request_space();
+                    self.write_word("|");
+                    self.request_space();
+                }
+                self.render_inline_content(cell);
+            }
+            if header {
+                self.pop_style();
+            }
             self.mark_drawn();
             self.write_newline();
         }

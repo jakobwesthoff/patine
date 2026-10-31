@@ -85,3 +85,32 @@ fn a_megabyte_of_nested_lists_and_quotes_fills_the_columns_it_has_left() {
         assert!(lines < bound, "{lines} lines at width {width}");
     }
 }
+
+/// A table with 1000 columns and 120 rows of one cell: the parser fills
+/// every row up to 1000 cells, 120,000 cells in all. Past the budget of
+/// 100,000 cells a table renders one line per row, from the cells with
+/// text, wrapped like running text.
+#[test]
+fn a_table_of_mostly_filled_in_cells_renders_one_wrapped_line_per_row() {
+    let columns = 1000;
+    let rows = 120;
+    let mut markdown = format!("{}|\n{}|\n", "| a ".repeat(columns), "|---".repeat(columns));
+    markdown.push_str(&"| x |\n".repeat(rows));
+
+    // "a | a | ... | a"
+    let header_width = columns + (columns - 1) * 3;
+    for width in [80, 20] {
+        let lines = render_lines_with(&markdown, width, &RenderOptions::default());
+        // A row holds its cells' text and the " | " between them, and
+        // wraps at the width; a row with a single cell of text is one line.
+        let bound = header_width.div_ceil(width) + 1 + rows * 2;
+        assert!(
+            lines.len() <= bound,
+            "{} lines at width {width}, at most {bound} expected",
+            lines.len()
+        );
+        assert!(lines[0].to_string().starts_with("a | a | a"));
+        let rows_of_x = lines.iter().filter(|line| line.to_string() == "x").count();
+        assert_eq!(rows_of_x, rows, "one line of `x` for each row");
+    }
+}
