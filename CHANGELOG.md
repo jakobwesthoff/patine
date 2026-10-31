@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `[https://example.com]`, is not a link, and neither is a `www.`
   address right after a `]` or in capitals (`WWW.example.com`). A `]`
   straight after an address belongs to its link.
+- The indent and the bars of nested block quotes and lists stop growing
+  before a line is left with less than 20 columns of text, and a prefix
+  of 6 columns is always kept. Deeper levels keep the indent they
+  reached. The prefix used to grow with every level, so a paragraph under
+  deep nesting took one line per word.
 
 ### Fixed
 
@@ -41,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deeply nested documents render within the stack of a 2 MiB thread, where
   a stack overflow would abort the process. Block quotes, list items and
   footnote definitions nest 64 levels deep; blocks below that depth render
-  at the indent of the 64th level, in document order, without a bar or
+  in document order at the indent they have reached, without a bar or
   bullet of their own. Their text is kept. Emphasis, links and other
   inline content nest as deep as the source does.
 - Markdown that made the parser panic no longer does: `[a]:b\n=\n=+\r-`,

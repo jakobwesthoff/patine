@@ -30,6 +30,14 @@ const NEST_INDENT_WIDTH: usize = 2;
 /// Foreground color used for inline code and code blocks.
 const CODE_COLOR: AnsiColor = AnsiColor::Yellow;
 
+/// The columns of text a line keeps at least, however deep the blocks
+/// around it nest: the line prefix stops growing before it takes them.
+const MIN_TEXT_WIDTH: usize = 20;
+
+/// The width of the line prefix that stays whatever the width is, three
+/// levels of bars or indent.
+const KEPT_PREFIX_WIDTH: usize = 6;
+
 /// Prefix for each blockquote nesting level.
 const BLOCKQUOTE_BAR: &str = "│ ";
 
@@ -1017,15 +1025,10 @@ impl Renderer {
     /// breaks words, and a cell never sees the option (see
     /// [`render_inline_lines`]).
     fn effective_width(&self) -> usize {
-        let prefix_width: usize = self
-            .prefix
-            .iter()
-            .map(|segment| match segment {
-                Segment::Nest(width) => *width,
-                Segment::Quote => text_width(BLOCKQUOTE_BAR),
-                Segment::Item { .. } => 0,
-            })
-            .sum();
+        let prefix_width = self
+            .drawn_prefix(self.prefix.len())
+            .map(|(_, width)| width)
+            .sum::<usize>();
         let content_width = match self.options.first_line_width {
             Some(first) if self.lines.is_empty() => first.min(self.content_width),
             _ => self.content_width,
@@ -1103,18 +1106,21 @@ impl Renderer {
     /// the style of the content around it.
     fn write_prefix(&mut self, segments: usize) {
         let mut wrote = false;
-        for index in 0..segments {
-            match self.prefix[index] {
-                Segment::Nest(width) => {
+        let drawn: Vec<(Segment, usize)> = self.drawn_prefix(segments).collect();
+        for (segment, width) in drawn {
+            if width == 0 {
+                continue;
+            }
+            match segment {
+                Segment::Nest(_) => {
                     self.line.push_str(&" ".repeat(width), TextStyle::default());
-                    wrote = true;
                 }
                 Segment::Quote => {
                     self.line.push_str(BLOCKQUOTE_BAR, self.bar_style());
-                    wrote = true;
                 }
                 Segment::Item { .. } => {}
             }
+            wrote = true;
         }
 
         // Only update output-tracking state when we actually wrote something,
@@ -1124,6 +1130,32 @@ impl Renderer {
             self.at_start = false;
             self.pending_space = None;
         }
+    }
+
+    /// The levels among the first `segments` of the line prefix that are
+    /// drawn, with the width each is drawn at. The prefix stops growing
+    /// before it leaves less than [`MIN_TEXT_WIDTH`] columns of text, or
+    /// before it is wider than [`KEPT_PREFIX_WIDTH`], and a document nested
+    /// deeper than that keeps the indent it has reached.
+    fn drawn_prefix(&self, segments: usize) -> impl Iterator<Item = (Segment, usize)> + '_ {
+        let limit = self
+            .content_width
+            .saturating_sub(MIN_TEXT_WIDTH.min(self.content_width))
+            .max(KEPT_PREFIX_WIDTH);
+        let mut drawn = 0;
+        // A level is two columns wide or takes none, so once one does not
+        // fit, no later one does.
+        self.prefix[..segments].iter().map_while(move |segment| {
+            let width = match segment {
+                Segment::Nest(width) => *width,
+                Segment::Quote => text_width(BLOCKQUOTE_BAR),
+                Segment::Item { .. } => 0,
+            };
+            (drawn + width <= limit).then(|| {
+                drawn += width;
+                (*segment, width)
+            })
+        })
     }
 
     /// The style of a blockquote bar, whatever the quoted content looks

@@ -28,10 +28,11 @@ fn render_on_a_small_stack(markdown: String) -> Vec<String> {
 }
 
 #[test]
-fn quotes_nested_100000_deep_render_with_64_bars() {
+fn quotes_nested_100000_deep_render_with_the_bars_that_fit() {
     let lines = render_on_a_small_stack(format!("{}text", "> ".repeat(100_000)));
     assert_eq!(lines.len(), 1);
-    assert_eq!(lines[0].matches('│').count(), 64);
+    // At width 80 the bars stop at 60 columns, which leaves 20 for the text.
+    assert_eq!(lines[0].matches('│').count(), 30);
     assert!(lines[0].ends_with("text"), "{}", lines[0]);
 }
 

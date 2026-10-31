@@ -67,8 +67,9 @@ break, a nested image and a footnote reference add nothing to it.
 
 The renderer nests block quotes, list items and footnote definitions 64
 levels deep. Blocks below that depth render in document order at the indent
-of the 64th level, without a bar or bullet of their own, so their text is
-kept. Inline content is walked with a stack of its own, not by recursion.
+they have reached, without a bar or bullet of their own, so their text is
+kept. The indent and the bars stop growing before a line is left with less
+than 20 columns of text, and a prefix of 6 columns is always kept. Inline content is walked with a stack of its own, not by recursion.
 A thread with a 2 MiB stack renders documents nested 100,000 block quotes
 deep or 20,000 emphasis levels deep.
 
