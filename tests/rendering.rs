@@ -3623,3 +3623,38 @@ fn link_text_of_inline_code_counts_as_its_url() {
     assert_eq!(plain_lines("[`a`](a)", 80), ["a"]);
     assert_eq!(plain_lines("[`a`](b)", 80), ["a (b)"]);
 }
+
+// =========================================================
+// Text on the line after a task marker
+// =========================================================
+
+// The line break after a marker that ends its line is not a break between
+// two lines of text: the text that follows belongs next to the box.
+
+#[test]
+fn text_after_a_marker_that_ends_its_line_follows_the_box() {
+    for (markdown, expected) in [
+        ("- [ ]\ndelta beta", "☐ delta beta"),
+        ("- [ ] \ndelta beta", "☐ delta beta"),
+        ("- [ ]\n  delta beta", "☐ delta beta"),
+        ("- [x]\ndelta beta", "☑ delta beta"),
+        ("1. [ ]\ndelta beta", "1. ☐ delta beta"),
+        ("1. [x]\n   delta beta", "1. ☑ delta beta"),
+    ] {
+        for options in [RenderOptions::default(), BREAK, BREAK_AND_LITERAL] {
+            assert_eq!(
+                plain_lines_with(markdown, 80, options),
+                [expected],
+                "{markdown:?} with {options:?}"
+            );
+        }
+    }
+}
+
+#[test]
+fn a_line_break_after_the_first_line_of_a_task_still_breaks() {
+    assert_eq!(
+        plain_lines_with("- [ ] delta\nbeta", 80, BREAK),
+        ["☐ delta", "  beta"]
+    );
+}

@@ -642,7 +642,11 @@ impl Renderer {
                             self.at_start = false;
                         }
                     }
-                    self.render_inline_content(child);
+                    // A task marker that ends its line leaves the line
+                    // break after it at the start of the paragraph; the
+                    // text that follows belongs next to the box.
+                    let task = matches!(item.data.borrow().value, NodeValue::TaskItem(_));
+                    self.render_inline_children(child, task && is_first);
                 }
                 // Nested lists and other block content get their own indent.
                 // Ensure we're on a new line before starting nested content.
@@ -732,12 +736,30 @@ impl Renderer {
     /// nests as deep as the source does, and rendering it costs no
     /// recursion.
     fn render_inline_content(&mut self, parent: Node<'_>) {
+        self.render_inline_children(parent, false);
+    }
+
+    /// Render the inline children of `parent` as
+    /// [`render_inline_content`](Self::render_inline_content) does, except
+    /// that with `skip_leading_soft_break` a soft break before the first
+    /// other child is left out.
+    fn render_inline_children(&mut self, parent: Node<'_>, skip_leading_soft_break: bool) {
         enum Step<'a> {
             Enter(Node<'a>),
             Exit(Node<'a>),
         }
 
-        let mut steps: Vec<Step<'_>> = parent.reverse_children().map(Step::Enter).collect();
+        let skipped = usize::from(
+            skip_leading_soft_break
+                && parent
+                    .first_child()
+                    .is_some_and(|first| matches!(first.data.borrow().value, NodeValue::SoftBreak)),
+        );
+        let mut steps: Vec<Step<'_>> = parent
+            .reverse_children()
+            .take(parent.children().count() - skipped)
+            .map(Step::Enter)
+            .collect();
         while let Some(step) = steps.pop() {
             match step {
                 Step::Enter(node) => {
