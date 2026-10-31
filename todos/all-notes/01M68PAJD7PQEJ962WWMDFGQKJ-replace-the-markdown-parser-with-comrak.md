@@ -137,6 +137,15 @@ HTML, autolinks.
    before parsing and renders it as today. Rejected: YAML only.
 6. Image alt text (the lead's call): flatten the children so the output
    stays as today.
+7. Footnote definitions that no reference uses are dropped, as comrak
+   and GitHub drop them; referenced ones come at the end in the order of
+   their first reference (Jakob, asked when the plan review found it).
+   Rejected: appending them after the referenced ones.
+8. YAML and TOML front matter both go through one splitter of patine's
+   own with today's rules (trailing blanks on the fences, all three line
+   endings, the earliest closing line, an empty block), with comrak's
+   front-matter option off (the lead's call: comrak's option cannot keep
+   today's output).
 
 Before the switch, besides the characterisation tests below, a batch of
 whole-document tests: varied example documents, each with its input and
