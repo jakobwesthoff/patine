@@ -144,6 +144,11 @@ its rendered output pinned, run across the rendering variants (options,
 line endings, widths that force wrapping and overflow) (Jakob,
 2026-10-31, in the chat).
 
+Release (Jakob, 2026-10-31, in the chat): once the switch is merged,
+release it as patine 2.0.0, with push, tag, `cargo publish` and the
+release workflow, so asqr can move to it. The public API stays the same;
+the major version marks the changed output. Rejected: 1.10.0.
+
 ### comrak facts (2026-10-31)
 
 - 0.59.0, released 2026-10-26, 16 open issues. Licence BSD-2-Clause
