@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"![alt *em* and `code` and **strong**](/u.png)\", WIDTH, &default())"
+---
+"![alt *em* and `code` and **strong**](/u.png)"
+[image: alt em and code and strong][dim] (/u.png)[]

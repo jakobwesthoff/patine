@@ -1,0 +1,8 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"1) a\\n1) b\\n1) c\", WIDTH, &default())"
+---
+"1) a\n1) b\n1) c"
+1. a
+2. b
+3. c

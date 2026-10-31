@@ -1,0 +1,118 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"---\\n---\\n\\nBody\", \"+++\\n+++\\n\\nBody\", \"---\\n\\n---\\n\\nBody\",\n\"--- \\ntitle: x\\n---\\t\\n\\nBody\", \"+++ \\ntitle = 1\\n+++ \\n\\nBody\",\n\"----\\ntitle: x\\n----\\n\\nBody\", \"---\\ntitle: x\\n----\\n\\nBody\",\n\"---\\ntitle: x\\n---\", \"---\\ntitle: x\", \"+++\\ntitle = 1\",\n\"---\\r\\ntitle: x\\r\\n---\\r\\n\\r\\nBody\", \"---\\rtitle: x\\r---\\r\\rBody\",\n\"---\\na\\n---\\nb\\r\\n---\\r\\nBody\", \"\\u{feff}---\\ntitle: x\\n---\\n\\nBody\",\n\"---\\ntitle: x\\n--not a fence\\n---\\n\\nBody\",\n\"+++\\ntitle = 1\\n+++\\n\\n---\\nsecond: 2\\n---\\n\\nBody\",\n\"---\\ntitle: x\\n---\\n\\n+++\\nsecond = 2\\n+++\\n\\nBody\",\n\" ---\\ntitle: x\\n---\\n\\nBody\",], WIDTH, &default())"
+---
+"---\n---\n\nBody"
+Body
+---
+"+++\n+++\n\nBody"
+Body
+---
+"---\n\n---\n\nBody"
+Body
+---
+"--- \ntitle: x\n---\t\n\nBody"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
+Body
+---
+"+++ \ntitle = 1\n+++ \n\nBody"
+  +++
+  [red]title[] = [yellow]1[]
+  +++
+
+Body
+---
+"----\ntitle: x\n----\n\nBody"
+────────────────────────────────────────────────────────────────────────────────
+
+[bold,underline]title: x[]
+
+Body
+---
+"---\ntitle: x\n----\n\nBody"
+────────────────────────────────────────────────────────────────────────────────
+
+[bold,underline]title: x[]
+
+Body
+---
+"---\ntitle: x\n---"
+  ---
+  [red]title[]: [green]x[]
+  ---
+---
+"---\ntitle: x"
+────────────────────────────────────────────────────────────────────────────────
+
+title: x
+---
+"+++\ntitle = 1"
++++ title = 1
+---
+"---\r\ntitle: x\r\n---\r\n\r\nBody"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
+Body
+---
+"---\rtitle: x\r---\r\rBody"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
+Body
+---
+"---\na\n---\nb\r\n---\r\nBody"
+  ---
+  [green]a[]
+  ---
+
+[bold,underline]b[]
+
+Body
+---
+"\u{feff}---\ntitle: x\n---\n\nBody"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
+Body
+---
+"---\ntitle: x\n--not a fence\n---\n\nBody"
+  ---
+  [red]title[]: [green]x[]
+  [green]--not a fence[]
+  ---
+
+Body
+---
+"+++\ntitle = 1\n+++\n\n---\nsecond: 2\n---\n\nBody"
+  +++
+  [red]title[] = [yellow]1[]
+  +++
+
+────────────────────────────────────────────────────────────────────────────────
+
+[bold,underline]second: 2[]
+
+Body
+---
+"---\ntitle: x\n---\n\n+++\nsecond = 2\n+++\n\nBody"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
++++ second = 2 +++
+
+Body
+---
+" ---\ntitle: x\n---\n\nBody"
+────────────────────────────────────────────────────────────────────────────────
+
+[bold,underline]title: x[]
+
+Body

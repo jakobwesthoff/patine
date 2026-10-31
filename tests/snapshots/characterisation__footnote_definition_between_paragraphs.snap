@@ -1,0 +1,10 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"first\\n\\n[^1]: the note\\n\\nsecond[^1]\", WIDTH, &default())"
+---
+"first\n\n[^1]: the note\n\nsecond[^1]"
+first
+
+the note
+
+second

@@ -1,0 +1,8 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"one[^a] two[^a] three[^missing]\\n\\n[^a]: the note\", WIDTH, &default())"
+---
+"one[^a] two[^a] three[^missing]\n\n[^a]: the note"
+one two three[^missing]
+
+the note

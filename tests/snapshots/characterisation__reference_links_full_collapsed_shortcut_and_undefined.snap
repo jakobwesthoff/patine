@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"full [text][r], collapsed [r][], shortcut [r], undefined [text][nope] and [nope].\\n\\n[r]: /u \\\"title\\\"\",\nWIDTH, &default())"
+---
+"full [text][r], collapsed [r][], shortcut [r], undefined [text][nope] and [nope].\n\n[r]: /u \"title\""
+full text, collapsed r, shortcut r, undefined [text][nope] and [nope].

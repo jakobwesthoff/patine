@@ -1,0 +1,10 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"| a \\\\| b | c |\\n|---|---|\\n| `x \\\\| y` | z |\", WIDTH, &default())"
+---
+"| a \\| b | c |\n|---|---|\n| `x \\| y` | z |"
+┌───────┬───┐
+│ [bold]a | b[] │ [bold]c[] │
+├───────┼───┤
+│ [yellow]x | y[] │ z │
+└───────┴───┘

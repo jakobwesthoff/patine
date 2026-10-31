@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"write to <a@b.c> or a@b.co or mailto:a@b.co\", WIDTH, &default())"
+---
+"write to <a@b.c> or a@b.co or mailto:a@b.co"
+write to [underline]a@b.c[] or [underline]a@b.co[] or [underline]mailto:a@b.co[]

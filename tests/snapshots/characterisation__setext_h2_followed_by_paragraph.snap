@@ -1,0 +1,8 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"Title\\n-----\\nparagraph after\", WIDTH, &default())"
+---
+"Title\n-----\nparagraph after"
+[bold,underline]Title[]
+
+paragraph after

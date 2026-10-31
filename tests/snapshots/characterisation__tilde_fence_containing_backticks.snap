@@ -1,0 +1,10 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"~~~\\n```\\ninner\\n```\\n~~~\\n\\nafter\", WIDTH, &default())"
+---
+"~~~\n```\ninner\n```\n~~~\n\nafter"
+  [yellow]```[]
+  [yellow]inner[]
+  [yellow]```[]
+
+after

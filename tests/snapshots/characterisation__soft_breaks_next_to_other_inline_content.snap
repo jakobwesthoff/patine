@@ -1,0 +1,95 @@
+---
+source: tests/characterisation.rs
+expression: "format!(\"{join}=== soft breaks as breaks ===\\n{break_}\")"
+---
+"[link](u)\nnext"
+[underline]link[][dim] (u)[] next
+---
+"`code`\nnext"
+[yellow]code[] next
+---
+"text\n[link](u)\n`code`\n**bold**\nend"
+text [underline]link[][dim] (u)[] [yellow]code[] [bold]bold[] end
+---
+"# heading with\nsoft break"
+[bold,italic,double-underline]heading with[]
+
+soft break
+---
+"> quote line\n> second line"
+[cyan]│ []quote line second line
+---
+"- item line\n  second line"
+• item line second line
+---
+"| a\nb | c |\n|---|---|\n| d | e |"
+| a
+
+┌───┬───┐
+│ [bold]b[] │ [bold]c[] │
+├───┼───┤
+│ d │ e │
+└───┴───┘
+---
+"a  \nhard\\\nbreaks\nsoft"
+a
+hard
+breaks soft
+---
+"trailing space \nbreak"
+trailing space break
+---
+"a\r\nb\rc"
+a b c
+=== soft breaks as breaks ===
+"[link](u)\nnext"
+[underline]link[][dim] (u)[]
+next
+---
+"`code`\nnext"
+[yellow]code[]
+next
+---
+"text\n[link](u)\n`code`\n**bold**\nend"
+text
+[underline]link[][dim] (u)[]
+[yellow]code[]
+[bold]bold[]
+end
+---
+"# heading with\nsoft break"
+[bold,italic,double-underline]heading with[]
+
+soft break
+---
+"> quote line\n> second line"
+[cyan]│ []quote line
+[cyan]│ []second line
+---
+"- item line\n  second line"
+• item line
+  second line
+---
+"| a\nb | c |\n|---|---|\n| d | e |"
+| a
+
+┌───┬───┐
+│ [bold]b[] │ [bold]c[] │
+├───┼───┤
+│ d │ e │
+└───┴───┘
+---
+"a  \nhard\\\nbreaks\nsoft"
+a
+hard
+breaks
+soft
+---
+"trailing space \nbreak"
+trailing space
+break
+---
+"a\r\nb\rc"
+a
+b
+c

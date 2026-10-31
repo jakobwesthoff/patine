@@ -1,0 +1,35 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"![a\\\\\\nb](u)\", \"![a  \\nb](u)\", \"![a\\nb](u)\",\n\"![a ![b](c) d](u)\", \"![a ~~b~~ c](u)\", \"![a <b>x</b> c](u)\",\n\"![a [link](l) b](u)\", \"![a[^1]](u)\\n\\n[^1]: n\",\n\"[![https://x.y](i)](https://x.y)\", \"[![alt](i)](https://x.y)\",], WIDTH,\n&RenderOptions::new().with_html(Html::Literal))"
+---
+"![a\\\nb](u)"
+[image: ab][dim] (u)[]
+---
+"![a  \nb](u)"
+[image: ab][dim] (u)[]
+---
+"![a\nb](u)"
+[image: a b][dim] (u)[]
+---
+"![a ![b](c) d](u)"
+[image: a d][dim] (u)[]
+---
+"![a ~~b~~ c](u)"
+[image: a b c][dim] (u)[]
+---
+"![a <b>x</b> c](u)"
+[image: a <b>x</b> c][dim] (u)[]
+---
+"![a [link](l) b](u)"
+[image: a link b][dim] (u)[]
+---
+"![a[^1]](u)\n\n[^1]: n"
+[image: a][dim] (u)[]
+
+n
+---
+"[![https://x.y](i)](https://x.y)"
+[underline][image: https://x.y][][dim,underline] (i)[][dim] (https://x.y)[]
+---
+"[![alt](i)](https://x.y)"
+[underline][image: alt][][dim,underline] (i)[][dim] (https://x.y)[]

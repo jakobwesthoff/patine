@@ -1,0 +1,8 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"- [X] upper\\n- [x] lower\\n- [ ] open\", WIDTH, &default())"
+---
+"- [X] upper\n- [x] lower\n- [ ] open"
+[dim]☑ upper[]
+[dim]☑ lower[]
+☐ open

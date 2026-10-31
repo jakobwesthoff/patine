@@ -1,0 +1,111 @@
+---
+source: tests/characterisation.rs
+expression: "format!(\"{drop}=== literal, soft breaks as breaks ===\\n{literal}\")"
+---
+"<div>\nblock\n</div>\n\nafter"
+after
+---
+"<div>\nblock\n</div>"
+---
+"<!-- comment -->\n\nafter"
+after
+---
+"<!-- open\ntext\n"
+---
+"<!-- open\n\n\n"
+---
+"<?php open\ntext"
+---
+"<script>\nvar x;\n</script>\n\nafter"
+after
+---
+"- item\n\n  <div>in item</div>\n\n- next"
+• item
+• next
+---
+"> <div>in quote</div>"
+---
+"<div>\r\nblock\r\n</div>\r\n\r\nafter"
+after
+---
+"inline <span\nclass=\"x\">text</span> here"
+inline text here
+---
+"inline <b>bold</b> and <!-- c --> and <br/>"
+inline bold and and
+---
+"| a | b |\n|---|---|\n| <b>x</b> | y |"
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ x │ y │
+└───┴───┘
+=== literal, soft breaks as breaks ===
+"<div>\nblock\n</div>\n\nafter"
+<div>
+block
+</div>
+
+after
+---
+"<div>\nblock\n</div>"
+<div>
+block
+</div>
+---
+"<!-- comment -->\n\nafter"
+<!-- comment -->
+
+after
+---
+"<!-- open\ntext\n"
+<!-- open
+text
+
+---
+"<!-- open\n\n\n"
+<!-- open
+
+
+
+---
+"<?php open\ntext"
+<?php open
+text
+---
+"<script>\nvar x;\n</script>\n\nafter"
+<script>
+var x;
+</script>
+
+after
+---
+"- item\n\n  <div>in item</div>\n\n- next"
+• item
+
+  <div>in item</div>
+• next
+---
+"> <div>in quote</div>"
+[cyan]│ []<div>in quote</div>
+---
+"<div>\r\nblock\r\n</div>\r\n\r\nafter"
+<div>
+block
+</div>
+
+after
+---
+"inline <span\nclass=\"x\">text</span> here"
+inline <span
+class="x">text</span> here
+---
+"inline <b>bold</b> and <!-- c --> and <br/>"
+inline <b>bold</b> and <!-- c --> and <br/>
+---
+"| a | b |\n|---|---|\n| <b>x</b> | y |"
+┌──────────┬───┐
+│ [bold]   a    [] │ [bold]b[] │
+├──────────┼───┤
+│ <b>x</b> │ y │
+└──────────┴───┘

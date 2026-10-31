@@ -1,0 +1,12 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"---\\na: 1\\n+++\\nb: 2\\n---\\n\\nBody\", WIDTH, &default())"
+---
+"---\na: 1\n+++\nb: 2\n---\n\nBody"
+  ---
+  [red]a[]: [yellow]1[]
+  [green]+++[]
+  [red]b[]: [yellow]2[]
+  ---
+
+Body

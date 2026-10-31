@@ -1,0 +1,13 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"- top\\n  1. middle\\n     - deepest\\n\\n       ```rust\\n       let x = 1;\\n       ```\\n\\n     - sibling\\n  2. second\\n- next\",\nWIDTH, &default())"
+---
+"- top\n  1. middle\n     - deepest\n\n       ```rust\n       let x = 1;\n       ```\n\n     - sibling\n  2. second\n- next"
+• top
+  1. middle
+    • deepest
+
+        [magenta]let[] x [magenta]=[] [yellow]1[];
+    • sibling
+  2. second
+• next

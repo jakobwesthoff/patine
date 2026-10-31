@@ -1,0 +1,9 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"| a | b |\\n|---|\\n| 1 | 2 |\", \"| a |\\n|---|---|\\n| 1 | 2 |\",],\nWIDTH, &default())"
+---
+"| a | b |\n|---|\n| 1 | 2 |"
+| a | b | |---| | 1 | 2 |
+---
+"| a |\n|---|---|\n| 1 | 2 |"
+| a | |---|---| | 1 | 2 |

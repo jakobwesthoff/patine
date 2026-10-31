@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"[text](/u \\\"the title\\\") and [t](<a b> 'x')\", WIDTH, &default())"
+---
+"[text](/u \"the title\") and [t](<a b> 'x')"
+[underline]text[][dim] (/u)[] and [underline]t[][dim] (a b)[]

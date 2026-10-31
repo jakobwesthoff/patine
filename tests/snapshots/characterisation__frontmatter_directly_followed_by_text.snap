@@ -1,0 +1,17 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"---\\ntitle: x\\n---\\nBody text\",\n\"+++\\ntitle = \\\"x\\\"\\n+++\\nBody text\",], WIDTH, &default())"
+---
+"---\ntitle: x\n---\nBody text"
+  ---
+  [red]title[]: [green]x[]
+  ---
+
+Body text
+---
+"+++\ntitle = \"x\"\n+++\nBody text"
+  +++
+  [red]title[] = [green]"x"[]
+  +++
+
+Body text

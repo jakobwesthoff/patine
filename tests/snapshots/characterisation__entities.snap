@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"&amp; &lt;tag&gt; a&nbsp;b &#x41; &#66; &copy; &unknown; &#0;\", WIDTH,\n&default())"
+---
+"&amp; &lt;tag&gt; a&nbsp;b &#x41; &#66; &copy; &unknown; &#0;"
+& <tag> a b A B © &unknown; �

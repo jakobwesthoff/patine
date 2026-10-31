@@ -1,0 +1,6 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"\\\\*not em\\\\* \\\\_not em\\\\_ back\\\\\\\\slash \\\\# not a heading \\\\[not a link\\\\]\",\nWIDTH, &default())"
+---
+"\\*not em\\* \\_not em\\_ back\\\\slash \\# not a heading \\[not a link\\]"
+*not em* _not em_ back\slash # not a heading [not a link]

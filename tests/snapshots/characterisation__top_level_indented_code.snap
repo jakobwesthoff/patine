@@ -1,0 +1,12 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"para\\n\\n    code line\\n\\n    more code\\n\\nafter\", WIDTH, &default())"
+---
+"para\n\n    code line\n\n    more code\n\nafter"
+para
+
+  [yellow]code line[]
+  
+  [yellow]more code[]
+
+after

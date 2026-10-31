@@ -1,0 +1,12 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"a\\tb\\n\\n-\\titem\\ttext\\n\\n```\\ncode\\tline\\n```\\n\\n\\tindented\\tcode\",\nWIDTH, &default())"
+---
+"a\tb\n\n-\titem\ttext\n\n```\ncode\tline\n```\n\n\tindented\tcode"
+a b
+
+• item text
+
+  [yellow]code	line[]
+
+  [yellow]indented	code[]

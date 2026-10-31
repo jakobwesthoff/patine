@@ -1,0 +1,43 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"```rust ignore\\nfn main() {}\\n```\",\n\"```rust,ignore\\nfn main() {}\\n```\", \"```rust\\tignore\\nfn main() {}\\n```\",\n\"```  rust\\nfn main() {}\\n```\", \"```\\nlast line blank\\n\\n```\",\n\"```\\nthree blank\\n\\n\\n\\n```\", \"```\\n```\", \"```rust\\n```\",\n\"    indented\\n\\n\\n    again\", \"```\\r\\nwith crlf\\r\\n\\r\\n```\",\n\"```\\rwith cr\\r\\r```\", \"```\\nunclosed fence\\nstill code\",], WIDTH, &default())"
+---
+"```rust ignore\nfn main() {}\n```"
+  [magenta]fn[] [blue]main[]() {}
+---
+"```rust,ignore\nfn main() {}\n```"
+  [yellow]fn main() {}[]
+---
+"```rust\tignore\nfn main() {}\n```"
+  [magenta]fn[] [blue]main[]() {}
+---
+"```  rust\nfn main() {}\n```"
+  [magenta]fn[] [blue]main[]() {}
+---
+"```\nlast line blank\n\n```"
+  [yellow]last line blank[]
+---
+"```\nthree blank\n\n\n\n```"
+  [yellow]three blank[]
+  
+  
+---
+"```\n```"
+---
+"```rust\n```"
+---
+"    indented\n\n\n    again"
+  [yellow]indented[]
+  
+  
+  [yellow]again[]
+---
+"```\r\nwith crlf\r\n\r\n```"
+  [yellow]with crlf[]
+---
+"```\rwith cr\r\r```"
+  [yellow]with cr[]
+---
+"```\nunclosed fence\nstill code"
+  [yellow]unclosed fence[]
+  [yellow]still code[]

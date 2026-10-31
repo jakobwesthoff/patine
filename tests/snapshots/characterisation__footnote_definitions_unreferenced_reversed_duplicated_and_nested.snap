@@ -1,0 +1,36 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"text\\n\\n[^unused]: nobody refers to this\",\n\"[^a]: first defined\\n\\n[^b]: second defined\\n\\nrefers to b[^b] and then a[^a]\",\n\"[^a]: one\\n\\n[^a]: two\\n\\nrefers[^a]\",\n\"- item[^n]\\n\\n  [^n]: note in an item\\n\\nafter\",\n\"> quote[^n]\\n>\\n> [^n]: note in a quote\\n\\nafter\",], WIDTH, &default())"
+---
+"text\n\n[^unused]: nobody refers to this"
+text
+
+nobody refers to this
+---
+"[^a]: first defined\n\n[^b]: second defined\n\nrefers to b[^b] and then a[^a]"
+first defined
+
+second defined
+
+refers to b and then a
+---
+"[^a]: one\n\n[^a]: two\n\nrefers[^a]"
+one
+
+two
+
+refers
+---
+"- item[^n]\n\n  [^n]: note in an item\n\nafter"
+• item
+
+  note in an item
+
+after
+---
+"> quote[^n]\n>\n> [^n]: note in a quote\n\nafter"
+[cyan]│ []quote
+[cyan]│ []
+[cyan]│ []note in a quote
+
+after
