@@ -17,9 +17,10 @@ All examples show the visual output, not the Markdown source.
   halfwidth sound mark, `ﾞ` or `ﾟ`, takes one column. Control
   characters keep their Unicode width.
 - Nested structures (lists, code blocks) are indented 2 spaces per level.
-- Block quotes, list items and footnote definitions nest 64 levels deep.
-  Blocks below that depth render in document order at the indent they
-  have reached, without a bar or bullet of their own.
+- Block quotes, callouts, list items and footnote definitions nest 64
+  levels deep. Blocks below that depth render in document order at the
+  indent they have reached, without a bar or bullet of their own; a
+  callout there keeps its title line.
 - The indent and the bars of nested blocks stop growing before a line is
   left with less than 20 columns of text; a prefix of 6 columns is always
   kept. Deeper levels keep the indent they reached.
@@ -419,6 +420,68 @@ inside a list item sits after the item's indent:
   │ Quote in the item
 ```
 
+## Callouts
+
+A quote whose first line is a marker such as `[!NOTE]` is a callout, as
+GitHub draws its alerts. Every line of a callout has a heavy bar `┃ ` in
+the color of its kind. The first line is the title, bold and in that
+color, after the kind's symbol; the body follows on the next line.
+
+```
+┃ ● Note                         ← bar, symbol and title blue, title bold
+┃ The release branch is cut from main every second Tuesday.
+```
+
+| Marker           | Symbol | Default title | Color   |
+|------------------|--------|---------------|---------|
+| `[!NOTE]`        | `●`    | Note          | Blue    |
+| `[!TIP]`         | `◆`    | Tip           | Green   |
+| `[!IMPORTANT]`   | `■`    | Important     | Magenta |
+| `[!WARNING]`     | `▲`    | Warning       | Yellow  |
+| `[!CAUTION]`     | `✕`    | Caution       | Red     |
+| any other type   | `○`    | from the type | Default |
+
+- **Marker**: `[!` and a type up to the first `]`, on the quote's first
+  line, after its `>` and at most one space. The letter case of the type
+  does not matter.
+- **Other types**: any other type, such as `[!FOO]` or `[!my kind]`, is a
+  neutral callout in the default foreground color. Its title is the type
+  with its first letter upper case and its other letters lower case
+  (`Foo`, `My kind`). A type whose title would be blank, such as `[!-]`,
+  shows the symbol alone.
+- **Title**: text after the marker, separated by a space or tab, is the
+  title in place of the type's name, for every type: `> [!WARNING] Back
+  up first` shows `▲ Back up first`, and `> [!NOTE see [docs] here`, whose
+  type runs to the first `]`, shows `○ here`. The title is inline
+  Markdown, so emphasis, inline code, links and images look as in running
+  text, in bold and the kind's color. A title too long for the line wraps
+  under its first word. When the text after the marker is a block, the
+  title is the text of its first block (`> [!NOTE] - item` shows `● item`).
+  When it draws nothing, such as `***` or HTML that is not shown, the
+  title is the type's name.
+- **Fold markers and metadata**: `[!NOTE]-`, `[!NOTE]+` and
+  `[!NOTE|wide]` are callouts of their type; the fold marker and the
+  metadata after `|` draw nothing, and the callout is never folded.
+- **Empty callout**: a marker with nothing under it shows its title line
+  alone.
+- **Nesting**: a callout nests in quotes, callouts, list items and
+  footnotes like a quote, and its bar comes in the order of the nesting.
+  A callout written in a title (`> [!NOTE] > [!TIP] x`) gives only its
+  text to that title and draws no bar or symbol of its own.
+- **Body**: blocks in a callout carry the bar on every line, blank lines
+  between them included.
+- **Not callouts**: a quote that only starts like a marker stays a quote
+  with its text as written: `> [!] x`, `> [!NOTE` without `]`,
+  `> [!NOTE]text` and `> [!NOTE](url)`, and a marker on a later line.
+  GitHub draws three forms as alerts that patine keeps as quotes: two
+  spaces or a tab after the `>` (`>  [!NOTE]`, `>\t[!NOTE]`) and an
+  escaped marker (`> \[!NOTE]`).
+
+GitHub draws a quote as an alert only for the five types, with no text
+after the marker, outside other elements and with a body. The other
+types, titles, fold markers, metadata, empty callouts and nested
+callouts are callouts in patine and quotes on GitHub.
+
 ## Footnotes
 
 A footnote reference (`[^1]`) shows a dimmed number in square brackets
@@ -494,6 +557,8 @@ restrained use of color and styling.
 | Done task           | Dimmed (nested lists excepted)     |
 | Blockquote text     | Default                            |
 | Blockquote bar `│`  | Cyan                               |
+| Callout bar `┃`     | The kind's color                   |
+| Callout title       | Bold, the kind's color             |
 | Table borders       | Default                            |
 | Table header text   | Bold, centered unless aligned      |
 | Table cell text     | As in running text                 |

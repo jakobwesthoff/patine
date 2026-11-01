@@ -5,7 +5,7 @@
 use std::collections::HashMap;
 
 use comrak::nodes::{
-    AstNode, ListType, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
+    AstNode, ListType, NodeCallout, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
 };
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -13,7 +13,7 @@ use crate::line_endings::{split_line_endings, trim_final_line_ending, verbatim_l
 use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
 use crate::styled::{AnsiColor, StyledLine, TextStyle, Underline, text_width};
 
-/// How many block containers (block quotes, list items, footnote
+/// How many block containers (block quotes, callouts, list items, footnote
 /// definitions) deep the renderer nests them. A container below that depth
 /// adds no bar, bullet or indent of its own: the blocks in it render at the
 /// indent of the container at the limit, in document order. Rendering
@@ -50,6 +50,10 @@ const KEPT_PREFIX_WIDTH: usize = 6;
 /// Prefix for each blockquote nesting level.
 const BLOCKQUOTE_BAR: &str = "│ ";
 
+/// Prefix for each line of a callout. Being heavier than a quote's bar, it
+/// keeps a callout apart from a quote where colors are off.
+const CALLOUT_BAR: &str = "┃ ";
+
 /// The marker of an unordered list item.
 const BULLET: &str = "•";
 
@@ -74,6 +78,8 @@ enum Segment {
     Nest(usize),
     /// A blockquote's `│ ` bar.
     Quote,
+    /// A callout's `┃ ` bar, drawn in `bar`, the style of its kind.
+    Callout { bar: TextStyle },
     /// A list item. It adds nothing to the prefix: its bullet is drawn
     /// once, and the blocks nested in it push a `Nest` of their own.
     /// While it is the innermost segment, wrapped lines start `hang`
@@ -81,6 +87,103 @@ enum Segment {
     /// after the bullet, so a block can follow a bullet that stands alone
     /// without a blank line.
     Item { hang: usize, bare: bool },
+}
+
+// =========================================================
+// Callout kinds
+// =========================================================
+
+/// The kind of a callout, from the type in its marker. GitHub's five alert
+/// kinds have a color and a symbol each; any other type, which comrak's
+/// Obsidian-style callouts accept as well, is a neutral callout.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum CalloutKind {
+    Note,
+    Tip,
+    Important,
+    Warning,
+    Caution,
+    Other,
+}
+
+impl CalloutKind {
+    /// The kind of `callout`. comrak lowercases the type, so `[!Note]` and
+    /// `[!NOTE]` are both `note`.
+    fn of(callout: &NodeCallout) -> Self {
+        match callout.callout_type.as_str() {
+            "note" => Self::Note,
+            "tip" => Self::Tip,
+            "important" => Self::Important,
+            "warning" => Self::Warning,
+            "caution" => Self::Caution,
+            _ => Self::Other,
+        }
+    }
+
+    /// The color of the bars, the symbol and the title. A neutral callout
+    /// keeps the terminal's default foreground: the five kinds and the
+    /// quote bar's cyan take every other palette color but black and
+    /// white.
+    fn color(self) -> Option<AnsiColor> {
+        match self {
+            Self::Note => Some(AnsiColor::Blue),
+            Self::Tip => Some(AnsiColor::Green),
+            Self::Important => Some(AnsiColor::Magenta),
+            Self::Warning => Some(AnsiColor::Yellow),
+            Self::Caution => Some(AnsiColor::Red),
+            Self::Other => None,
+        }
+    }
+
+    /// The symbol before the title, one column wide.
+    fn symbol(self) -> &'static str {
+        match self {
+            Self::Note => "●",
+            Self::Tip => "◆",
+            Self::Important => "■",
+            Self::Warning => "▲",
+            Self::Caution => "✕",
+            Self::Other => "○",
+        }
+    }
+}
+
+/// Whether `node` is the title of a callout: the blocks comrak parsed from
+/// the rest of the marker line.
+fn is_callout_title(node: Node<'_>) -> bool {
+    matches!(node.data.borrow().value, NodeValue::CalloutTitle)
+}
+
+/// The block a callout's title comes from, or `None` when the marker line
+/// holds nothing after the marker.
+///
+/// comrak parses the rest of the marker line as blocks, so `- item` is a
+/// list and `> [!TIP] x` a callout inside the title. A title is one line,
+/// so it takes the first leaf block below: a paragraph, heading, code
+/// block, HTML block or thematic break, or a callout without a title of
+/// its own, which stands for its default title. A callout with a title is
+/// looked into like any other container. A callout inside a title thus
+/// gives the title its text and draws no bar or symbol of its own. Walks
+/// with a stack of its own, as titles can nest as deep as callouts.
+fn callout_title_leaf(callout: Node<'_>) -> Option<Node<'_>> {
+    let title = callout.children().find(|child| is_callout_title(child))?;
+    let mut pending: Vec<Node<'_>> = title.reverse_children().collect();
+    while let Some(node) = pending.pop() {
+        let is_leaf = match node.data.borrow().value {
+            NodeValue::Paragraph
+            | NodeValue::Heading(_)
+            | NodeValue::CodeBlock(_)
+            | NodeValue::HtmlBlock(_)
+            | NodeValue::ThematicBreak => true,
+            NodeValue::Callout(_) => !node.children().any(|child| is_callout_title(child)),
+            _ => false,
+        };
+        if is_leaf {
+            return Some(node);
+        }
+        pending.extend(node.reverse_children());
+    }
+    None
 }
 
 // =========================================================
@@ -285,6 +388,9 @@ impl Renderer {
             NodeValue::Paragraph => self.render_paragraph(node),
             NodeValue::List(list) => self.render_list(node, list, false),
             NodeValue::BlockQuote => self.nested(node, |renderer| renderer.render_blockquote(node)),
+            NodeValue::Callout(callout) => {
+                self.nested(node, |renderer| renderer.render_callout(node, callout));
+            }
             NodeValue::CodeBlock(block) => self.render_code_block(block),
             NodeValue::Table(table) => self.render_table(node, table),
             NodeValue::ThematicBreak => self.render_thematic_break(),
@@ -332,24 +438,31 @@ impl Renderer {
 
     /// Render the blocks below `container` one after the other, in
     /// document order, without the bars, bullets and indents of the
-    /// containers between them and `container`. Walks the tree with a
-    /// stack of its own, so the depth of the content costs no recursion.
+    /// containers between them and `container`. A callout among them,
+    /// `container` included, keeps its title as a line of its own, so its
+    /// kind is not lost; its body follows after a blank line, as every
+    /// block here does. Walks the tree with a stack of its own, so the
+    /// depth of the content costs no recursion.
     fn render_flat(&mut self, container: Node<'_>) {
-        let mut pending: Vec<Node<'_>> = container.reverse_children().collect();
+        let mut pending: Vec<Node<'_>> = vec![container];
         while let Some(node) = pending.pop() {
-            let is_leaf_block = matches!(
-                node.data.borrow().value,
+            match &node.data.borrow().value {
                 NodeValue::Heading(_)
-                    | NodeValue::Paragraph
-                    | NodeValue::CodeBlock(_)
-                    | NodeValue::Table(_)
-                    | NodeValue::ThematicBreak
-                    | NodeValue::HtmlBlock(_)
-            );
-            if is_leaf_block {
-                self.render_node(node);
-            } else {
-                pending.extend(node.reverse_children());
+                | NodeValue::Paragraph
+                | NodeValue::CodeBlock(_)
+                | NodeValue::Table(_)
+                | NodeValue::ThematicBreak
+                | NodeValue::HtmlBlock(_) => self.render_node(node),
+                NodeValue::Callout(callout) => {
+                    self.ensure_block_spacing();
+                    self.write_indent();
+                    self.write_callout_title(node, callout);
+                    pending.extend(
+                        node.reverse_children()
+                            .filter(|child| !is_callout_title(child)),
+                    );
+                }
+                _ => pending.extend(node.reverse_children()),
             }
         }
     }
@@ -556,6 +669,124 @@ impl Renderer {
         self.with_segment(Segment::Quote, |renderer| {
             renderer.render_children(quote);
         });
+    }
+
+    /// Render a callout: its title line, then its body, every line behind
+    /// a `┃ ` bar in the color of its kind. The body starts on the line
+    /// under the title.
+    fn render_callout(&mut self, callout: Node<'_>, details: &NodeCallout) {
+        // As for a quote, the blank line before the callout belongs to
+        // the blocks around it and carries their bars, not the callout's.
+        self.ensure_block_spacing();
+        let bar = TextStyle {
+            foreground: CalloutKind::of(details).color(),
+            ..TextStyle::default()
+        };
+        self.with_segment(Segment::Callout { bar }, |renderer| {
+            renderer.write_indent();
+            renderer.write_callout_title(callout, details);
+            // The first block of the body would open with a blank line;
+            // `at_start` makes its spacing stand down, as under a bare
+            // list bullet. A body that draws nothing leaves it set, so it is
+            // cleared after the body: the block after the callout still
+            // needs its blank line below the title.
+            renderer.at_start = true;
+            for child in callout.children().filter(|child| !is_callout_title(child)) {
+                renderer.render_node(child);
+            }
+            renderer.at_start = false;
+        });
+    }
+
+    /// Write the title line of a callout after the line prefix: the
+    /// symbol of its kind, then its title, both bold and in the kind's
+    /// color, and close the line.
+    ///
+    /// The title is what the marker line holds after the marker, or the
+    /// default title comrak derives from the type (`Note`, `Foo`) where
+    /// that holds nothing that draws. The symbol is placed like a list
+    /// bullet, so the first word of the title always follows it on its
+    /// line and a wrapped title continues under the title's text.
+    fn write_callout_title(&mut self, callout: Node<'_>, details: &NodeCallout) {
+        let kind = CalloutKind::of(details);
+        self.push_style(Style::Bold);
+        if let Some(color) = kind.color() {
+            self.push_style(Style::ForegroundColor(color));
+        }
+
+        let default_title = details.default_title();
+        let leaf = callout_title_leaf(callout).filter(|leaf| self.draws_title(leaf));
+        if leaf.is_none() && default_title.trim().is_empty() {
+            // A type such as `[!-]` has a blank default title; the symbol
+            // stands alone rather than in front of blank text.
+            self.emit(kind.symbol());
+            self.column += text_width(kind.symbol());
+        } else {
+            let marker = format!("{} ", kind.symbol());
+            let hang = text_width(&marker);
+            self.emit(&marker);
+            self.column += hang;
+            self.text_start = self.column;
+            self.mark_drawn();
+            let segment = Segment::Item { hang, bare: false };
+            self.with_segment(segment, |renderer| match leaf {
+                Some(leaf) => renderer.render_title_leaf(leaf),
+                None => {
+                    renderer.render_text(&default_title);
+                    renderer.flush_word();
+                }
+            });
+        }
+
+        if kind.color().is_some() {
+            self.pop_style();
+        }
+        self.pop_style();
+        self.mark_drawn();
+        self.write_newline();
+    }
+
+    /// Render the block a callout's title comes from as running text in
+    /// the style around it: a paragraph's or heading's inline content (a
+    /// heading adds no styles of its own), a code block's text as inline
+    /// code, an HTML block as inline HTML, and a callout nested in the
+    /// title by its own default title. See [`callout_title_leaf`].
+    fn render_title_leaf(&mut self, leaf: Node<'_>) {
+        match &leaf.data.borrow().value {
+            NodeValue::CodeBlock(block) => {
+                self.render_inline_code(trim_final_line_ending(&block.literal));
+            }
+            NodeValue::HtmlBlock(html) => self.render_inline_html(html_block_lines(html)),
+            NodeValue::Callout(callout) => self.render_text(&callout.default_title()),
+            _ => self.render_inline_content(leaf),
+        }
+        self.flush_word();
+    }
+
+    /// Whether the block a callout's title comes from draws anything as a
+    /// title. A thematic break never does, and neither does HTML that
+    /// [`Html::Drop`] leaves out. In inline content, any text but
+    /// whitespace draws, and so do inline code, an image (`[image]` at
+    /// least), a link (its `(url)` at least) and a footnote number.
+    fn draws_title(&self, leaf: Node<'_>) -> bool {
+        let literal_html = self.options.html == Html::Literal;
+        match &leaf.data.borrow().value {
+            NodeValue::ThematicBreak => false,
+            NodeValue::CodeBlock(block) => !block.literal.trim().is_empty(),
+            NodeValue::HtmlBlock(html) => literal_html && !html.literal.trim().is_empty(),
+            NodeValue::Callout(callout) => !callout.default_title().trim().is_empty(),
+            _ => leaf
+                .descendants()
+                .any(|node| match &node.data.borrow().value {
+                    NodeValue::Text(text) => !text.trim().is_empty(),
+                    NodeValue::HtmlInline(html) => literal_html && !html.trim().is_empty(),
+                    NodeValue::Code(_)
+                    | NodeValue::Image(_)
+                    | NodeValue::Link(_)
+                    | NodeValue::FootnoteReference(_) => true,
+                    _ => false,
+                }),
+        }
     }
 
     /// Render a list. A list `directly_in_item`, nested in a list item
@@ -1242,8 +1473,8 @@ impl Renderer {
     }
 
     /// Write the first `segments` levels of the line prefix, outermost
-    /// first: an unstyled indent for a `Nest`, a `│ ` bar for a `Quote`,
-    /// nothing for a list item. The prefix is layout, so it never takes on
+    /// first: an unstyled indent for a `Nest`, a `│ ` bar for a `Quote`, a
+    /// `┃ ` bar for a `Callout`, nothing for a list item. The prefix is layout, so it never takes on
     /// the style of the content around it.
     fn write_prefix(&mut self, segments: usize) {
         let mut wrote = false;
@@ -1259,6 +1490,7 @@ impl Renderer {
                 Segment::Quote => {
                     self.line.push_str(BLOCKQUOTE_BAR, self.bar_style());
                 }
+                Segment::Callout { bar } => self.line.push_str(CALLOUT_BAR, bar),
                 Segment::Item { .. } => {}
             }
             wrote = true;
@@ -1290,6 +1522,7 @@ impl Renderer {
             let width = match segment {
                 Segment::Nest(width) => *width,
                 Segment::Quote => text_width(BLOCKQUOTE_BAR),
+                Segment::Callout { .. } => text_width(CALLOUT_BAR),
                 Segment::Item { .. } => 0,
             };
             (drawn + width <= limit).then(|| {
@@ -1325,8 +1558,9 @@ impl Renderer {
     /// until there are at least two consecutive ones (i.e., one visible blank
     /// line). Skipped at the very start of the output.
     ///
-    /// When inside a blockquote, the blank line carries the prefix up to
-    /// the innermost `│` bar so that the visual bar column is unbroken.
+    /// When inside a blockquote or callout, the blank line carries the
+    /// prefix up to the innermost bar so that the visual bar column is
+    /// unbroken.
     /// Indents after that bar would only be trailing blanks.
     fn ensure_block_spacing(&mut self) {
         if self.at_start {
@@ -1339,7 +1573,7 @@ impl Renderer {
         let innermost_quote = self
             .prefix
             .iter()
-            .rposition(|segment| *segment == Segment::Quote);
+            .rposition(|segment| matches!(segment, Segment::Quote | Segment::Callout { .. }));
         if let Some(innermost_quote) = innermost_quote {
             if self.consecutive_newlines == 0 {
                 self.write_newline();

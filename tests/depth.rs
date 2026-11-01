@@ -55,6 +55,28 @@ fn lists_nested_2000_deep_render_with_64_bullets_and_all_their_text() {
 }
 
 #[test]
+fn callouts_nested_2000_deep_render_with_their_titles() {
+    let markdown: String = (1..=2000)
+        .map(|level| format!("{}[!TIP] level {level}\n", "> ".repeat(level)))
+        .collect();
+    let lines = render_on_a_small_stack(markdown);
+    let text = lines.join(" ");
+    for level in 1..=2000 {
+        assert!(text.contains(&format!("◆ level {level}")), "level {level}");
+    }
+}
+
+/// Each marker after the first starts a callout inside the title of the
+/// one before it, so the titles nest 100,000 deep in one line. The
+/// innermost callout has no title, and its default one becomes the title
+/// of the outermost.
+#[test]
+fn callouts_in_titles_100000_deep_render_as_one_title_line() {
+    let lines = render_on_a_small_stack("> [!NOTE] ".repeat(100_000));
+    assert_eq!(lines, ["┃ ● Note"]);
+}
+
+#[test]
 fn emphasis_nested_20000_deep_renders_all_its_text() {
     let lines = render_on_a_small_stack(format!("{}x{}", "*a ".repeat(20_000), "*".repeat(20_000)));
     let words: Vec<&str> = lines.iter().flat_map(|line| line.split(' ')).collect();

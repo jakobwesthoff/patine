@@ -48,6 +48,7 @@ patine --width 100 README.md
 - **Lists**: ordered, unordered and task lists (`☐`/`☑`), with arbitrary nesting
 - **Tables**: Unicode box-drawing borders, bold headers, inline formatting in cells as in running text, column alignment from the delimiter row, row separators; a table whose columns would have to break a word is laid out as records, one line per column with its header name in bold and dim and the cell's text
 - **Blockquotes**: `│` bar prefix in cyan, text in its normal style, nested support
+- **Callouts**: GitHub alerts (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) and other `[!type]` markers, with a heavy `┃` bar and a bold title after a symbol in the kind's color
 - **Horizontal rules**: `─` spanning the terminal width
 - **Word wrapping**: at terminal width (overridable with `--width`)
 

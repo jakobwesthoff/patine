@@ -1,0 +1,23 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!NOTE]\\n> Useful information.\",\n\"> [!TIP]\\n> Helpful advice.\", \"> [!IMPORTANT]\\n> Key information.\",\n\"> [!WARNING]\\n> Urgent info, see `cargo publish`.\",\n\"> [!CAUTION]\\n> Risks of an action.\",], WIDTH, &default())"
+---
+"> [!NOTE]\n> Useful information."
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []Useful information.
+---
+"> [!TIP]\n> Helpful advice."
+[green]┃ [][bold,green]◆ Tip[]
+[green]┃ []Helpful advice.
+---
+"> [!IMPORTANT]\n> Key information."
+[magenta]┃ [][bold,magenta]■ Important[]
+[magenta]┃ []Key information.
+---
+"> [!WARNING]\n> Urgent info, see `cargo publish`."
+[yellow]┃ [][bold,yellow]▲ Warning[]
+[yellow]┃ []Urgent info, see [yellow]cargo publish[].
+---
+"> [!CAUTION]\n> Risks of an action."
+[red]┃ [][bold,red]✕ Caution[]
+[red]┃ []Risks of an action.

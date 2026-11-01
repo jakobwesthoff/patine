@@ -17,12 +17,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TextStyle::without_colors` returns the style with its colors cleared
   and its other attributes kept, for output without colors. A color
   field a later release adds is cleared by it too.
+- GitHub alerts render as callouts: `> [!NOTE]`, `[!TIP]`,
+  `[!IMPORTANT]`, `[!WARNING]` and `[!CAUTION]` draw a heavy bar `┃` on
+  every line and a bold title after a symbol (`●`, `◆`, `■`, `▲`, `✕`),
+  in blue, green, magenta, yellow and red. Text after the marker is the
+  title, in place of the kind's name, as inline Markdown. A marker with
+  nothing under it shows its title alone. Callouts nest in quotes,
+  callouts, list items and footnotes, and a callout below the nesting
+  limit keeps its title line.
 
 ### Changed
 
 - When the writer fails, the error of `render` and `render_with` reads
   `write the rendered lines` over the writer's error. It used to read
   `write styled span` or `write newline`.
+- A quote whose first line is a marker beyond GitHub's alerts renders as
+  a callout as well, as comrak's Obsidian-style callouts parse it: any
+  other type (`[!FOO]` is a neutral callout titled `Foo`, with `○` and no
+  color), a title after the marker, a fold marker (`[!NOTE]-`, drawn
+  unfolded), metadata (`[!NOTE|wide]`, not drawn), an empty marker and a
+  marker in a list item or another quote. It used to be a plain quote
+  with the marker as text. A quote with two spaces or a tab after `>`
+  before the marker, or with an escaped marker (`> \[!NOTE]`), stays a
+  quote, though GitHub draws an alert.
 
 ## [2.1.0] - 2026-10-31
 

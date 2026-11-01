@@ -8,6 +8,8 @@ Accepted
 
 Supersedes [2. Use markdown-rs for Markdown parsing](0002-use-markdown-rs-for-parsing.md)
 
+Amended by [18. Render GitHub alerts as callouts](0018-render-github-alerts-as-callouts.md)
+
 ## Context
 
 markdown-rs 1.0.0 (the `markdown` crate) panics on small inputs instead

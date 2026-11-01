@@ -1,0 +1,40 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"- item\\n\\n  > [!TIP]\\n  > body\", \"- > [!TIP] T\\n  > body\",\n\"> outer\\n>\\n> > [!WARNING]\\n> > body\", \"> [!NOTE]\\n> > [!TIP]\\n> > inner\",\n\"> [!NOTE]\\n> outer text\\n>\\n> > [!CAUTION]\\n> > inner\",\n\"a[^1]\\n\\n[^1]: note\\n\\n    > [!NOTE]\\n    > body\",], WIDTH, &default())"
+---
+"- item\n\n  > [!TIP]\n  > body"
+• item
+
+  [green]┃ [][bold,green]◆ Tip[]
+  [green]┃ []body
+---
+"- > [!TIP] T\n  > body"
+• 
+  [green]┃ [][bold,green]◆ T[]
+  [green]┃ []body
+---
+"> outer\n>\n> > [!WARNING]\n> > body"
+[cyan]│ []outer
+[cyan]│ []
+[cyan]│ [][yellow]┃ [][bold,yellow]▲ Warning[]
+[cyan]│ [][yellow]┃ []body
+---
+"> [!NOTE]\n> > [!TIP]\n> > inner"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ [][green]┃ [][bold,green]◆ Tip[]
+[blue]┃ [][green]┃ []inner
+---
+"> [!NOTE]\n> outer text\n>\n> > [!CAUTION]\n> > inner"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []outer text
+[blue]┃ []
+[blue]┃ [][red]┃ [][bold,red]✕ Caution[]
+[blue]┃ [][red]┃ []inner
+---
+"a[^1]\n\n[^1]: note\n\n    > [!NOTE]\n    > body"
+a[dim][1][]
+
+[dim][1][] note
+
+  [blue]┃ [][bold,blue]● Note[]
+  [blue]┃ []body

@@ -1,0 +1,36 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\">  [!NOTE]\\n> b\", \">\\t[!NOTE]\\n> b\", \"> \\\\[!NOTE]\\n> b\",\n\"> [!] x\\n> b\", \"> [!]\\n> b\", \"> [!NOTE\\n> b\", \"> [!NOTE x\\n> b\",\n\"> [!NOTE]]\\n> b\", \"> [!NOTE]text\\n> b\", \"> [!NOTE](https://x.y)\\n> b\",\n\"> text\\n> [!NOTE]\\n> b\",], WIDTH, &default())"
+---
+">  [!NOTE]\n> b"
+[cyan]│ [][!NOTE] b
+---
+">\t[!NOTE]\n> b"
+[cyan]│ [][!NOTE] b
+---
+"> \\[!NOTE]\n> b"
+[cyan]│ [][!NOTE] b
+---
+"> [!] x\n> b"
+[cyan]│ [][!] x b
+---
+"> [!]\n> b"
+[cyan]│ [][!] b
+---
+"> [!NOTE\n> b"
+[cyan]│ [][!NOTE b
+---
+"> [!NOTE x\n> b"
+[cyan]│ [][!NOTE x b
+---
+"> [!NOTE]]\n> b"
+[cyan]│ [][!NOTE]] b
+---
+"> [!NOTE]text\n> b"
+[cyan]│ [][!NOTE]text b
+---
+"> [!NOTE](https://x.y)\n> b"
+[cyan]│ [][underline]!NOTE[][dim] (https://x.y)[] b
+---
+"> text\n> [!NOTE]\n> b"
+[cyan]│ []text [!NOTE] b

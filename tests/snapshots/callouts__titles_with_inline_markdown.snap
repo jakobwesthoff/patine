@@ -1,0 +1,25 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!TIP] Use *this* and **that**\\n> b\",\n\"> [!TIP] Run `cargo test` first\\n> b\",\n\"> [!TIP] See [the docs](https://example.com)\\n> b\",\n\"> [!TIP] As noted[^1]\\n> b\\n\\n[^1]: The note.\",\n\"> [!TIP] ![logo](logo.png) inside\\n> b\",], WIDTH, &default())"
+---
+"> [!TIP] Use *this* and **that**\n> b"
+[green]┃ [][bold,green]◆ Use [][bold,italic,green]this[][bold,green] and that[]
+[green]┃ []b
+---
+"> [!TIP] Run `cargo test` first\n> b"
+[green]┃ [][bold,green]◆ Run [][bold,yellow]cargo test[][bold,green] first[]
+[green]┃ []b
+---
+"> [!TIP] See [the docs](https://example.com)\n> b"
+[green]┃ [][bold,green]◆ See [][bold,underline,green]the docs[][bold,dim,green] (https://example.com)[]
+[green]┃ []b
+---
+"> [!TIP] As noted[^1]\n> b\n\n[^1]: The note."
+[green]┃ [][bold,green]◆ As noted[][bold,dim,green][1][]
+[green]┃ []b
+
+[dim][1][] The note.
+---
+"> [!TIP] ![logo](logo.png) inside\n> b"
+[green]┃ [][bold,green]◆ [image: logo][][bold,dim,green] (logo.png)[][bold,green] inside[]
+[green]┃ []b

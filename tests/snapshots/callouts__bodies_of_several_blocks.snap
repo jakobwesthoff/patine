@@ -1,0 +1,41 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!NOTE]\\n> One.\\n>\\n> Two.\",\n\"> [!TIP]\\n> - a\\n>   - b\\n> - c\", \"> [!TIP]\\n> ```rust\\n> let x = 1;\\n> ```\",\n\"> [!TIP]\\n> | a | b |\\n> |---|---|\\n> | 1 | 2 |\",\n\"> [!TIP]\\n> # Heading\\n> text\", \"para\\n\\n> [!NOTE]\\n> body\\n\\npara\",], WIDTH,\n&default())"
+---
+"> [!NOTE]\n> One.\n>\n> Two."
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []One.
+[blue]┃ []
+[blue]┃ []Two.
+---
+"> [!TIP]\n> - a\n>   - b\n> - c"
+[green]┃ [][bold,green]◆ Tip[]
+[green]┃ []• a
+[green]┃ []  • b
+[green]┃ []• c
+---
+"> [!TIP]\n> ```rust\n> let x = 1;\n> ```"
+[green]┃ [][bold,green]◆ Tip[]
+[green]┃ []  [magenta]let[] x [magenta]=[] [yellow]1[];
+---
+"> [!TIP]\n> | a | b |\n> |---|---|\n> | 1 | 2 |"
+[green]┃ [][bold,green]◆ Tip[]
+[green]┃ []┌───┬───┐
+[green]┃ []│ [bold]a[] │ [bold]b[] │
+[green]┃ []├───┼───┤
+[green]┃ []│ 1 │ 2 │
+[green]┃ []└───┴───┘
+---
+"> [!TIP]\n> # Heading\n> text"
+[green]┃ [][bold,green]◆ Tip[]
+[green]┃ [][bold,italic,double-underline]Heading[]
+[green]┃ []
+[green]┃ []text
+---
+"para\n\n> [!NOTE]\n> body\n\npara"
+para
+
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []body
+
+para

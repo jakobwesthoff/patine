@@ -1,0 +1,106 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!FOO]\\n> b\", \"> [!x]\\n> b\", \"> [!my kind]\\n> b\",\n\"> [!Überblick]\\n> b\", \"> [!**bold**]\\n> b\", \"> [! note ]\\n> b\",\n\"> [!NOTE] Title\\n> b\", \"> [!NOTE]\\tTitle\\n> b\", \"> [!NOTE] Title\",\n\"> [!NOTE]\", \"> [!NOTE]\\n\\nafter\", \"> [!NOTE]-\\n> b\", \"> [!NOTE]+\\n> b\",\n\"> [!NOTE]- Title\\n> b\", \"> [!NOTE|wide]\\n> b\", \"> [!NOTE|]\\n> b\",\n\"> [!a|b|c]\\n> b\", \"> [!|meta]\\n> b\", \"> [! ]\\n> b\", \"> [!|]\\n> b\",\n\"> [!-]\\n> b\", \"> [!NOTE see [docs] here\\n> b\", \"> [!NOTE] - item\\n> b\",\n\">[!NOTE]\\n> b\", \"> [!NOTE]\\nlazy line\", \"> [!NOTE]\\t\\n> b\",], WIDTH,\n&default())"
+---
+"> [!FOO]\n> b"
+┃ [bold]○ Foo[]
+┃ b
+---
+"> [!x]\n> b"
+┃ [bold]○ X[]
+┃ b
+---
+"> [!my kind]\n> b"
+┃ [bold]○ My kind[]
+┃ b
+---
+"> [!Überblick]\n> b"
+┃ [bold]○ Überblick[]
+┃ b
+---
+"> [!**bold**]\n> b"
+┃ [bold]○ **bold**[]
+┃ b
+---
+"> [! note ]\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!NOTE] Title\n> b"
+[blue]┃ [][bold,blue]● Title[]
+[blue]┃ []b
+---
+"> [!NOTE]\tTitle\n> b"
+[blue]┃ [][bold,blue]● Title[]
+[blue]┃ []b
+---
+"> [!NOTE] Title"
+[blue]┃ [][bold,blue]● Title[]
+---
+"> [!NOTE]"
+[blue]┃ [][bold,blue]● Note[]
+---
+"> [!NOTE]\n\nafter"
+[blue]┃ [][bold,blue]● Note[]
+
+after
+---
+"> [!NOTE]-\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!NOTE]+\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!NOTE]- Title\n> b"
+[blue]┃ [][bold,blue]● Title[]
+[blue]┃ []b
+---
+"> [!NOTE|wide]\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!NOTE|]\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!a|b|c]\n> b"
+┃ [bold]○ A[]
+┃ b
+---
+"> [!|meta]\n> b"
+┃ [bold]○[]
+┃ b
+---
+"> [! ]\n> b"
+┃ [bold]○[]
+┃ b
+---
+"> [!|]\n> b"
+┃ [bold]○[]
+┃ b
+---
+"> [!-]\n> b"
+┃ [bold]○[]
+┃ b
+---
+"> [!NOTE see [docs] here\n> b"
+┃ [bold]○ here[]
+┃ b
+---
+"> [!NOTE] - item\n> b"
+[blue]┃ [][bold,blue]● item[]
+[blue]┃ []b
+---
+">[!NOTE]\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b
+---
+"> [!NOTE]\nlazy line"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []lazy line
+---
+"> [!NOTE]\t\n> b"
+[blue]┃ [][bold,blue]● Note[]
+[blue]┃ []b

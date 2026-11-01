@@ -120,9 +120,9 @@ pub fn render_with(
     write!(writer, "{}", ansi(&lines)).context("write the rendered lines")
 }
 
-/// Parse a Markdown string (CommonMark with GitHub extensions and YAML or
-/// TOML frontmatter) and lay it out as styled lines for a display `width`
-/// columns wide.
+/// Parse a Markdown string (CommonMark with GitHub extensions, GitHub
+/// alerts and Obsidian-style callouts, and YAML or TOML frontmatter) and
+/// lay it out as styled lines for a display `width` columns wide.
 ///
 /// Text wraps at `width`. Lines may still be wider: in running text,
 /// words and URLs longer than the width stay whole; code blocks and
@@ -132,10 +132,11 @@ pub fn render_with(
 /// wider only where one grapheme, such as a wide character or an emoji,
 /// is wider than the room it gets. Widths count grapheme by grapheme, as
 /// terminals draw text.
-/// Line prefixes are spans of their own: indents are unstyled spaces and
+/// Line prefixes are spans of their own: indents are unstyled spaces,
 /// blockquote bars are `│ ` spans in the style
-/// [`RenderOptions::quote_style`] asks for. Blank lines have no
-/// spans, and empty input yields no lines.
+/// [`RenderOptions::quote_style`] asks for, and callout bars are `┃ `
+/// spans in the color of the callout's kind. Blank lines have no spans,
+/// and empty input yields no lines.
 ///
 /// A code block whose language syntect fails to highlight is shown in the
 /// flat code color, like a block without a language.
@@ -196,9 +197,13 @@ pub fn render_lines_with(input: &str, width: usize, options: &RenderOptions) -> 
     renderer.finish()
 }
 
-/// The CommonMark parser with the GitHub extensions patine renders. Front
-/// matter is not among them: [`front_matter::split`] takes it off first,
-/// as comrak's own rules for it differ from the ones patine keeps.
+/// The CommonMark parser with the GitHub extensions patine renders, and
+/// comrak's Obsidian-style callouts, which take GitHub's alerts and every
+/// other `[!type]` marker. comrak's GitHub alerts stay off: with both on,
+/// the alerts would still take the markers the callouts leave, such as
+/// `> [!NOTE]text`, two rules for one syntax. Front matter is not among
+/// the extensions: [`front_matter::split`] takes it off first, as comrak's
+/// own rules for it differ from the ones patine keeps.
 fn parse_options() -> comrak::Options<'static> {
     let mut options = comrak::Options::default();
     options.extension.strikethrough = true;
@@ -206,6 +211,7 @@ fn parse_options() -> comrak::Options<'static> {
     options.extension.autolink = true;
     options.extension.tasklist = true;
     options.extension.footnotes = true;
+    options.extension.ofm_callouts = true;
     options
 }
 

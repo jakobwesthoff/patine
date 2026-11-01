@@ -1,0 +1,27 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!NOTE] - item\\n> b\", \"> [!NOTE] # Head\\n> b\",\n\"> [!NOTE] > quoted\\n> b\", \"> [!NOTE] > [!TIP]\\n> b\",\n\"> [!NOTE] > [!TIP] inner\\n> b\", \"> [!NOTE]     indented code\\n> b\",], WIDTH,\n&default())"
+---
+"> [!NOTE] - item\n> b"
+[blue]┃ [][bold,blue]● item[]
+[blue]┃ []b
+---
+"> [!NOTE] # Head\n> b"
+[blue]┃ [][bold,blue]● Head[]
+[blue]┃ []b
+---
+"> [!NOTE] > quoted\n> b"
+[blue]┃ [][bold,blue]● quoted[]
+[blue]┃ []b
+---
+"> [!NOTE] > [!TIP]\n> b"
+[blue]┃ [][bold,blue]● Tip[]
+[blue]┃ []b
+---
+"> [!NOTE] > [!TIP] inner\n> b"
+[blue]┃ [][bold,blue]● inner[]
+[blue]┃ []b
+---
+"> [!NOTE]     indented code\n> b"
+[blue]┃ [][bold,blue]● [][bold,yellow]indented code[]
+[blue]┃ []b
