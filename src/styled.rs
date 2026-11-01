@@ -12,7 +12,7 @@
 use std::fmt;
 
 use unicode_segmentation::UnicodeSegmentation;
-use unicode_width::UnicodeWidthStr;
+use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
 
 // =========================================================
 // Colors and underline
@@ -216,10 +216,12 @@ const HALFWIDTH_SEMI_VOICED_SOUND_MARK: char = '\u{FF9F}';
 /// the Lam-Alef ligature `لا` is one column as a string, but its two
 /// graphemes are drawn in a column each.
 ///
-/// Each halfwidth sound mark, `ﾞ` or `ﾟ`, takes one column more.
-/// unicode-width gives them none, as they extend the grapheme before
-/// them, but terminals and ratatui draw each in a cell of its own. The
-/// combining sound marks U+3099 and U+309A keep their Unicode width.
+/// Each halfwidth sound mark, `ﾞ` or `ﾟ`, takes one column, whatever
+/// unicode-width gives it. Terminals and ratatui draw each in a cell of
+/// its own. unicode-width 0.2.2 gives the mark no width, as it extends the
+/// grapheme before it, and 0.2.3 gives it one; patine adds only the columns
+/// that unicode-width leaves out. The combining sound marks U+3099 and
+/// U+309A keep their Unicode width.
 ///
 /// Control characters keep their Unicode width; a front end decides how
 /// to draw them.
@@ -227,14 +229,26 @@ pub(crate) fn text_width(text: &str) -> usize {
     text.graphemes(true).map(grapheme_width).sum()
 }
 
+/// The columns patine adds for one halfwidth sound mark that unicode-width
+/// measures as `mark_width` columns. unicode-width 0.2.2 gives the mark
+/// none and 0.2.3 gives it one, and the mark takes exactly one column
+/// either way.
+fn uncounted_mark_columns(mark_width: usize) -> usize {
+    1usize.saturating_sub(mark_width)
+}
+
 /// The columns one extended grapheme cluster takes, as [`text_width`]
 /// counts them.
 fn grapheme_width(grapheme: &str) -> usize {
-    let sound_marks = grapheme
+    // The marks stay in the cluster while it is measured: removing them
+    // would put their neighbours together and change how unicode-width
+    // reads an emoji and its modifier or selector.
+    let uncounted_columns: usize = grapheme
         .chars()
         .filter(|&c| c == HALFWIDTH_VOICED_SOUND_MARK || c == HALFWIDTH_SEMI_VOICED_SOUND_MARK)
-        .count();
-    UnicodeWidthStr::width(grapheme) + sound_marks
+        .map(|mark| uncounted_mark_columns(UnicodeWidthChar::width(mark).unwrap_or(0)))
+        .sum();
+    UnicodeWidthStr::width(grapheme) + uncounted_columns
 }
 
 // =========================================================
@@ -496,6 +510,73 @@ mod tests {
     #[test]
     fn a_halfwidth_semi_voiced_sound_mark_takes_a_column() {
         assert_eq!(StyledSpan::new("ﾟ", TextStyle::default()).width(), 1);
+    }
+
+    #[test]
+    fn two_sound_marks_after_one_letter_take_a_column_each() {
+        assert_eq!(StyledSpan::new("ｶﾞﾟ", TextStyle::default()).width(), 3);
+    }
+
+    #[test]
+    fn a_sound_mark_after_a_latin_letter_takes_a_column() {
+        assert_eq!(
+            StyledSpan::new("a\u{FF9E}", TextStyle::default()).width(),
+            2
+        );
+    }
+
+    #[test]
+    fn sound_marks_alone_take_a_column_each() {
+        assert_eq!(
+            StyledSpan::new("\u{FF9E}\u{FF9E}", TextStyle::default()).width(),
+            2
+        );
+    }
+
+    #[test]
+    fn sound_marks_in_a_longer_text_take_a_column_each() {
+        assert_eq!(StyledSpan::new("ｱﾞｱﾟ", TextStyle::default()).width(), 4);
+    }
+
+    #[test]
+    fn a_line_sums_the_widths_of_spans_holding_sound_marks() {
+        let line = StyledLine::new(vec![
+            StyledSpan::new("ｶﾞ", TextStyle::default()),
+            StyledSpan::new("ﾟ", BOLD),
+        ]);
+        assert_eq!(line.width(), 3);
+    }
+
+    // A mark between an emoji and its modifier or selector must not change
+    // how unicode-width reads the rest of the cluster, so the mark is
+    // measured in place and not removed first.
+
+    #[test]
+    fn a_sound_mark_between_an_emoji_and_its_skin_tone_adds_one_column() {
+        assert_eq!(
+            StyledSpan::new("\u{1F44D}\u{FF9E}\u{1F3FB}", TextStyle::default()).width(),
+            5
+        );
+    }
+
+    #[test]
+    fn a_sound_mark_between_an_emoji_and_a_text_selector_adds_one_column() {
+        assert_eq!(
+            StyledSpan::new("\u{231A}\u{FF9E}\u{FE0E}", TextStyle::default()).width(),
+            3
+        );
+    }
+
+    #[test]
+    fn a_sound_mark_not_counted_by_unicode_width_takes_a_column() {
+        // unicode-width 0.2.2 gives the mark no width.
+        assert_eq!(uncounted_mark_columns(0), 1);
+    }
+
+    #[test]
+    fn a_sound_mark_counted_by_unicode_width_adds_nothing() {
+        // unicode-width 0.2.3 gives the mark a column itself.
+        assert_eq!(uncounted_mark_columns(1), 0);
     }
 
     #[test]

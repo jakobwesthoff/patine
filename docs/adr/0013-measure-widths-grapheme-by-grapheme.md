@@ -6,6 +6,8 @@ Date: 2026-10-22
 
 Accepted
 
+Amended by [19. Count halfwidth sound marks whatever width unicode-width gives them](0019-count-halfwidth-sound-marks-whatever-width-unicode-width-gives-them.md)
+
 ## Context
 
 patine measured text with unicode-width, one string at a time.
