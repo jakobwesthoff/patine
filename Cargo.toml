@@ -29,6 +29,11 @@ name = "patine"
 path = "src/main.rs"
 required-features = ["cli"]
 
+# Runs the `patine` binary, which only exists with the `cli` feature.
+[[test]]
+name = "cli"
+required-features = ["cli"]
+
 [dependencies]
 anyhow = "1.0.102"
 clap = { version = "4.6.0", features = ["derive"], optional = true }

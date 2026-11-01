@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Rust version from `rust-version` and `--locked`, and with
   unicode-width 0.2.2.
 
+### Fixed
+
+- The `patine` command wrote the control characters of a document to the
+  terminal as they were, so a file could run an escape sequence in the
+  terminal that rendered it, as a raw ESC or through a character
+  reference such as `&#27;`. The command now shows every control
+  character other than tab as a character that does not act: the
+  Control Pictures `␀` to `␟` for the C0 controls (`␛`
+  for ESC), `␡` for DEL, `␤` for a CR LF pair and U+FFFD for the
+  C1 controls. Each takes the one column the control took in the layout.
+  The library output is unchanged: `render` still writes text as it is,
+  and a program that shows text it does not trust replaces controls
+  before `ansi`.
+
 ## [2.2.2] - 2026-11-01
 
 ### Fixed

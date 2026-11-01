@@ -68,6 +68,8 @@ Options:
 
 When no file is given and stdin is a terminal, patine prints its help message.
 
+The command shows the control characters of a document, other than tab, as pictures from Unicode's Control Pictures block (`␛` for ESC), and the C1 controls as U+FFFD, so a file cannot run escape sequences in your terminal. The library leaves text as it is, see below.
+
 ## Library
 
 patine is also a Rust library. `patine::render` writes a document with ANSI escape sequences, exactly as the binary prints it. `patine::render_lines` returns the same document as lines of styled spans, for applications that draw their own interface, such as a ratatui application; each span carries its complete style (bold, italic, dim, strikethrough, underline, and one of the 8 ANSI palette colors). `patine::highlight` does the same for source code outside Markdown.
