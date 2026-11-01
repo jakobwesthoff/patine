@@ -10,6 +10,8 @@ Supersedes [2. Use markdown-rs for Markdown parsing](0002-use-markdown-rs-for-pa
 
 Amended by [18. Render GitHub alerts as callouts](0018-render-github-alerts-as-callouts.md)
 
+Amended by [20. Draw the footnotes the body reaches](0020-draw-the-footnotes-the-body-reaches.md)
+
 ## Context
 
 markdown-rs 1.0.0 (the `markdown` crate) panics on small inputs instead

@@ -55,6 +55,25 @@ fn lists_nested_2000_deep_render_with_64_bullets_and_all_their_text() {
 }
 
 #[test]
+fn a_list_nested_deep_in_a_footnote_flattens_after_the_footnote_and_63_bullets() {
+    // The footnote itself is one of the 64 block containers a document
+    // nests, so 63 bullets fit below it.
+    let list: String = (0..100)
+        .map(|level| format!("    {}- item {level}\n", "  ".repeat(level)))
+        .collect();
+    let lines = render_on_a_small_stack(format!("x[^a]\n\n[^a]: note\n\n{list}"));
+    let text = lines
+        .join(" ")
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    for level in 0..100 {
+        assert!(text.contains(&format!("item {level}")), "item {level}");
+    }
+    assert_eq!(text.matches('•').count(), 63);
+}
+
+#[test]
 fn callouts_nested_2000_deep_render_with_their_titles() {
     let markdown: String = (1..=2000)
         .map(|level| format!("{}[!TIP] level {level}\n", "> ".repeat(level)))

@@ -63,3 +63,55 @@ fn front_matter_followed_by_a_footnote_definition_without_text() {
 fn toml_front_matter_marker_followed_by_a_list_item_with_spaces() {
     renders_without_panic("+++\n\n- *   ");
 }
+
+// =========================================================
+// Footnotes that only dropped footnotes reference
+// =========================================================
+
+#[test]
+fn a_footnote_referenced_only_from_an_unreferenced_footnote() {
+    renders_without_panic("text\n\n[^z]: sees[^b]\n\n[^b]: B\n\nlater[^c]\n\n[^c]: C\n");
+}
+
+#[test]
+fn a_chain_of_footnotes_nothing_in_the_body_references() {
+    renders_without_panic("[^z]: [^b]\n\n[^b]: [^c]\n\n[^c]: end\n\nx\n");
+}
+
+#[test]
+fn a_footnote_nested_in_an_unreferenced_footnote() {
+    renders_without_panic("[^a]: outer\n\n    [^b]: nested[^c]\n\n[^c]: C\n\ny");
+}
+
+#[test]
+fn footnotes_referencing_themselves_and_each_other() {
+    renders_without_panic("[^a]: me[^a]\n\nx");
+    renders_without_panic("[^a]: [^b]\n\n[^b]: [^a]\n\nx");
+    renders_without_panic("[^a]: [^b]\n\n[^b]: [^a]\n\nx[^a]");
+}
+
+#[test]
+fn references_in_headings_tables_and_lists_of_an_unreferenced_footnote() {
+    renders_without_panic(
+        "x\n\n[^z]: # head[^b]\n\n    | h[^c] |\n    |--|\n    | c[^d] |\n\n    - item [l](u)[^e]\n\n[^b]: B\n\n[^c]: C\n\n[^d]: D\n\n[^e]: E\n",
+    );
+}
+
+#[test]
+fn a_losing_duplicate_footnote_that_references_another() {
+    renders_without_panic("x[^a]\n\n[^a]: one[^b]\n\n[^a]: two\n\n[^b]: B\n");
+    renders_without_panic("x\n\n[^a]: one[^b]\n\n[^a]: two\n\n[^b]: B\n");
+}
+
+#[test]
+fn footnotes_inside_quotes_nested_past_the_block_depth_limit() {
+    let quotes = "> ".repeat(70);
+    renders_without_panic(&format!("{quotes}x[^a] y\n\n[^a]: A[^b]\n\n[^b]: B\n"));
+    renders_without_panic(&format!("{quotes}x\n\n[^z]: Z[^a]\n\n[^a]: A\n"));
+}
+
+#[test]
+fn references_in_image_alt_text() {
+    renders_without_panic("![pic[^a]](u)\n\n[^a]: A\n");
+    renders_without_panic("x[^z]\n\n[^z]: ![a[^b]](u.png)\n\n[^b]: B");
+}

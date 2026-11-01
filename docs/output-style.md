@@ -495,13 +495,21 @@ line either way.
 A footnote reference (`[^1]`) shows a dimmed number in square brackets
 right after the text it follows: `a guide[1]`. Footnotes are numbered from 1
 in the order of their first references, whatever their labels in the source,
-and a second reference to a footnote shows the same number.
+and a second reference to a footnote shows the same number. A definition
+written above its first reference numbers the references inside it first,
+as on GitHub: with `[^a]: see[^b]` above `body[^a]`, the reference in the
+body shows `[2]` and `[^b]` is `[1]`.
 
 The definition (`[^1]: text`) renders as paragraphs at the end of the
 document, wherever it is written, in the order of the first references to
 the definitions. The first line starts with the same dimmed number, `[1] `,
-and the lines after it sit under the text. A definition that no reference
-points to is not shown. A reference without a definition stays text.
+and the lines after it sit under the text. A definition is shown when a
+reference in the body points to it or a reference in a shown definition
+does, whether in its text, a heading, a table or a list. A definition that
+only definitions which are not shown refer to, such as definitions that
+refer only to each other, is not shown, and their references take no
+numbers. A reference in the alt text of an image is not
+shown, so it does not count. A reference without a definition stays text.
 
 ```
 See a guide[1] and more.

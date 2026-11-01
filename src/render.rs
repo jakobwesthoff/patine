@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use comrak::nodes::{
     AstNode, ListType, NodeCallout, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
@@ -334,12 +334,6 @@ pub struct Renderer {
     /// How many more table cells the document may lay out in tables. A
     /// table with more cells than that renders as rows of running text.
     table_cells_left: usize,
-
-    /// The number each referenced footnote shows, by footnote name. The
-    /// parser counts footnotes from 1 in the order of their first
-    /// reference; a definition has to look its number up by name as it
-    /// carries none of its own.
-    footnote_numbers: HashMap<String, u32>,
 }
 
 impl Renderer {
@@ -361,7 +355,6 @@ impl Renderer {
             long_words: LongWords::Overflow,
             block_depth: 0,
             table_cells_left: MAX_TABLE_CELLS,
-            footnote_numbers: HashMap::new(),
         }
     }
 
@@ -394,26 +387,51 @@ impl Renderer {
             NodeValue::Table(table) => self.render_table(node, table),
             NodeValue::ThematicBreak => self.render_thematic_break(),
             NodeValue::HtmlBlock(html) => self.render_block_html(html),
-            NodeValue::Document => {
-                self.footnote_numbers = footnote_numbers(node);
-                self.render_children(node);
-            }
-            NodeValue::FootnoteDefinition(definition) => {
-                // Only the definition a reference points to counts its
-                // references.
-                let number = (definition.total_references > 0).then(|| {
-                    *self
-                        .footnote_numbers
-                        .get(&definition.name)
-                        .expect("a definition with references has a reference node")
-                });
+            NodeValue::Document => self.render_document(node),
+            // A definition the parser left where it was written, because
+            // a later definition of the same name replaced it. The ones
+            // the document draws as notes come from `render_document`.
+            NodeValue::FootnoteDefinition(_) => {
                 self.nested(node, |renderer| {
-                    renderer.render_footnote_definition(node, number);
+                    renderer.render_footnote_definition(node, None);
                 });
             }
             // Everything else, such as an item outside a list, renders its
             // children; a leaf we do not handle draws nothing.
             _ => self.render_children(node),
+        }
+    }
+
+    /// Render the blocks of the document, then its footnotes as notes in
+    /// the order of their numbers.
+    ///
+    /// The parser appends every definition it has a reference for to the
+    /// end of the document. Which of them the document draws is up to
+    /// [`number_footnotes`]: a definition without a number is one that
+    /// only definitions nobody draws refer to, and is skipped.
+    fn render_document(&mut self, document: Node<'_>) {
+        let numbers = number_footnotes(document);
+
+        let mut notes = Vec::new();
+        for child in document.children() {
+            let number = match &child.data.borrow().value {
+                NodeValue::FootnoteDefinition(definition) if definition.total_references > 0 => {
+                    Some(numbers.get(&definition.name).copied())
+                }
+                _ => None,
+            };
+            match number {
+                None => self.render_node(child),
+                Some(Some(number)) => notes.push((number, child)),
+                Some(None) => {}
+            }
+        }
+
+        notes.sort_by_key(|&(number, _)| number);
+        for (number, note) in notes {
+            self.nested(note, |renderer| {
+                renderer.render_footnote_definition(note, Some(number));
+            });
         }
     }
 
@@ -962,8 +980,8 @@ impl Renderer {
     /// list item renders behind its bullet: the text starts after the
     /// number and every later line sits under it. A definition without a
     /// number is one the parser left where it was written because a later
-    /// definition of the same name replaced it, or because no reference
-    /// points to it; it renders without a prefix.
+    /// definition of the same name replaced it; it renders without a
+    /// prefix.
     fn render_footnote_definition(&mut self, definition: Node<'_>, number: Option<u32>) {
         let Some(number) = number else {
             self.render_children(definition);
@@ -1690,17 +1708,80 @@ fn html_block_lines(block: &NodeHtmlBlock) -> &str {
 // Footnote numbers
 // =========================================================
 
-/// The number of each footnote the document refers to, by name. The
-/// parser sets it on every reference that has a definition; a reference
-/// without one is plain text by then.
-fn footnote_numbers(document: Node<'_>) -> HashMap<String, u32> {
-    document
-        .descendants()
-        .filter_map(|node| match &node.data.borrow().value {
-            NodeValue::FootnoteReference(reference) => Some((reference.name.clone(), reference.ix)),
-            _ => None,
-        })
-        .collect()
+/// Number the footnotes the document draws, by footnote name, and set that
+/// number on every reference that shows it.
+///
+/// A footnote is drawn when a reference in the blocks of the document
+/// points to it, or a reference in a drawn footnote does. The parser
+/// counts every reference, also those in a definition it dropped because
+/// nothing refers to it, and also those in the alt text of an image, which
+/// draws no reference. Its numbers and its reference counts would give a
+/// footnote a number, or a note, that nothing drawn leads to. The numbers
+/// here count from 1 in the order of the first drawn reference in the
+/// source, which is the order the parser numbers in when every footnote is
+/// drawn.
+fn number_footnotes(document: Node<'_>) -> HashMap<String, u32> {
+    // The parser appends the definitions it has a reference for to the
+    // document. Every other block, a definition it left in place included,
+    // is drawn where it stands.
+    let mut definitions = HashMap::new();
+    let mut references = Vec::new();
+    for block in document.children() {
+        match &block.data.borrow().value {
+            NodeValue::FootnoteDefinition(definition) if definition.total_references > 0 => {
+                definitions.insert(definition.name.clone(), block);
+            }
+            _ => references.extend(references_below(block)),
+        }
+    }
+
+    // `references` grows as definitions are reached: the references of a
+    // drawn definition join the end, and each definition is reached once.
+    let mut reached = HashSet::new();
+    let mut next = 0;
+    while let Some((name, _)) = references.get(next) {
+        next += 1;
+        if let Some(&definition) = definitions.get(name)
+            && reached.insert(name.clone())
+        {
+            references.extend(references_below(definition));
+        }
+    }
+
+    references.sort_by_key(|(_, reference)| {
+        let start = reference.data.borrow().sourcepos.start;
+        (start.line, start.column)
+    });
+    let mut numbers = HashMap::new();
+    let mut last = 0;
+    for (name, reference) in references {
+        let number = *numbers.entry(name).or_insert_with(|| {
+            last += 1;
+            last
+        });
+        if let NodeValue::FootnoteReference(reference) = &mut reference.data.borrow_mut().value {
+            reference.ix = number;
+        }
+    }
+    numbers
+}
+
+/// The footnote references below `parent`, in document order, with the
+/// name of the footnote each points to. Those in the alt text of an image
+/// are left out.
+fn references_below<'a>(parent: Node<'a>) -> Vec<(String, Node<'a>)> {
+    let mut references = Vec::new();
+    let mut pending: Vec<Node<'a>> = parent.reverse_children().collect();
+    while let Some(node) = pending.pop() {
+        match &node.data.borrow().value {
+            NodeValue::FootnoteReference(reference) => {
+                references.push((reference.name.clone(), node));
+            }
+            NodeValue::Image(_) => {}
+            _ => pending.extend(node.reverse_children()),
+        }
+    }
+    references
 }
 
 // =========================================================

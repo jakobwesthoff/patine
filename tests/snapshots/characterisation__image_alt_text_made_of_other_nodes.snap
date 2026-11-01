@@ -25,8 +25,6 @@ expression: "pinned_all(&[\"![a\\\\\\nb](u)\", \"![a  \\nb](u)\", \"![a\\nb](u)\
 ---
 "![a[^1]](u)\n\n[^1]: n"
 [image: a][dim] (u)[]
-
-[dim][1][] n
 ---
 "[![https://x.y](i)](https://x.y)"
 [underline][image: https://x.y][][dim,underline] (i)[][dim] (https://x.y)[]

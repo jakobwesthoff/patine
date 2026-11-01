@@ -3597,6 +3597,183 @@ fn an_unreferenced_footnote_definition_is_dropped() {
 }
 
 // =========================================================
+// Footnotes drawn only when the body reaches them
+// =========================================================
+
+/// The note a body reference points to is drawn, and so is a note that a
+/// drawn note points to. A note that only an undrawn note points to is as
+/// unreferenced as one nothing points to.
+#[test]
+fn a_note_referenced_only_from_an_unreferenced_note_is_dropped() {
+    assert_eq!(
+        plain_lines(
+            "text\n\n[^z]: sees[^b]\n\n[^b]: B\n\nlater[^c]\n\n[^c]: C\n",
+            60
+        ),
+        ["text", "", "later[1]", "", "[1] C"]
+    );
+}
+
+#[test]
+fn a_chain_of_notes_the_body_does_not_reach_is_dropped() {
+    assert_eq!(
+        plain_lines("[^z]: [^b]\n\n[^b]: [^c]\n\n[^c]: end\n\nx\n", 60),
+        ["x"]
+    );
+}
+
+#[test]
+fn a_chain_of_notes_from_the_body_is_drawn_in_order() {
+    assert_eq!(
+        plain_lines("x[^a]\n\n[^a]: [^b]\n\n[^b]: [^c]\n\n[^c]: end\n", 60),
+        ["x[1]", "", "[1] [2]", "", "[2] [3]", "", "[3] end"]
+    );
+}
+
+#[test]
+fn a_note_referencing_itself_without_a_body_reference_is_dropped() {
+    assert_eq!(plain_lines("[^a]: me[^a]\n\nx", 60), ["x"]);
+}
+
+#[test]
+fn a_note_referencing_itself_is_drawn_when_the_body_reaches_it() {
+    assert_eq!(
+        plain_lines("x[^a]\n\n[^a]: me[^a]\n", 60),
+        ["x[1]", "", "[1] me[1]"]
+    );
+}
+
+#[test]
+fn notes_referencing_only_each_other_are_dropped() {
+    assert_eq!(plain_lines("[^a]: [^b]\n\n[^b]: [^a]\n\nx\n", 60), ["x"]);
+}
+
+#[test]
+fn notes_referencing_each_other_are_drawn_when_the_body_reaches_them() {
+    assert_eq!(
+        plain_lines("[^a]: [^b]\n\n[^b]: [^a]\n\nx[^a]\n", 60),
+        ["x[2]", "", "[1] [2]", "", "[2] [1]"]
+    );
+}
+
+#[test]
+fn notes_that_only_each_other_reference_take_no_number_from_the_notes_the_body_reaches() {
+    assert_eq!(
+        plain_lines("[^a]: [^b]\n\n[^b]: [^a]\n\nx[^c]\n\n[^c]: C", 60),
+        ["x[1]", "", "[1] C"]
+    );
+}
+
+#[test]
+fn a_note_first_referenced_from_a_dropped_note_is_numbered_by_its_drawn_reference() {
+    assert_eq!(
+        plain_lines(
+            "[^z]: sees[^b]\n\nbody[^c] body[^b]\n\n[^b]: B\n\n[^c]: C\n",
+            60
+        ),
+        ["body[1] body[2]", "", "[1] C", "", "[2] B"]
+    );
+}
+
+#[test]
+fn a_note_referenced_from_a_dropped_and_a_drawn_note_is_drawn() {
+    assert_eq!(
+        plain_lines(
+            "[^z]: from z[^b]\n\nx[^a]\n\n[^a]: from a[^b]\n\n[^b]: B\n",
+            60
+        ),
+        ["x[1]", "", "[1] from a[2]", "", "[2] B"]
+    );
+}
+
+#[test]
+fn a_reference_written_before_a_body_reference_numbers_before_it() {
+    assert_eq!(
+        plain_lines(
+            "[^a]: see[^b]\n\nbody[^a] x[^c]\n\n[^b]: B\n\n[^c]: C\n",
+            60
+        ),
+        ["body[2] x[3]", "", "[1] B", "", "[2] see[1]", "", "[3] C"]
+    );
+}
+
+#[test]
+fn a_reference_in_a_heading_of_a_drawn_note_reaches_its_note() {
+    assert_eq!(
+        plain_lines("x[^a]\n\n[^a]: # head[^b]\n\n[^b]: B\n", 60),
+        ["x[1]", "", "[1] ", "  head[2]", "", "[2] B"]
+    );
+}
+
+#[test]
+fn a_reference_in_a_heading_of_a_dropped_note_does_not_reach_its_note() {
+    assert_eq!(plain_lines("x\n\n[^a]: # head[^b]\n\n[^b]: B\n", 60), ["x"]);
+}
+
+#[test]
+fn a_reference_in_image_alt_text_does_not_reach_its_note() {
+    assert_eq!(
+        plain_lines("![pic[^a]](u) then x[^b]\n\n[^a]: A\n\n[^b]: B", 60),
+        ["[image: pic] (u) then x[1]", "", "[1] B"]
+    );
+    assert_eq!(
+        plain_lines("![pic[^a]](u)\n\n[^a]: A", 60),
+        ["[image: pic] (u)"]
+    );
+}
+
+#[test]
+fn a_reference_in_image_alt_text_of_a_drawn_note_does_not_reach_its_note() {
+    assert_eq!(
+        plain_lines("x[^z]\n\n[^z]: ![a[^b]](u.png)\n\n[^b]: B", 60),
+        ["x[1]", "", "[1] [image: a] (u.png)"]
+    );
+}
+
+#[test]
+fn a_note_nested_in_a_dropped_note_does_not_reach_its_note() {
+    assert_eq!(
+        plain_lines("[^a]: outer\n\n    [^b]: nested[^c]\n\n[^c]: C\n\ny", 60),
+        ["y"]
+    );
+}
+
+#[test]
+fn a_note_nested_in_a_drawn_note_reaches_its_note() {
+    assert_eq!(
+        plain_lines(
+            "x[^a]\n\n[^a]: outer\n\n    [^b]: nested[^c]\n\n[^c]: C",
+            60
+        ),
+        ["x[1]", "", "[1] outer", "", "  nested[2]", "", "[2] C"]
+    );
+}
+
+/// The text of a link is compared with its URL to decide whether the URL
+/// shows after it. A reference in that text reads its number from the
+/// renumbered tree: a number left over from the parser would show as
+/// `a[2]`, which is no longer the URL.
+#[test]
+fn a_reference_in_link_text_shows_its_number_among_the_drawn_notes() {
+    assert_eq!(
+        plain_lines("[^z]: [^b]\n\n[^b]: B\n\n[a[^c]](a[1])\n\n[^c]: C\n", 60),
+        ["a[1]", "", "[1] C"]
+    );
+}
+
+#[test]
+fn labels_match_whatever_their_case() {
+    assert_eq!(
+        plain_lines("x[^a] y[^A]\n\n[^A]: upper", 60),
+        ["x[1] y[1]", "", "[1] upper"]
+    );
+    assert_eq!(
+        plain_lines("x[^a]\n\n[^A]: upper\n\n[^a]: lower", 60),
+        ["x[1]", "", "upper", "", "[1] lower"]
+    );
+}
+
+// =========================================================
 // Autolink literals
 // =========================================================
 

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- A footnote that only an unreferenced footnote refers to made rendering
+  panic, in the `patine` CLI and in every program using the library:
+  `text\n\n[^z]: sees[^b]\n\n[^b]: B\n\nlater[^c]\n\n[^c]: C` and a
+  chain of definitions that nothing in the body reaches. A footnote is
+  drawn only when a reference in the body, or in a drawn footnote, points
+  to it, and the numbers count the drawn references only.
+- Because of that rule, three kinds of input differ from 2.2.1.
+  Definitions that refer only to each other or to themselves, with no
+  reference from the body, are no longer drawn and take no numbers from
+  the notes the body reaches. A reference in the alt text of an image no
+  longer draws its note. A footnote first referenced from a definition
+  that is not drawn is numbered by its first drawn reference.
+
 ## [2.2.1] - 2026-11-01
 
 ### Fixed
