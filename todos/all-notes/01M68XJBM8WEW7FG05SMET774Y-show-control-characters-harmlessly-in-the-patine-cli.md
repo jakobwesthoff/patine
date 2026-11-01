@@ -28,6 +28,12 @@ itself was not exploited.
 - asqr is not affected: its adapter draws control characters as their
   pictures (asqr `src/tui/render/patine_adapter.rs`, asqr ADR 33).
 
+## Decision
+
+The user decided on 2026-11-01 (AskUserQuestion in the lead session of
+the todo run): do it now, in parallel with the ntropy docs work, then
+release patine 2.2.3.
+
 ## Suggested fix
 
 Before the CLI writes a span, replace C0 and C1 control characters other

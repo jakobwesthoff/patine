@@ -13,6 +13,12 @@ breaks on Linux or Windows, or under an older lockfile, shows up only in
 the release build or downstream in asqr and ntropy. Found on 2026-11-01
 while updating the dependencies for 2.2.1.
 
+## Decision
+
+The user decided on 2026-11-01 (AskUserQuestion in the lead session of
+the todo run): do it now, in parallel with the ntropy docs work, then
+release patine 2.2.3.
+
 ## Suggested fix
 
 A `ci.yml` on push and pull request, running on Linux and macOS (and
