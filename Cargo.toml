@@ -2,7 +2,7 @@
 name = "patine"
 version = "2.2.0"
 edition = "2024"
-# `time` 0.3.47, which syntect pulls in through plist, needs 1.88, and so
+# `time`, which syntect pulls in through plist, needs 1.88, and so
 # does a let chain in src/highlight.rs. comrak and its dependency
 # `memchr-n` need 1.89.
 rust-version = "1.89"

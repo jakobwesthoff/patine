@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- With unicode-width 0.2.3, which gives the halfwidth sound marks `ﾞ`
+  and `ﾟ` a column of their own, patine counted each of them twice:
+  `ｶﾞ` took 3 columns in `StyledSpan::width` and `StyledLine::width`,
+  and text and tables holding one wrapped too early. Each mark takes one
+  column again under unicode-width 0.2.2 and 0.2.3.
+
+### Changed
+
+- The dependencies are updated to their newest compatible versions,
+  among them unicode-width 0.2.3, unicode-segmentation 1.13.3,
+  two-face 0.5.2 (syntax definitions of bat 0.26.1), plist 1.10.3 and
+  quick-xml 0.42. The requirements in `Cargo.toml` are unchanged.
+- unicode-width 0.2.3 uses Unicode 18. A character that Unicode 18
+  assigns can measure differently under unicode-width 0.2.2 and 0.2.3,
+  and patine lays it out with the width unicode-width gives it.
+
 ## [2.2.0] - 2026-11-01
 
 ### Added
