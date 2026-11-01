@@ -11,8 +11,8 @@ use std::io::Write;
 
 use insta::assert_snapshot;
 use patine::{
-    AnsiColor, Html, RenderOptions, SoftBreaks, StyledLine, TextStyle, Underline, render_lines,
-    render_lines_with,
+    AnsiColor, Html, QuoteStyle, RenderOptions, SoftBreaks, StyledLine, StyledSpan, TextStyle,
+    Underline, ansi, render_lines, render_lines_with,
 };
 
 const SHOWCASE_MD: &str = include_str!("fixtures/showcase.md");
@@ -279,7 +279,107 @@ fn write_errors_are_reported() {
         }
     }
     let error = patine::render("text", &mut FailingWriter, 80).expect_err("the writer fails");
+    assert_eq!(error.to_string(), "write the rendered lines");
     assert_eq!(error.root_cause().to_string(), "disk full");
+}
+
+// =========================================================
+// ansi encodes lines as render does
+// =========================================================
+
+/// Options other than the defaults, for the `_with` functions.
+fn other_options() -> RenderOptions {
+    RenderOptions::new()
+        .with_soft_breaks(SoftBreaks::Break)
+        .with_html(Html::Literal)
+        .with_quote_style(QuoteStyle::DimBar)
+}
+
+/// `lines` with every span's style replaced by `restyle`, as a program
+/// that changes the lines between layout and output builds them.
+fn restyled(lines: &[StyledLine], restyle: fn(TextStyle) -> TextStyle) -> Vec<StyledLine> {
+    lines
+        .iter()
+        .map(|line| {
+            line.spans
+                .iter()
+                .map(|span| StyledSpan::new(span.text.clone(), restyle(span.style)))
+                .collect()
+        })
+        .collect()
+}
+
+#[test]
+fn render_writes_through_ansi() {
+    for width in [80, 30] {
+        for markdown in sample_documents() {
+            assert_eq!(
+                ansi(&render_lines(markdown, width)).to_string(),
+                render_raw(markdown, width),
+                "{markdown:?} at {width}"
+            );
+
+            let options = other_options();
+            let mut buf = Vec::new();
+            patine::render_with(markdown, &mut buf, width, &options)
+                .expect("writing to a Vec cannot fail");
+            assert_eq!(
+                ansi(&render_lines_with(markdown, width, &options)).to_string(),
+                String::from_utf8(buf).expect("output is UTF-8"),
+                "{markdown:?} at {width} with options"
+            );
+        }
+    }
+}
+
+#[test]
+fn ansi_shows_exactly_the_lines() {
+    // Replayed like a terminal, the output of `ansi` shows the text of
+    // the lines in their styles, character by character, and every line
+    // ends in the default style.
+    for width in [80, 30] {
+        for markdown in sample_documents() {
+            for options in [RenderOptions::new(), other_options()] {
+                let lines = render_lines_with(markdown, width, &options);
+                let screen = screen_lines(&ansi(&lines).to_string());
+                assert_eq!(screen.len(), lines.len(), "{markdown:?} at {width}");
+                for (shown, line) in screen.iter().zip(&lines) {
+                    assert_eq!(shown.chars, styled_chars(line), "{markdown:?} at {width}");
+                    assert_eq!(shown.end, TextStyle::default(), "{markdown:?} at {width}");
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn colorless_lines_keep_every_other_style() {
+    let lines = restyled(&render_lines(SHOWCASE_MD, 80), TextStyle::without_colors);
+    let screen = screen_lines(&ansi(&lines).to_string());
+    assert_eq!(screen.len(), lines.len());
+    let mut emphasized = 0;
+    for (shown, line) in screen.iter().zip(&lines) {
+        for (&(c, style), (expected_c, expected_style)) in
+            shown.chars.iter().zip(styled_chars(line))
+        {
+            assert_eq!(c, expected_c);
+            assert_eq!(style, expected_style.without_colors());
+            if style.bold || style.dim {
+                emphasized += 1;
+            }
+        }
+        assert_eq!(shown.chars.len(), styled_chars(line).len());
+    }
+    assert!(emphasized > 0, "the showcase has bold or dim text");
+}
+
+#[test]
+fn plain_lines_write_no_escape_sequence() {
+    let lines = render_lines(SHOWCASE_MD, 80);
+    let plain = ansi(&restyled(&lines, |_| TextStyle::default())).to_string();
+    assert!(!plain.contains('\x1b'), "{plain:?}");
+    let text: String = lines.iter().map(|line| format!("{line}\n")).collect();
+    assert_eq!(plain, text);
 }
 
 // =========================================================

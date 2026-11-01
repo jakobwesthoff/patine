@@ -9,9 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `patine::ansi` writes styled lines with the escape sequences `render`
+  uses, for a program that changes the lines between layout and output.
+  It returns `AnsiLines`, a value that formats as the text, so it writes
+  into a `String` as well as into any writer. Span text goes out as it
+  is, control characters and tabs included.
 - `TextStyle::without_colors` returns the style with its colors cleared
   and its other attributes kept, for output without colors. A color
   field a later release adds is cleared by it too.
+
+### Changed
+
+- When the writer fails, the error of `render` and `render_with` reads
+  `write the rendered lines` over the writer's error. It used to read
+  `write styled span` or `write newline`.
 
 ## [2.1.0] - 2026-10-31
 

@@ -89,6 +89,26 @@ for line in &lines {
 
 `TextStyle::without_colors` returns a style with its colors cleared and every other attribute kept, for a program that honours `NO_COLOR`.
 
+`patine::ansi` writes lines with the escape sequences `render` uses, for a program that changes the lines between layout and output. It returns a value that formats as the text, so it writes into a `String` as well as into any writer. The text of each span goes out as it is: control characters and tabs are the program's to replace before it writes text it does not trust.
+
+```rust
+use patine::{StyledLine, StyledSpan};
+
+let lines = patine::render_lines("Some **bold** and `code`.", 80);
+let colorless: Vec<StyledLine> = lines
+    .iter()
+    .map(|line| {
+        line.spans
+            .iter()
+            .map(|span| StyledSpan::new(span.text.clone(), span.style.without_colors()))
+            .collect()
+    })
+    .collect();
+let text = patine::ansi(&colorless).to_string();
+```
+
+Mapping every style to `TextStyle::default()` instead writes the plain text.
+
 `patine::render_lines_with` and `patine::render_with` take `RenderOptions`. Two of them suit text that is not a Markdown document, such as a description a program wrote into a JSON string, one suits a program with colors of its own, and one suits a program that draws something at the end of the first line:
 
 - `soft_breaks`: with `SoftBreaks::Join` (the default), a single newline inside running text joins the lines into one paragraph, as CommonMark specifies. With `SoftBreaks::Break`, it breaks the line the way a trailing backslash does, as GitHub comments show it. Code blocks, inline code and frontmatter are not affected.

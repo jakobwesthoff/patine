@@ -10,7 +10,7 @@
 //! strikethrough and the 8 colors of the ANSI palette, so the user's
 //! terminal theme decides the actual colors.
 //!
-//! There are two ways to use the result:
+//! The result comes in two forms:
 //!
 //! - [`render`] writes the document as text with ANSI escape sequences,
 //!   ready for a terminal. This is what the `patine` binary does.
@@ -19,6 +19,10 @@
 //!   application that draws its own interface, such as a ratatui
 //!   application, maps these onto its own types. [`highlight`] does the
 //!   same for source code outside Markdown.
+//!
+//! [`ansi`] turns lines into the first form, encoded the way [`render`]
+//! writes them, for a program that changes the lines between layout and
+//! output. [`TextStyle::without_colors`] drops their colors.
 //!
 //! [`render_lines_with`] and [`render_with`] take [`RenderOptions`] for
 //! text that is not a Markdown document, where a single newline should
@@ -56,18 +60,19 @@ mod table;
 
 use std::io::Write;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 
+pub use crate::ansi::{AnsiLines, ansi};
 pub use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
 pub use crate::styled::{AnsiColor, StyledLine, StyledSpan, TextStyle, Underline};
 
 /// Parse and render a Markdown string as styled terminal output, wrapping
 /// text at `terminal_width` columns.
 ///
-/// Writes the lines of [`render_lines`] to `writer`, each followed by a
-/// newline, with ANSI SGR escape sequences for their styles. Every span
-/// switches its attributes off again, so no style stays active across a
-/// line break or after the output ends.
+/// Writes the lines of [`render_lines`] to `writer` as [`ansi`] encodes
+/// them: each followed by a newline, with ANSI SGR escape sequences for
+/// their styles. Every span switches its attributes off again, so no
+/// style stays active across a line break or after the output ends.
 ///
 /// # Errors
 ///
@@ -88,7 +93,7 @@ pub fn render(input: &str, writer: &mut impl Write, terminal_width: usize) -> Re
 /// Like [`render`], with [`RenderOptions`] that change how soft line
 /// breaks and raw HTML render.
 ///
-/// Writes the lines of [`render_lines_with`].
+/// Writes the lines of [`render_lines_with`] as [`ansi`] encodes them.
 ///
 /// # Errors
 ///
@@ -111,7 +116,8 @@ pub fn render_with(
     terminal_width: usize,
     options: &RenderOptions,
 ) -> Result<()> {
-    ansi::write_lines(&render_lines_with(input, terminal_width, options), writer)
+    let lines = render_lines_with(input, terminal_width, options);
+    write!(writer, "{}", ansi(&lines)).context("write the rendered lines")
 }
 
 /// Parse a Markdown string (CommonMark with GitHub extensions and YAML or

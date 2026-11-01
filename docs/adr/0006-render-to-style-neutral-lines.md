@@ -14,6 +14,8 @@ Amended by [10. Quote style option](0010-quote-style-option.md)
 
 Amended by [11. Table cells render as inline content](0011-table-cells-render-as-inline-content.md)
 
+Amended by [17. Offer the ANSI encoding as a Display adapter](0017-offer-the-ansi-encoding-as-a-display-adapter.md)
+
 ## Context
 
 ADR 0003 has the renderer write ANSI escape sequences straight into an

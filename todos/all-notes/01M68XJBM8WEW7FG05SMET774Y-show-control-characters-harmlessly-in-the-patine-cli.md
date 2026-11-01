@@ -34,3 +34,10 @@ Before the CLI writes a span, replace C0 and C1 control characters other
 than tab with their Control Pictures (U+2400 block) or U+FFFD, as asqr
 does, in text and in link URL suffixes. The library output stays as it
 is, so other front ends keep deciding for themselves.
+
+The replacement lives in `src/main.rs`, as patine's library encodes
+styles only (ADR 0017): the CLI takes the lines of `render_lines`, maps
+each span's text and keeps its style, and writes the result with
+`patine::ansi`. Every character patine writes is span text, link URL
+suffixes and frontmatter included, so mapping the spans covers all of
+it. A tab needs no column, as it stays.

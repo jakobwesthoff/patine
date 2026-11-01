@@ -243,8 +243,11 @@ fn grapheme_width(grapheme: &str) -> usize {
 
 /// A run of text drawn in one style.
 ///
-/// The text never contains a line ending, `\n` or `\r`. It may contain
-/// tab characters from code blocks, which patine passes through verbatim.
+/// The text of a span patine builds never contains a line ending, `\n`
+/// or `\r`. It may contain tab characters from code blocks, which patine
+/// passes through verbatim. A span built with [`StyledSpan::new`] holds
+/// its text as given, and [`ansi`](crate::ansi) writes a line ending in
+/// it as its documentation describes.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub struct StyledSpan {
