@@ -157,6 +157,45 @@ impl TextStyle {
             foreground: top.foreground.or(self.foreground),
         }
     }
+
+    /// This style without colors: every color field cleared, which is the
+    /// foreground, and every other attribute kept. A color field that a
+    /// later release adds is cleared here too, so output drawn from these
+    /// styles stays free of colors whatever patine version draws it.
+    ///
+    /// ```
+    /// use patine::{AnsiColor, TextStyle};
+    ///
+    /// let mut keyword = TextStyle::default();
+    /// keyword.bold = true;
+    /// keyword.foreground = Some(AnsiColor::Magenta);
+    ///
+    /// let plain = keyword.without_colors();
+    /// assert_eq!(plain.foreground, None);
+    /// assert!(plain.bold);
+    /// ```
+    #[must_use]
+    pub const fn without_colors(self) -> Self {
+        // Every field is named, with no `..self`, so a field added to
+        // `TextStyle` fails to compile here until it is decided whether it
+        // is a color.
+        let TextStyle {
+            bold,
+            italic,
+            dim,
+            strikethrough,
+            underline,
+            foreground: _,
+        } = self;
+        TextStyle {
+            bold,
+            italic,
+            dim,
+            strikethrough,
+            underline,
+            foreground: None,
+        }
+    }
 }
 
 // =========================================================
@@ -392,6 +431,35 @@ mod tests {
         assert_eq!(patched.foreground, Some(AnsiColor::Blue));
         assert_eq!(patched.underline, Underline::Single);
         assert!(patched.strikethrough);
+    }
+
+    #[test]
+    fn without_colors_clears_the_foreground_and_keeps_every_attribute() {
+        let style = TextStyle {
+            bold: true,
+            italic: true,
+            dim: true,
+            strikethrough: true,
+            underline: Underline::Double,
+            foreground: Some(AnsiColor::Magenta),
+        };
+        assert_eq!(
+            style.without_colors(),
+            TextStyle {
+                foreground: None,
+                ..style
+            }
+        );
+    }
+
+    #[test]
+    fn without_colors_stays_a_const_fn() {
+        const KEYWORD: TextStyle = TextStyle {
+            foreground: Some(AnsiColor::Blue),
+            ..BOLD
+        };
+        const PLAIN_KEYWORD: TextStyle = KEYWORD.without_colors();
+        assert_eq!(PLAIN_KEYWORD, BOLD);
     }
 
     #[test]

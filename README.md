@@ -87,6 +87,8 @@ for line in &lines {
 }
 ```
 
+`TextStyle::without_colors` returns a style with its colors cleared and every other attribute kept, for a program that honours `NO_COLOR`.
+
 `patine::render_lines_with` and `patine::render_with` take `RenderOptions`. Two of them suit text that is not a Markdown document, such as a description a program wrote into a JSON string, one suits a program with colors of its own, and one suits a program that draws something at the end of the first line:
 
 - `soft_breaks`: with `SoftBreaks::Join` (the default), a single newline inside running text joins the lines into one paragraph, as CommonMark specifies. With `SoftBreaks::Break`, it breaks the line the way a trailing backslash does, as GitHub comments show it. Code blocks, inline code and frontmatter are not affected.
