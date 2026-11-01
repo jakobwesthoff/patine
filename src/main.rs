@@ -103,33 +103,15 @@ fn harmless(lines: Vec<StyledLine>) -> Vec<StyledLine> {
 }
 
 /// `text` with each control character other than tab replaced.
-///
-/// Each replacement is one character that counts one column, as the
-/// control did when the lines were laid out, so no line gets wider. CR
-/// followed by LF is the one pair that is a single grapheme and counts one
-/// column, so it becomes one character as well. Tab stays: the terminal
-/// draws it as before, and the layout counts it as one column either way.
 fn harmless_text(text: &str) -> String {
-    let mut out = String::with_capacity(text.len());
-    let mut chars = text.chars().peekable();
-    while let Some(c) = chars.next() {
-        if c == '\r' && chars.peek() == Some(&'\n') {
-            chars.next();
-            out.push(SYMBOL_FOR_NEWLINE);
-        } else {
-            out.push(harmless_char(c));
-        }
-    }
-    out
+    text.chars().map(harmless_char).collect()
 }
-
-/// U+2424, the Control Pictures symbol for a CR LF pair.
-const SYMBOL_FOR_NEWLINE: char = '\u{2424}';
 
 /// `c`, or what shows in its place when it is a control character other
 /// than tab: the Control Pictures block for C0 and DEL, which keeps the
 /// reader able to tell which control the document held, and U+FFFD for C1,
-/// which that block has no pictures for.
+/// which that block has no pictures for. Each replacement counts one column,
+/// as the control did when the lines were laid out.
 fn harmless_char(c: char) -> char {
     match u32::from(c) {
         0x09 => c,

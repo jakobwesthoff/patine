@@ -22,15 +22,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   terminal that rendered it, as a raw ESC or through a character
   reference such as `&#27;`. The command now shows every control
   character other than tab as a character that does not act: the
-  Control Pictures `␀` to `␟` for the C0 controls (`␛`
-  for ESC), `␡` for DEL, `␤` for a CR LF pair and U+FFFD for the
-  C1 controls. Each takes the one column the control took in the layout.
-  The library output is unchanged: `render` still writes text as it is,
-  and a program that shows text it does not trust replaces controls
-  before `ansi`.
+  Control Pictures `␀` to `␟` for the C0 controls (`␛` for ESC), `␡`
+  for DEL and U+FFFD for the C1 controls. Each takes the one column the
+  control took in the layout. `render` and `ansi` still
+  write span text as it is, so a program that shows text it does not
+  trust replaces controls before `ansi`.
 - The same holds for the messages on stderr: the file name in the error for
   a file that cannot be read, and the argument clap quotes in a usage
   error, no longer carry controls to the terminal.
+- A character reference to a line ending, such as `&#13;` or `&#10;`,
+  in a link or image destination put a CR or LF into the span of the
+  dim `(url)` suffix, against the promise that no span holds a line
+  ending. A CR moved the cursor to the start of the line, so a later URL
+  could cover the link text. The suffix shows `%0D` and `%0A` instead,
+  in `render` and `render_lines`. A link whose text repeats such a
+  destination now shows its suffix too, as the text draws the line
+  ending as a space.
 
 ## [2.2.2] - 2026-11-01
 

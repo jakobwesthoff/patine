@@ -359,3 +359,130 @@ fn types_are_send_and_sync() {
     assert_send_sync::<SoftBreaks>();
     assert_send_sync::<Html>();
 }
+
+// =========================================================
+// Line endings in a link URL
+// =========================================================
+
+/// The text of `markdown` as lines, under both option sets, which must
+/// agree on documents whose text holds no line ending.
+fn lines_of_both_option_sets(markdown: &str) -> Vec<String> {
+    let break_and_literal = RenderOptions::new()
+        .with_soft_breaks(SoftBreaks::Break)
+        .with_html(Html::Literal);
+    let default = texts(&render_lines(markdown, 80));
+    assert_eq!(
+        default,
+        texts(&render_lines_with(markdown, 80, &break_and_literal)),
+        "{markdown:?}"
+    );
+    default
+}
+
+/// No span of `markdown` holds a line ending, which `StyledSpan` promises.
+fn assert_no_line_ending_in_spans(markdown: &str) {
+    for line in render_lines(markdown, 80) {
+        for span in &line {
+            assert!(
+                !span.text.contains(['\n', '\r']),
+                "{:?} in {markdown:?}",
+                span.text
+            );
+        }
+    }
+}
+
+#[test]
+fn a_carriage_return_in_a_link_url_shows_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("[t](http://x/a&#13;b)"),
+        ["t (http://x/a%0Db)"]
+    );
+}
+
+#[test]
+fn a_line_feed_in_a_link_url_shows_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("[t](http://x/a&#10;b)"),
+        ["t (http://x/a%0Ab)"]
+    );
+}
+
+#[test]
+fn a_carriage_return_and_line_feed_in_a_link_url_show_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("[t](http://x/a&#x0D;&#x0A;b)"),
+        ["t (http://x/a%0D%0Ab)"]
+    );
+}
+
+#[test]
+fn a_line_ending_in_an_image_url_shows_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("![i](http://x/&#13;)"),
+        ["[image: i] (http://x/%0D)"]
+    );
+}
+
+#[test]
+fn a_line_ending_in_a_reference_definition_url_shows_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("[r]\n\n[r]: http://x/&#13;&#10;q"),
+        ["r (http://x/%0D%0Aq)"]
+    );
+}
+
+#[test]
+fn a_line_ending_in_a_mailto_url_shows_percent_encoded() {
+    assert_eq!(
+        lines_of_both_option_sets("[a](mailto:x&#10;y)"),
+        ["a (mailto:x%0Ay)"]
+    );
+}
+
+#[test]
+fn a_link_whose_text_repeats_a_url_with_a_line_ending_still_shows_the_url() {
+    // The text is drawn with a space where the line ending was, so it does
+    // not show the destination.
+    assert_eq!(
+        texts(&render_lines("[a&#10;b](a&#10;b)", 80)),
+        ["a b (a%0Ab)"]
+    );
+}
+
+#[test]
+fn an_autolink_with_a_line_ending_still_shows_the_url() {
+    assert_eq!(
+        texts(&render_lines("<http://x/a&#10;b>", 80)),
+        ["http://x/a b (http://x/a%0Ab)"]
+    );
+}
+
+#[test]
+fn a_url_without_a_line_ending_is_written_as_it_is() {
+    assert_eq!(
+        lines_of_both_option_sets("[t](http://x/a%0Db&c)"),
+        ["t (http://x/a%0Db&c)"]
+    );
+}
+
+#[test]
+fn no_other_construct_puts_a_line_ending_into_a_span() {
+    for markdown in [
+        "text&#13;&#10;text",
+        "`a&#10;b`",
+        "# h&#13;i",
+        "| a&#10;b |\n|--|\n| c&#13;d |",
+        "[^1]\n\n[^1]: n&#10;m",
+        "> q&#13;r",
+        "- [ ] a&#10;b",
+        "> [!NOTE]\n> a&#13;b",
+        "![a&#10;b](u)",
+        "[a&#10;b](u \"t&#13;\")",
+        "---\nt: a&#13;b\n---\n\ntext",
+        "```rs\nfn a&#10;() {}\n```",
+        "www.x.com/a&#10;b",
+    ] {
+        assert_no_line_ending_in_spans(markdown);
+    }
+}

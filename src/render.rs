@@ -1254,7 +1254,10 @@ impl Renderer {
     fn write_link_url_suffix(&mut self, link: Node<'_>, url: &str) {
         let mut text = String::new();
         self.push_drawn_text(link, &mut text);
-        let shows_its_url = text == url || url.strip_prefix("mailto:") == Some(text.as_str());
+        // Text draws a line ending of the destination as a space, so a link
+        // whose destination holds one does not show it.
+        let shows_its_url = !url.contains(['\r', '\n'])
+            && (text == url || url.strip_prefix("mailto:") == Some(text.as_str()));
         if !shows_its_url {
             self.write_dimmed_url_suffix(url);
         }
@@ -1304,6 +1307,11 @@ impl Renderer {
         // text ended with.
         self.push_style(Style::Dim);
         self.pending_space = Some(self.current_style());
+        // A character reference can put CR or LF into a destination. A span
+        // never holds a line ending, so the suffix shows them as the
+        // percent-encoding comrak's HTML output gives the same characters
+        // in an `href` (`escape_href`).
+        let url = url.replace('\r', "%0D").replace('\n', "%0A");
         self.write_word(&format!("({url})"));
         self.pop_style();
     }

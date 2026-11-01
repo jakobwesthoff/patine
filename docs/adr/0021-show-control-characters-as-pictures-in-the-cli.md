@@ -21,8 +21,7 @@ alt text, table cells, footnotes, quotes, callouts, lists, frontmatter
 and link and image destinations, which the command shows as a dim
 suffix. Whitespace splitting turns U+0085, vertical tab, form feed, CR
 and LF in running text and inline code into spaces before a span
-exists; a code block and a link destination keep them. A character
-reference in a destination puts CR and LF into the suffix.
+exists; a code block keeps U+0085, vertical tab and form feed.
 
 Every character the command writes to stdout is span text, apart from
 the SGR sequences and the newline `ansi` adds. On stderr, the error for
@@ -33,9 +32,9 @@ controls.
 ## Decision
 
 The command renders with `render_lines`, replaces the controls in the
-text of every span and writes the result with `patine::ansi`. The
-library output stays as it is, so other front ends keep deciding for
-themselves.
+text of every span and writes the result with `patine::ansi`. This
+decision leaves the library alone, so other front ends keep deciding
+for themselves what to do with controls.
 
 A control is a C0 character (U+0000 to U+001F), DEL (U+007F) or a C1
 character (U+0080 to U+009F), other than tab.
@@ -44,17 +43,15 @@ character (U+0080 to U+009F), other than tab.
   order, so `␛` stands for ESC. DEL becomes U+2421.
 - C1 characters become U+FFFD, as the Control Pictures block has no
   pictures for them.
-- A CR directly followed by LF becomes one U+2424.
 - Tab stays.
 
 A picture keeps the reader able to see which control the document held.
 U+FFFD hides that, so it is used only where no picture exists.
 
 Each replacement is one character that unicode-width counts as one
-column, as it counted the control. Except for CR LF, a control is a
-grapheme cluster of its own, so no line gets wider than the layout
-measured. CR LF is one grapheme cluster that unicode-width counts as one
-column, so the pair becomes one character.
+column, as it counted the control. A control is a grapheme cluster of
+its own, apart from CR directly followed by LF, which no span holds
+(ADR 22), so no line gets wider than the layout measured.
 
 ## Consequences
 

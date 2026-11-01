@@ -24,7 +24,7 @@ const WIDTHS: [usize; 3] = [1, 12, 80];
 /// Pieces of Markdown that start, continue or break constructs: fences,
 /// markers, definitions, front matter fences, list and table syntax,
 /// inline syntax and plain words.
-const FRAGMENTS: [&str; 64] = [
+const FRAGMENTS: [&str; 72] = [
     "text",
     "word another",
     "# heading",
@@ -89,6 +89,14 @@ const FRAGMENTS: [&str; 64] = [
     "日本語",
     "👩‍👩‍👧‍👦",
     "  ",
+    "&#10;",
+    "&#13;",
+    "&#x0D;&#x0A;",
+    "[a](u&#10;v)",
+    "![i](u&#13;v)",
+    "[a]: u&#13;&#10;v",
+    "[m](mailto:a&#10;b)",
+    "<http://x/&#10;>",
 ];
 
 /// xorshift64: small, and the same on every platform.

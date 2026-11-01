@@ -133,34 +133,6 @@ fn a_next_line_control_in_prose_is_already_a_space() {
 }
 
 // =========================================================
-// CR and LF reach a span through a link destination
-// =========================================================
-
-#[test]
-fn a_carriage_return_in_a_link_url_is_pictured() {
-    assert_eq!(
-        shown("[t](http://x/a&#13;b)\n"),
-        "t (http://x/a\u{240d}b)\n"
-    );
-}
-
-#[test]
-fn a_line_feed_in_a_link_url_is_pictured() {
-    assert_eq!(
-        shown("[t](http://x/a&#10;b)\n"),
-        "t (http://x/a\u{240a}b)\n"
-    );
-}
-
-#[test]
-fn a_carriage_return_and_line_feed_in_a_link_url_are_one_picture() {
-    assert_eq!(
-        shown("[t](http://x/a&#13;&#10;b)\n"),
-        "t (http://x/a\u{2424}b)\n"
-    );
-}
-
-// =========================================================
 // Every place text appears
 // =========================================================
 
@@ -294,15 +266,6 @@ fn a_picture_takes_the_one_column_the_control_took() {
     assert_eq!(with("\u{1b}").replace('\u{241b}', "x"), with("x"));
 }
 
-#[test]
-fn a_pictured_carriage_return_and_line_feed_take_the_one_column_they_took() {
-    let with = |filler: &str| {
-        let text = format!("[t](http://x/{filler}b)\n");
-        without_sgr(&String::from_utf8(patine_bytes(&text, 14)).expect("patine writes UTF-8"))
-    };
-    assert_eq!(with("&#13;&#10;").replace('\u{2424}', "x"), with("x"));
-}
-
 // =========================================================
 // Safety net
 // =========================================================
@@ -408,6 +371,17 @@ fn an_argument_with_a_control_in_a_usage_error_is_pictured() {
     assert_eq!(controls_in(&stderr), Vec::<char>::new(), "{stderr:?}");
     assert!(stderr.contains("\u{241b}]0;x\u{2407}"), "{stderr:?}");
     assert_eq!(code, Some(2));
+}
+
+#[test]
+fn a_carriage_return_and_line_feed_in_a_file_name_are_pictured() {
+    let (_, stderr) = failure(&["/nonexistent/a\r\nb"]);
+
+    assert_eq!(controls_in(&stderr), Vec::<char>::new(), "{stderr:?}");
+    assert!(
+        stderr.contains("read /nonexistent/a\u{240d}\u{240a}b"),
+        "{stderr:?}"
+    );
 }
 
 #[test]

@@ -112,6 +112,11 @@ render as the underlined URL alone. An email autolink counts as such a
 link, since its URL is its text behind `mailto:`. A bare `www.` address
 keeps the dimmed URL, which has `http://` in front of it.
 
+A line ending in a URL, which a character reference such as `&#13;` or
+`&#10;` can put there, shows in the dimmed URL as `%0D` or `%0A`. A link
+whose destination holds one always keeps the dimmed URL, as its text
+draws the line ending as a space.
+
 ```
 See https://example.com for details.
     ^^^^^^^^^^^^^^^^^^^
