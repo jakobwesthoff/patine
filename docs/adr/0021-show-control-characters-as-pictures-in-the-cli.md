@@ -25,7 +25,10 @@ exists; a code block and a link destination keep them. A character
 reference in a destination puts CR and LF into the suffix.
 
 Every character the command writes to stdout is span text, apart from
-the SGR sequences and the newline `ansi` adds.
+the SGR sequences and the newline `ansi` adds. On stderr, the error for
+a file that cannot be read names the file as given, and clap's error
+for a bad command line quotes the argument it rejects. Both can hold
+controls.
 
 ## Decision
 
@@ -55,9 +58,12 @@ column, so the pair becomes one character.
 
 ## Consequences
 
-- The guarantee covers what the command writes to stdout. A file name
-  in the error message for a file that cannot be read, and the argument
-  clap echoes for a bad command line, are not covered.
+- The messages on stderr get the same replacement: the file name in the
+  error for a file that cannot be read, and the argument that clap
+  quotes for a bad command line. The command line is parsed a second
+  time with the controls in its arguments replaced, and clap's message
+  for that parse is the one printed. The file name used to read the file
+  is the one given.
 - The output is UTF-8 and is harmless on terminals that decode UTF-8. A
   terminal that acts on 8-bit C1 bytes reads the UTF-8 encoding of a
   Control Picture, whose last byte lies between 0x80 and 0x9F, as it

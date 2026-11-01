@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   The library output is unchanged: `render` still writes text as it is,
   and a program that shows text it does not trust replaces controls
   before `ansi`.
+- The same holds for the messages on stderr: the file name in the error for
+  a file that cannot be read, and the argument clap quotes in a usage
+  error, no longer carry controls to the terminal.
 
 ## [2.2.2] - 2026-11-01
 

@@ -68,7 +68,7 @@ Options:
 
 When no file is given and stdin is a terminal, patine prints its help message.
 
-The command shows the control characters of a document, other than tab, as pictures from Unicode's Control Pictures block (`␛` for ESC), and the C1 controls as U+FFFD, so a file cannot run escape sequences in your terminal. The library leaves text as it is, see below.
+The command shows the control characters of a document, other than tab, as pictures from Unicode's Control Pictures block (`␛` for ESC), and the C1 controls as U+FFFD, so a file cannot run escape sequences in your terminal. Error messages show them the same way. The library leaves text as it is, see below.
 
 ## Library
 

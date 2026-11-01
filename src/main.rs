@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+use std::ffi::OsString;
 use std::io::{self, IsTerminal, Read, Write};
 use std::path::PathBuf;
 
@@ -22,12 +23,11 @@ struct Cli {
 }
 
 fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+    let cli = parse_cli();
 
     let markdown = match cli.file {
-        Some(path) => {
-            std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?
-        }
+        Some(path) => std::fs::read_to_string(&path)
+            .with_context(|| format!("read {}", harmless_text(&path.display().to_string())))?,
         None => {
             if io::stdin().is_terminal() {
                 Cli::command().print_help().context("print help")?;
@@ -51,6 +51,31 @@ fn main() -> anyhow::Result<()> {
     stdout.flush().context("flush stdout")?;
 
     Ok(())
+}
+
+// =========================================================
+// The command line
+// =========================================================
+
+/// The parsed command line, or the end of the program with clap's message.
+///
+/// clap's message quotes the argument it rejects, and that argument can
+/// hold controls. They stay in the file name used to read the file, so the
+/// message is made from the arguments with the controls replaced, parsed
+/// a second time. Every rule of the command line looks at digits, dashes
+/// and names, which the replacement leaves alone, so the second parse
+/// fails the way the first did, with the same kind of message in clap's
+/// colors.
+fn parse_cli() -> Cli {
+    if let Ok(cli) = Cli::try_parse() {
+        return cli;
+    }
+    let harmless_arguments = std::env::args_os()
+        .map(|argument| OsString::from(harmless_text(&argument.to_string_lossy())));
+    Cli::try_parse_from(harmless_arguments)
+        .err()
+        .expect("replacing controls in arguments does not make a rejected command line valid")
+        .exit()
 }
 
 // =========================================================

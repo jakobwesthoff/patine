@@ -362,3 +362,61 @@ fn a_file_argument_is_filtered_like_stdin() {
         "a\u{241b}b\n"
     );
 }
+
+// =========================================================
+// Messages on stderr
+// =========================================================
+
+/// The exit code and the stderr text of `patine` run with `args`, and with
+/// `CLICOLOR_FORCE` set, so clap's own colors are on whether or not stderr
+/// is a terminal. The text is without the SGR sequences.
+fn failure(args: &[&str]) -> (Option<i32>, String) {
+    let output = Command::new(env!("CARGO_BIN_EXE_patine"))
+        .args(args)
+        .env("CLICOLOR_FORCE", "1")
+        .stdin(Stdio::null())
+        .output()
+        .expect("the patine binary starts");
+    assert!(!output.status.success(), "patine should fail");
+    (
+        output.status.code(),
+        without_sgr(&String::from_utf8_lossy(&output.stderr)),
+    )
+}
+
+fn controls_in(text: &str) -> Vec<char> {
+    text.chars()
+        .filter(|&c| c != '\n' && c.is_control())
+        .collect()
+}
+
+#[test]
+fn a_file_name_with_a_control_in_a_read_error_is_pictured() {
+    let (_, stderr) = failure(&["/nonexistent/\u{1b}]0;x\u{7}"]);
+
+    assert_eq!(controls_in(&stderr), Vec::<char>::new(), "{stderr:?}");
+    assert!(
+        stderr.contains("read /nonexistent/\u{241b}]0;x\u{2407}"),
+        "{stderr:?}"
+    );
+}
+
+#[test]
+fn an_argument_with_a_control_in_a_usage_error_is_pictured() {
+    let (code, stderr) = failure(&["a", "\u{1b}]0;x\u{7}"]);
+
+    assert_eq!(controls_in(&stderr), Vec::<char>::new(), "{stderr:?}");
+    assert!(stderr.contains("\u{241b}]0;x\u{2407}"), "{stderr:?}");
+    assert_eq!(code, Some(2));
+}
+
+#[test]
+fn an_argument_without_a_control_in_a_usage_error_is_echoed_as_it_is() {
+    let (code, stderr) = failure(&["a", "b"]);
+
+    assert!(
+        stderr.contains("unexpected argument 'b' found"),
+        "{stderr:?}"
+    );
+    assert_eq!(code, Some(2));
+}
