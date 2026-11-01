@@ -25,6 +25,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   nothing under it shows its title alone. Callouts nest in quotes,
   callouts, list items and footnotes, and a callout below the nesting
   limit keeps its title line.
+- `RenderOptions::callout_style` and `with_callout_style` choose how
+  callouts look: `CalloutStyle::Colored(CalloutColors)` with a color, or
+  none, for each kind, or `CalloutStyle::DimBar` with dim bars and bold
+  titles without a color. The callout style does not follow
+  `quote_style`: a front end that sets `QuoteStyle::DimBar` for output
+  without colors sets `CalloutStyle::DimBar` as well.
+- `RenderOptions::callout_spacing` and `with_callout_spacing` choose
+  whether a blank line separates a callout's title from its body;
+  `CalloutSpacing::Attached`, the default, has none.
 
 ### Changed
 

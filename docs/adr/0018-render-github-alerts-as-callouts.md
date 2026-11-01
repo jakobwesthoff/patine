@@ -8,6 +8,8 @@ Accepted
 
 Amends [16. Use comrak for Markdown parsing](0016-use-comrak-for-markdown-parsing.md)
 
+Amends [7. Render options for soft breaks and HTML](0007-render-options-for-soft-breaks-and-html.md)
+
 ## Context
 
 GitHub's alert syntax marks a quote as a callout with its first line:
@@ -73,6 +75,48 @@ definitions. A callout below that depth renders flat like the other
 containers, but keeps its title as a line of its own, followed by its
 body after a blank line.
 
+### Options
+
+`RenderOptions` gets two fields with `const` builders,
+`with_callout_style` and `with_callout_spacing`:
+
+```rust
+#[non_exhaustive]
+pub enum CalloutStyle {
+    Colored(CalloutColors), // default Colored(CalloutColors::new())
+    DimBar,
+}
+
+#[non_exhaustive]
+pub struct CalloutColors {
+    pub note: Option<AnsiColor>,      // Blue
+    pub tip: Option<AnsiColor>,       // Green
+    pub important: Option<AnsiColor>, // Magenta
+    pub warning: Option<AnsiColor>,   // Yellow
+    pub caution: Option<AnsiColor>,   // Red
+    pub other: Option<AnsiColor>,     // None
+}
+
+#[non_exhaustive]
+pub enum CalloutSpacing {
+    Attached, // default
+    BlankLine,
+}
+```
+
+`Colored` draws each kind's bars, symbol and title in its color, `None`
+in the default foreground. `DimBar` draws the bars dim and the symbol and
+title bold without a color, for a front end that shows no colors.
+`CalloutColors` has `const` builders for each field. `BlankLine` puts a
+blank line carrying the bar between the title and the body.
+
+`CalloutStyle` is independent of `QuoteStyle`: two settings without a
+hidden coupling. A front end that sets `QuoteStyle::DimBar` for output
+without colors, as ntropy and asqr do under `NO_COLOR`, sets
+`CalloutStyle::DimBar` as well.
+
+The command-line interface has no flag for either option.
+
 ## Consequences
 
 - Quotes whose first line is a marker render as callouts, beyond what
@@ -85,6 +129,8 @@ body after a blank line.
   shows `○ here`.
 - Inline code and unhighlighted code blocks are yellow, so in a Warning
   they have the color of the bar.
-- A front end that removes colors gets the bars and titles in its
-  default foreground; the heavy bar and the symbol keep a callout apart
-  from a quote.
+- A front end that removes colors and leaves the callout style at its
+  default gets the bars and titles in its default foreground, not dim;
+  the heavy bar and the symbol still keep a callout apart from a quote.
+- ADR 7's options gain the callout style and spacing; they apply to
+  Markdown documents and short text fields alike.

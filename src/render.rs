@@ -10,7 +10,9 @@ use comrak::nodes::{
 use unicode_segmentation::UnicodeSegmentation;
 
 use crate::line_endings::{split_line_endings, trim_final_line_ending, verbatim_lines};
-use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
+use crate::options::{
+    CalloutColors, CalloutSpacing, CalloutStyle, Html, QuoteStyle, RenderOptions, SoftBreaks,
+};
 use crate::styled::{AnsiColor, StyledLine, TextStyle, Underline, text_width};
 
 /// How many block containers (block quotes, callouts, list items, footnote
@@ -120,18 +122,15 @@ impl CalloutKind {
         }
     }
 
-    /// The color of the bars, the symbol and the title. A neutral callout
-    /// keeps the terminal's default foreground: the five kinds and the
-    /// quote bar's cyan take every other palette color but black and
-    /// white.
-    fn color(self) -> Option<AnsiColor> {
+    /// The color of this kind's bars, symbol and title among `colors`.
+    fn color(self, colors: CalloutColors) -> Option<AnsiColor> {
         match self {
-            Self::Note => Some(AnsiColor::Blue),
-            Self::Tip => Some(AnsiColor::Green),
-            Self::Important => Some(AnsiColor::Magenta),
-            Self::Warning => Some(AnsiColor::Yellow),
-            Self::Caution => Some(AnsiColor::Red),
-            Self::Other => None,
+            Self::Note => colors.note,
+            Self::Tip => colors.tip,
+            Self::Important => colors.important,
+            Self::Warning => colors.warning,
+            Self::Caution => colors.caution,
+            Self::Other => colors.other,
         }
     }
 
@@ -441,7 +440,7 @@ impl Renderer {
     /// containers between them and `container`. A callout among them,
     /// `container` included, keeps its title as a line of its own, so its
     /// kind is not lost; its body follows after a blank line, as every
-    /// block here does. Walks the tree with a stack of its own, so the
+    /// block here does, whatever [`CalloutSpacing`] says. Walks the tree with a stack of its own, so the
     /// depth of the content costs no recursion.
     fn render_flat(&mut self, container: Node<'_>) {
         let mut pending: Vec<Node<'_>> = vec![container];
@@ -672,25 +671,35 @@ impl Renderer {
     }
 
     /// Render a callout: its title line, then its body, every line behind
-    /// a `┃ ` bar in the color of its kind. The body starts on the line
-    /// under the title.
+    /// a `┃ ` bar in the style [`CalloutStyle`] gives its kind. The body
+    /// starts on the line under the title, or after a blank line with
+    /// [`CalloutSpacing::BlankLine`].
     fn render_callout(&mut self, callout: Node<'_>, details: &NodeCallout) {
         // As for a quote, the blank line before the callout belongs to
         // the blocks around it and carries their bars, not the callout's.
         self.ensure_block_spacing();
-        let bar = TextStyle {
-            foreground: CalloutKind::of(details).color(),
-            ..TextStyle::default()
+        let kind = CalloutKind::of(details);
+        let bar = match self.options.callout_style {
+            CalloutStyle::Colored(colors) => TextStyle {
+                foreground: kind.color(colors),
+                ..TextStyle::default()
+            },
+            CalloutStyle::DimBar => TextStyle {
+                dim: true,
+                ..TextStyle::default()
+            },
         };
         self.with_segment(Segment::Callout { bar }, |renderer| {
             renderer.write_indent();
             renderer.write_callout_title(callout, details);
-            // The first block of the body would open with a blank line;
-            // `at_start` makes its spacing stand down, as under a bare
-            // list bullet. A body that draws nothing leaves it set, so it is
-            // cleared after the body: the block after the callout still
-            // needs its blank line below the title.
-            renderer.at_start = true;
+            // The first block of the body would open with a blank line,
+            // which `BlankLine` keeps. `at_start` makes its spacing stand
+            // down, as under a bare list bullet. A body that draws nothing
+            // leaves it set, so it is cleared after the body: the block
+            // after the callout still needs its blank line below the title.
+            if renderer.options.callout_spacing == CalloutSpacing::Attached {
+                renderer.at_start = true;
+            }
             for child in callout.children().filter(|child| !is_callout_title(child)) {
                 renderer.render_node(child);
             }
@@ -700,7 +709,8 @@ impl Renderer {
 
     /// Write the title line of a callout after the line prefix: the
     /// symbol of its kind, then its title, both bold and in the kind's
-    /// color, and close the line.
+    /// color unless [`CalloutStyle::DimBar`] takes the colors off, and
+    /// close the line.
     ///
     /// The title is what the marker line holds after the marker, or the
     /// default title comrak derives from the type (`Note`, `Foo`) where
@@ -709,8 +719,12 @@ impl Renderer {
     /// line and a wrapped title continues under the title's text.
     fn write_callout_title(&mut self, callout: Node<'_>, details: &NodeCallout) {
         let kind = CalloutKind::of(details);
+        let color = match self.options.callout_style {
+            CalloutStyle::Colored(colors) => kind.color(colors),
+            CalloutStyle::DimBar => None,
+        };
         self.push_style(Style::Bold);
-        if let Some(color) = kind.color() {
+        if let Some(color) = color {
             self.push_style(Style::ForegroundColor(color));
         }
 
@@ -738,7 +752,7 @@ impl Renderer {
             });
         }
 
-        if kind.color().is_some() {
+        if color.is_some() {
             self.pop_style();
         }
         self.pop_style();

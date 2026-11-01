@@ -63,7 +63,9 @@ use std::io::Write;
 use anyhow::{Context, Result};
 
 pub use crate::ansi::{AnsiLines, ansi};
-pub use crate::options::{Html, QuoteStyle, RenderOptions, SoftBreaks};
+pub use crate::options::{
+    CalloutColors, CalloutSpacing, CalloutStyle, Html, QuoteStyle, RenderOptions, SoftBreaks,
+};
 pub use crate::styled::{AnsiColor, StyledLine, StyledSpan, TextStyle, Underline};
 
 /// Parse and render a Markdown string as styled terminal output, wrapping
@@ -135,8 +137,9 @@ pub fn render_with(
 /// Line prefixes are spans of their own: indents are unstyled spaces,
 /// blockquote bars are `│ ` spans in the style
 /// [`RenderOptions::quote_style`] asks for, and callout bars are `┃ `
-/// spans in the color of the callout's kind. Blank lines have no spans,
-/// and empty input yields no lines.
+/// spans in the style [`RenderOptions::callout_style`] gives the
+/// callout's kind. Blank lines have no spans, and empty input yields no
+/// lines.
 ///
 /// A code block whose language syntect fails to highlight is shown in the
 /// flat code color, like a block without a language.
@@ -157,8 +160,8 @@ pub fn render_lines(input: &str, width: usize) -> Vec<StyledLine> {
 }
 
 /// Like [`render_lines`], with [`RenderOptions`] that change how soft
-/// line breaks, raw HTML and quotes render, and how wide the first line
-/// may be.
+/// line breaks, raw HTML, quotes and callouts render, and how wide the
+/// first line may be.
 ///
 /// The defaults suit Markdown documents. Short text fields, such as text
 /// a program writes into a JSON string, often mean a newline as a line

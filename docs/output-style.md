@@ -482,6 +482,14 @@ after the marker, outside other elements and with a body. The other
 types, titles, fold markers, metadata, empty callouts and nested
 callouts are callouts in patine and quotes on GitHub.
 
+Programs using the library can choose the color of each kind, or no
+color, through `RenderOptions::callout_style`; `CalloutStyle::DimBar`
+draws the bars dim and the symbol and title bold, without a color, for a
+front end that shows no colors. `RenderOptions::callout_spacing` with
+`CalloutSpacing::BlankLine` puts a blank line, carrying the bar, between
+the title and the body. A callout below the nesting limit has that blank
+line either way.
+
 ## Footnotes
 
 A footnote reference (`[^1]`) shows a dimmed number in square brackets

@@ -1,0 +1,11 @@
+---
+source: tests/callouts.rs
+expression: "pinned_all(&[\"> [!NOTE] Title\\n> body\", \"> [!FOO]\\n> body\"], WIDTH,\n&RenderOptions::new().with_callout_style(CalloutStyle::DimBar))"
+---
+"> [!NOTE] Title\n> body"
+[dim]┃ [][bold]● Title[]
+[dim]┃ []body
+---
+"> [!FOO]\n> body"
+[dim]┃ [][bold]○ Foo[]
+[dim]┃ []body

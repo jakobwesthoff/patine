@@ -12,7 +12,8 @@ mod common;
 use common::pinned_all;
 use insta::assert_snapshot;
 use patine::{
-    AnsiColor, Html, RenderOptions, SoftBreaks, StyledLine, TextStyle, render_lines_with,
+    AnsiColor, CalloutColors, CalloutSpacing, CalloutStyle, Html, RenderOptions, SoftBreaks,
+    StyledLine, TextStyle, render_lines_with,
 };
 
 const WIDTH: usize = 80;
@@ -410,4 +411,95 @@ fn callout_bytes() {
     patine::render("> [!NOTE] A *title*\n> body", &mut output, WIDTH)
         .expect("writing to a Vec does not fail");
     assert_snapshot!(String::from_utf8(output).expect("patine writes UTF-8"));
+}
+
+// =========================================================
+// Options
+// =========================================================
+
+fn dim() -> TextStyle {
+    let mut style = TextStyle::default();
+    style.dim = true;
+    style
+}
+
+fn bold() -> TextStyle {
+    bold_colored(None)
+}
+
+#[test]
+fn colored_style_takes_the_colors_it_is_given() {
+    let colors = CalloutColors::new()
+        .with_note(Some(AnsiColor::Cyan))
+        .with_warning(None)
+        .with_other(Some(AnsiColor::White));
+    let options = RenderOptions::new().with_callout_style(CalloutStyle::Colored(colors));
+    for (markdown, color) in [
+        ("> [!NOTE]\n> b", Some(AnsiColor::Cyan)),
+        ("> [!WARNING]\n> b", None),
+        ("> [!FOO]\n> b", Some(AnsiColor::White)),
+        ("> [!TIP]\n> b", Some(AnsiColor::Green)),
+    ] {
+        let rendered = render_lines_with(markdown, WIDTH, &options);
+        assert_eq!(rendered[0].spans[0].style, colored(color), "{markdown:?}");
+        assert_eq!(
+            rendered[0].spans[1].style,
+            bold_colored(color),
+            "{markdown:?}"
+        );
+    }
+}
+
+#[test]
+fn dim_bar_style_draws_dim_bars_and_bold_titles_without_a_color() {
+    let options = RenderOptions::new().with_callout_style(CalloutStyle::DimBar);
+    for markdown in ["> [!CAUTION] *Careful*\n> b", "> [!FOO]\n> b"] {
+        let rendered = render_lines_with(markdown, WIDTH, &options);
+        assert_eq!(rendered[0].spans[0].text, "┃ ", "{markdown:?}");
+        assert_eq!(rendered[0].spans[0].style, dim(), "{markdown:?}");
+        assert_eq!(rendered[0].spans[1].style, bold(), "{markdown:?}");
+        assert_eq!(rendered[1].spans[0].style, dim(), "{markdown:?}");
+    }
+
+    let quotes = "> ".repeat(64);
+    let flat = render_lines_with(&format!("{quotes}> [!NOTE]\n{quotes}> b"), 400, &options);
+    let title = flat[0].spans.last().expect("the title line has a title");
+    assert_eq!(title.text, "● Note");
+    assert_eq!(title.style, bold());
+}
+
+#[test]
+fn dim_bar_style() {
+    assert_snapshot!(pinned_all(
+        &["> [!NOTE] Title\n> body", "> [!FOO]\n> body"],
+        WIDTH,
+        &RenderOptions::new().with_callout_style(CalloutStyle::DimBar)
+    ));
+}
+
+#[test]
+fn blank_line_spacing_separates_title_and_body() {
+    let options = RenderOptions::new().with_callout_spacing(CalloutSpacing::BlankLine);
+    assert_eq!(
+        plain("> [!NOTE]\n> body\n>\n> more", WIDTH, &options),
+        ["┃ ● Note", "┃ ", "┃ body", "┃ ", "┃ more"]
+    );
+    assert_eq!(
+        plain("> [!NOTE]\n\nafter", WIDTH, &options),
+        ["┃ ● Note", "", "after"]
+    );
+    assert_eq!(
+        plain("- item\n\n  > [!TIP]\n  > body", WIDTH, &options),
+        ["• item", "", "  ┃ ◆ Tip", "  ┃ ", "  ┃ body"]
+    );
+}
+
+#[test]
+fn the_flat_rendering_has_its_blank_line_under_either_spacing() {
+    let quotes = "> ".repeat(64);
+    let markdown = format!("{quotes}> [!NOTE]\n{quotes}> body");
+    for spacing in [CalloutSpacing::Attached, CalloutSpacing::BlankLine] {
+        let options = RenderOptions::new().with_callout_spacing(spacing);
+        assert_eq!(plain(&markdown, 400, &options).len(), 3, "{spacing:?}");
+    }
 }

@@ -8,10 +8,12 @@
 //! every newline and every `<`; the quote style suits a front end with a
 //! color scheme of its own, for documents and text fields alike; the
 //! first line width suits a front end that draws something at the end of
-//! the first line. Design rationale lives in
+//! the first line; the callout style and spacing suit a front end with
+//! colors or a layout of its own. Design rationale lives in
 //! `docs/adr/0007-render-options-for-soft-breaks-and-html.md`,
-//! `docs/adr/0010-quote-style-option.md` and
-//! `docs/adr/0015-first-line-width-option.md`.
+//! `docs/adr/0010-quote-style-option.md`,
+//! `docs/adr/0015-first-line-width-option.md` and
+//! `docs/adr/0018-render-github-alerts-as-callouts.md`.
 
 use crate::styled::AnsiColor;
 
@@ -50,6 +52,10 @@ pub struct RenderOptions {
     /// lays out every line at the full width. See
     /// [`with_first_line_width`](Self::with_first_line_width).
     pub first_line_width: Option<usize>,
+    /// How callouts look: the colors of their bars, symbols and titles.
+    pub callout_style: CalloutStyle,
+    /// Whether a blank line separates a callout's title from its body.
+    pub callout_spacing: CalloutSpacing,
 }
 
 impl RenderOptions {
@@ -60,6 +66,8 @@ impl RenderOptions {
             html: Html::Drop,
             quote_style: QuoteStyle::DEFAULT,
             first_line_width: None,
+            callout_style: CalloutStyle::DEFAULT,
+            callout_spacing: CalloutSpacing::Attached,
         }
     }
 
@@ -111,6 +119,20 @@ impl RenderOptions {
     #[must_use]
     pub const fn with_first_line_width(mut self, width: usize) -> Self {
         self.first_line_width = Some(width);
+        self
+    }
+
+    /// These options with `callout_style` replaced.
+    #[must_use]
+    pub const fn with_callout_style(mut self, callout_style: CalloutStyle) -> Self {
+        self.callout_style = callout_style;
+        self
+    }
+
+    /// These options with `callout_spacing` replaced.
+    #[must_use]
+    pub const fn with_callout_spacing(mut self, callout_spacing: CalloutSpacing) -> Self {
+        self.callout_spacing = callout_spacing;
         self
     }
 }
@@ -220,6 +242,167 @@ impl Default for QuoteStyle {
     }
 }
 
+/// How a callout looks: its `┃ ` bars, the symbol of its kind and its
+/// title.
+///
+/// Under both variants the title is bold and the body keeps the style
+/// around it; only the colors differ. The style is independent of
+/// [`QuoteStyle`]: a front end that shows no colors sets
+/// [`CalloutStyle::DimBar`] next to [`QuoteStyle::DimBar`].
+///
+/// ```
+/// use patine::{AnsiColor, CalloutColors, CalloutStyle, RenderOptions, render_lines_with};
+///
+/// let colors = CalloutColors::new().with_warning(Some(AnsiColor::Red));
+/// let options = RenderOptions::new().with_callout_style(CalloutStyle::Colored(colors));
+/// let lines = render_lines_with("> [!WARNING]\n> Back up first.", 80, &options);
+/// assert_eq!(lines[0].to_string(), "┃ ▲ Warning");
+/// assert_eq!(lines[0].spans[0].style.foreground, Some(AnsiColor::Red));
+///
+/// let options = RenderOptions::new().with_callout_style(CalloutStyle::DimBar);
+/// let lines = render_lines_with("> [!WARNING]\n> Back up first.", 80, &options);
+/// assert!(lines[0].spans[0].style.dim);
+/// assert_eq!(lines[0].spans[1].style.foreground, None);
+/// ```
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum CalloutStyle {
+    /// Each kind's bars, symbol and title in its color. The default is
+    /// `Colored(CalloutColors::new())`.
+    Colored(CalloutColors),
+    /// The bars dim and the symbol and title bold, all without a color,
+    /// for a front end that shows no colors.
+    DimBar,
+}
+
+impl CalloutStyle {
+    /// The default, usable in a `const` such as [`RenderOptions::new`].
+    const DEFAULT: Self = Self::Colored(CalloutColors::new());
+}
+
+impl Default for CalloutStyle {
+    /// Every kind in its color from [`CalloutColors::new`].
+    fn default() -> Self {
+        Self::DEFAULT
+    }
+}
+
+/// The color of each kind of callout, for its bars, symbol and title.
+/// `None` keeps the terminal's default foreground.
+///
+/// Fields may be added in minor releases, so outside patine a value starts
+/// from [`CalloutColors::new`] or [`CalloutColors::default`]; the builders
+/// are `const`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub struct CalloutColors {
+    /// A `[!NOTE]` callout, blue by default.
+    pub note: Option<AnsiColor>,
+    /// A `[!TIP]` callout, green by default.
+    pub tip: Option<AnsiColor>,
+    /// An `[!IMPORTANT]` callout, magenta by default.
+    pub important: Option<AnsiColor>,
+    /// A `[!WARNING]` callout, yellow by default.
+    pub warning: Option<AnsiColor>,
+    /// A `[!CAUTION]` callout, red by default.
+    pub caution: Option<AnsiColor>,
+    /// A callout of any other type, such as `[!FOO]`, without a color by
+    /// default.
+    pub other: Option<AnsiColor>,
+}
+
+impl CalloutColors {
+    /// The default colors, usable in a `const`. The five kinds take five
+    /// palette colors that are not cyan, the default quote bar's.
+    #[must_use]
+    pub const fn new() -> Self {
+        Self {
+            note: Some(AnsiColor::Blue),
+            tip: Some(AnsiColor::Green),
+            important: Some(AnsiColor::Magenta),
+            warning: Some(AnsiColor::Yellow),
+            caution: Some(AnsiColor::Red),
+            other: None,
+        }
+    }
+
+    /// These colors with `note` replaced.
+    #[must_use]
+    pub const fn with_note(mut self, color: Option<AnsiColor>) -> Self {
+        self.note = color;
+        self
+    }
+
+    /// These colors with `tip` replaced.
+    #[must_use]
+    pub const fn with_tip(mut self, color: Option<AnsiColor>) -> Self {
+        self.tip = color;
+        self
+    }
+
+    /// These colors with `important` replaced.
+    #[must_use]
+    pub const fn with_important(mut self, color: Option<AnsiColor>) -> Self {
+        self.important = color;
+        self
+    }
+
+    /// These colors with `warning` replaced.
+    #[must_use]
+    pub const fn with_warning(mut self, color: Option<AnsiColor>) -> Self {
+        self.warning = color;
+        self
+    }
+
+    /// These colors with `caution` replaced.
+    #[must_use]
+    pub const fn with_caution(mut self, color: Option<AnsiColor>) -> Self {
+        self.caution = color;
+        self
+    }
+
+    /// These colors with `other` replaced.
+    #[must_use]
+    pub const fn with_other(mut self, color: Option<AnsiColor>) -> Self {
+        self.other = color;
+        self
+    }
+}
+
+impl Default for CalloutColors {
+    /// The colors of [`CalloutColors::new`].
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// Whether a blank line separates a callout's title from its body.
+///
+/// ```
+/// use patine::{CalloutSpacing, RenderOptions, render_lines_with};
+///
+/// let text = |lines: Vec<patine::StyledLine>| -> Vec<String> {
+///     lines.iter().map(ToString::to_string).collect()
+/// };
+/// let attached = render_lines_with("> [!TIP]\n> Run it twice.", 80, &RenderOptions::new());
+/// assert_eq!(text(attached), ["┃ ◆ Tip", "┃ Run it twice."]);
+///
+/// let options = RenderOptions::new().with_callout_spacing(CalloutSpacing::BlankLine);
+/// let spaced = render_lines_with("> [!TIP]\n> Run it twice.", 80, &options);
+/// assert_eq!(text(spaced), ["┃ ◆ Tip", "┃ ", "┃ Run it twice."]);
+/// ```
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum CalloutSpacing {
+    /// The body starts on the line under the title.
+    #[default]
+    Attached,
+    /// A blank line, carrying the bar, separates the title from the body.
+    /// A callout below the nesting limit, drawn without its bar, has the
+    /// blank line under either variant.
+    BlankLine,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -231,5 +414,39 @@ mod tests {
             RenderOptions::new().quote_style,
             QuoteStyle::Bar(AnsiColor::Cyan)
         );
+        assert_eq!(
+            RenderOptions::new().callout_style,
+            CalloutStyle::Colored(CalloutColors::default())
+        );
+        assert_eq!(CalloutStyle::default(), RenderOptions::new().callout_style);
+        assert_eq!(
+            RenderOptions::new().callout_spacing,
+            CalloutSpacing::Attached
+        );
+    }
+
+    #[test]
+    fn default_callout_colors_follow_the_kinds() {
+        let colors = CalloutColors::new();
+        assert_eq!(colors, CalloutColors::default());
+        assert_eq!(colors.note, Some(AnsiColor::Blue));
+        assert_eq!(colors.tip, Some(AnsiColor::Green));
+        assert_eq!(colors.important, Some(AnsiColor::Magenta));
+        assert_eq!(colors.warning, Some(AnsiColor::Yellow));
+        assert_eq!(colors.caution, Some(AnsiColor::Red));
+        assert_eq!(colors.other, None);
+    }
+
+    #[test]
+    fn each_color_builder_sets_its_kind_alone() {
+        let red = Some(AnsiColor::Red);
+        let base = CalloutColors::new();
+        assert_eq!(base.with_note(red).note, red);
+        assert_eq!(base.with_tip(red).tip, red);
+        assert_eq!(base.with_important(red).important, red);
+        assert_eq!(base.with_warning(None).warning, None);
+        assert_eq!(base.with_caution(None).caution, None);
+        assert_eq!(base.with_other(red).other, red);
+        assert_eq!(base.with_note(red).tip, base.tip);
     }
 }

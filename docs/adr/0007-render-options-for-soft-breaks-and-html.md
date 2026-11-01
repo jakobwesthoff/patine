@@ -14,6 +14,8 @@ Amended by [10. Quote style option](0010-quote-style-option.md)
 
 Amended by [15. First line width option](0015-first-line-width-option.md)
 
+Amended by [18. Render GitHub alerts as callouts](0018-render-github-alerts-as-callouts.md)
+
 ## Context
 
 asqr renders the intro, the question texts and the option descriptions
