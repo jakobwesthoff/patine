@@ -2,7 +2,6 @@
 title: "Render GitHub alerts as callouts"
 kind: feature
 component: render
-status: needs-discussion
 origin: request
 ---
 # Render GitHub alerts as callouts
@@ -29,20 +28,18 @@ and `plans/patine-alerts/`):
 
 - Look: a heavy bar `┃` in the kind's colour and a bold title in that
   colour (Note blue, Tip green, Important magenta, Warning yellow,
-  Caution red). A symbol before the title is welcome, but the first set
-  (ⓘ ✦ ❢ △ ⊘) looked uneven in the owner's terminal; the symbols are
-  still open.
+  Caution red), with a geometric symbol before the title: Note `●`, Tip
+  `◆`, Important `■`, Warning `▲`, Caution `✕` (follow-up session
+  01M6BFEEBG4YK631ERYGTMN7HT; a first set ⓘ ✦ ❢ △ ⊘ looked uneven in the
+  owner's terminal, ASCII and classic ℹ ★ ‼ ⚠ ✖ were the other choices).
 - A custom title (`> [!WARNING] Back up first`) replaces the kind's name
   and is rendered as inline Markdown.
 - An unknown marker (`> [!FOO]`) becomes a neutral callout titled `Foo`.
 - An empty alert shows its title line alone.
 - Alerts render as callouts wherever comrak finds them, nested ones
   included.
-- No blank line between the title and the body (the owner asked to see
-  both side by side before this is final).
+- The blank line between the title and the body is configurable in the
+  library API (`RenderOptions`); the default is no blank line (owner's
+  note in the follow-up session, after switching between both).
 - `RenderOptions` gets a setting for the callout colours, as
   `QuoteStyle` is for quotes.
-
-## Still open
-
-- The symbols, and the blank-line question after the side-by-side view.
