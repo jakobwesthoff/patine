@@ -440,8 +440,9 @@ impl Renderer {
     /// containers between them and `container`. A callout among them,
     /// `container` included, keeps its title as a line of its own, so its
     /// kind is not lost; its body follows after a blank line, as every
-    /// block here does, whatever [`CalloutSpacing`] says. Walks the tree with a stack of its own, so the
-    /// depth of the content costs no recursion.
+    /// block here does, whatever [`CalloutSpacing`] says. Walks the tree
+    /// with a stack of its own, so the depth of the content costs no
+    /// recursion.
     fn render_flat(&mut self, container: Node<'_>) {
         let mut pending: Vec<Node<'_>> = vec![container];
         while let Some(node) = pending.pop() {
@@ -1488,8 +1489,8 @@ impl Renderer {
 
     /// Write the first `segments` levels of the line prefix, outermost
     /// first: an unstyled indent for a `Nest`, a `│ ` bar for a `Quote`, a
-    /// `┃ ` bar for a `Callout`, nothing for a list item. The prefix is layout, so it never takes on
-    /// the style of the content around it.
+    /// `┃ ` bar for a `Callout`, nothing for a list item. The prefix is
+    /// layout, so it never takes on the style of the content around it.
     fn write_prefix(&mut self, segments: usize) {
         let mut wrote = false;
         let drawn: Vec<(Segment, usize)> = self.drawn_prefix(segments).collect();
