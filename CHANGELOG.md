@@ -51,6 +51,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `https://z.com_` have a link, `_www.z.com_` has a link that shows
     its `http://` URL, and `foo&#x40;bar.com` is no mail link.
   - `~~a~ *b*` shows `b` in italics.
+- A footnote reference in the alt text of an image shows its number, and
+  its note appears: `![bild[^1]](u.png)` shows `[image: bild[1]] (u.png)`
+  and the note `[1] ...`, where it showed `[image: bild] (u.png)` and no
+  note. Alt text that holds only references shows `[image: [1]]`. The
+  footnotes are numbered in the order of the first reference in the
+  source, as on GitHub, and the alt text counts at its place. ADR 25
+  records the rules, among them where GitHub numbers differently: a
+  reference inside a definition that nothing reaches counts for nothing in
+  patine.
 
 ### Fixed
 

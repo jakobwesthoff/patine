@@ -35,6 +35,46 @@ fn nested_emphasis_costs_time_in_proportion_to_its_depth() {
     );
 }
 
+/// Each nested image holds a footnote reference, and the outermost image
+/// draws every one of their numbers once. Walking the alt text again for
+/// each level would take time quadratic in the depth.
+#[test]
+fn nested_images_with_references_cost_time_in_proportion_to_their_depth() {
+    let levels = 20_000;
+    let markdown = format!(
+        "{}{}\n\n[^x]: X\n",
+        "![a[^x]".repeat(levels),
+        "](u)".repeat(levels)
+    );
+    let (lines, elapsed) = render_timed(&markdown, 80);
+    assert_eq!(lines.last().map(String::as_str), Some("[1] X"));
+    assert!(
+        elapsed < Duration::from_millis(1500),
+        "rendering {levels} levels took {elapsed:?}"
+    );
+}
+
+/// Many footnotes, each with a reference and a definition of its own,
+/// are numbered in time proportional to their number, whether the
+/// references stand in the text or in the alt text of images.
+#[test]
+fn many_footnotes_cost_time_in_proportion_to_their_number() {
+    let count = 10_000;
+    for reference in ["w[^kN]", "![a[^kN]](u)"] {
+        let body: String = (0..count)
+            .map(|n| format!("{}\n\n", reference.replace('N', &n.to_string())))
+            .collect();
+        let definitions: String = (0..count).map(|n| format!("[^k{n}]: n\n\n")).collect();
+        let (lines, elapsed) = render_timed(&format!("{body}{definitions}"), 80);
+        let last = format!("[{count}] n");
+        assert_eq!(lines.last().map(String::as_str), Some(last.as_str()));
+        assert!(
+            elapsed < Duration::from_millis(1500),
+            "rendering {count} footnotes of {reference} took {elapsed:?}"
+        );
+    }
+}
+
 /// The number of lines and the text on them for `markdown` at `width`.
 fn line_count(markdown: &str, width: usize) -> (usize, usize) {
     let lines = render_lines_with(markdown, width, &RenderOptions::default());

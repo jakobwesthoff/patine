@@ -189,9 +189,6 @@ const DEFAULT_GRAPHS: usize = 500;
 struct Reference {
     id: usize,
     label: usize,
-    /// Whether the reference sits in the alt text of an image, which
-    /// draws no reference.
-    in_alt_text: bool,
 }
 
 /// A piece of the document, in the order written. A definition carries
@@ -235,11 +232,7 @@ impl GraphBuilder<'_> {
             let spelling = self.label_spelling(label);
             let reference = format!("r{id}[^{spelling}]");
             let kind = self.random.below(4);
-            references.push(Reference {
-                id,
-                label,
-                in_alt_text: kind == 3,
-            });
+            references.push(Reference { id, label });
             text.push(match kind {
                 0 => reference,
                 1 => format!("[{reference}](u)"),
@@ -346,21 +339,29 @@ fn markdown_of(pieces: &[Piece]) -> String {
 }
 
 /// What the renderer has to draw for a document, worked out from the
-/// order the pieces were written in.
+/// order the pieces were written in and the rules of the parser: the first
+/// definition of a label is the one that counts, and a definition is drawn
+/// when a reference in the body, or in a drawn definition, names its
+/// label. The footnotes are numbered from 1 in the order of the first
+/// drawn reference in the source, a reference in a definition counting
+/// where the definition is written.
 struct Expected {
     /// The number each reference shows, by reference id; none when the
-    /// reference draws no number.
+    /// reference is not drawn.
     numbers: Vec<(usize, Option<usize>)>,
     /// The definitions drawn as notes, with their numbers, in the order
     /// they appear.
     notes: Vec<(usize, usize)>,
     /// Definitions that must not appear at all.
     dropped: Vec<usize>,
-    /// Every label a reference of the document is numbered under.
+    /// The labels of the definitions drawn.
+    drawn_labels: Vec<usize>,
+    /// Every label that has a number, by number.
     label_numbers: Vec<(usize, usize)>,
-    /// Whether every reference counts and every definition is drawn, so
-    /// the parser's own numbers have to agree.
-    all_drawn: bool,
+    /// Whether no definition holds a reference. The parser numbers the
+    /// references of the body before those inside definitions, so its
+    /// numbers are the model's only for such a document.
+    plain: bool,
 }
 
 fn expected(pieces: &[Piece]) -> Expected {
@@ -374,8 +375,8 @@ fn expected(pieces: &[Piece]) -> Expected {
         }
     }
 
-    // Each reference with the definition it sits in. A reference to a label
-    // without a definition is text.
+    // Each reference with the definition it sits in, in the order of the
+    // source. A reference to a label without a definition is text.
     let mut references: Vec<(&Reference, Option<usize>)> = Vec::new();
     let mut references_of: Vec<(usize, Vec<&Reference>)> = Vec::new();
     for piece in pieces {
@@ -388,16 +389,14 @@ fn expected(pieces: &[Piece]) -> Expected {
                 label,
                 references: found,
                 ..
-            } => {
-                if winner[*label] == Some(*id) {
-                    references.extend(found.iter().map(|reference| (reference, Some(*id))));
-                    references_of.push((*id, found.iter().collect()));
-                }
+            } if winner[*label] == Some(*id) => {
+                references.extend(found.iter().map(|reference| (reference, Some(*id))));
+                references_of.push((*id, found.iter().collect()));
             }
+            Piece::Definition { .. } => {}
         }
     }
-    let counts =
-        |reference: &Reference| !reference.in_alt_text && winner[reference.label].is_some();
+    let counts = |reference: &Reference| winner[reference.label].is_some();
 
     // A definition is drawn when a counted reference of the body, or of a
     // drawn definition, points to it.
@@ -415,7 +414,7 @@ fn expected(pieces: &[Piece]) -> Expected {
         let (_, inside) = references_of
             .iter()
             .find(|(owner, _)| *owner == id)
-            .expect("every definition has a reference list");
+            .expect("every kept definition has a reference list");
         pending.extend(
             inside
                 .iter()
@@ -451,17 +450,17 @@ fn expected(pieces: &[Piece]) -> Expected {
             .find(|(known, _)| *known == label)
             .map(|(_, number)| *number)
     };
-    let mut notes: Vec<(usize, usize)> = pieces
-        .iter()
-        .filter_map(|piece| match piece {
-            Piece::Definition { id, label, .. } if drawn.contains(id) => Some((
-                number_of(*label).expect("a drawn definition has a number"),
-                *id,
-            )),
-            _ => None,
-        })
-        .map(|(number, id)| (id, number))
-        .collect();
+    let mut notes: Vec<(usize, usize)> = Vec::new();
+    let mut drawn_labels = Vec::new();
+    for piece in pieces {
+        if let Piece::Definition { id, label, .. } = piece
+            && drawn.contains(id)
+        {
+            let number = number_of(*label).expect("a drawn definition has a number");
+            notes.push((*id, number));
+            drawn_labels.push(*label);
+        }
+    }
     notes.sort_by_key(|(_, number)| *number);
 
     let dropped = pieces
@@ -476,18 +475,14 @@ fn expected(pieces: &[Piece]) -> Expected {
         })
         .collect::<Vec<_>>();
 
-    // The parser numbers the references of the body before those inside
-    // definitions, and patine numbers by source position. The two agree
-    // for a document in which no definition holds a reference.
-    let all_drawn = dropped.is_empty()
-        && references_of.iter().all(|(_, inside)| inside.is_empty())
-        && references.iter().all(|(reference, _)| counts(reference));
+    let plain = references_of.iter().all(|(_, inside)| inside.is_empty());
     Expected {
         numbers,
         notes,
         dropped,
+        drawn_labels,
         label_numbers,
-        all_drawn,
+        plain,
     }
 }
 
@@ -521,9 +516,10 @@ fn notes_in(lines: &[String]) -> Vec<(usize, usize)> {
         .collect()
 }
 
-/// The parser's own numbers by label, for a document in which the
-/// renderer has to keep them.
-fn parser_numbers(markdown: &str) -> Vec<(usize, usize)> {
+/// What the parser makes of the footnotes of `markdown`: the number of
+/// each label its references carry, and the labels of the definitions it
+/// leaves at the end of the document, which are the footnotes it draws.
+fn parser_footnotes(markdown: &str) -> (Vec<(usize, usize)>, Vec<usize>) {
     use comrak::nodes::NodeValue;
 
     // The extensions patine parses with, as `parse_options` in
@@ -536,23 +532,47 @@ fn parser_numbers(markdown: &str) -> Vec<(usize, usize)> {
     options.extension.footnotes = true;
     options.extension.ofm_callouts = true;
 
+    let label_of = |name: &str| {
+        LABELS
+            .iter()
+            .position(|label| label.eq_ignore_ascii_case(name))
+            .expect("a footnote name is a label of the pool")
+    };
+
     let arena = comrak::Arena::new();
     let root = comrak::parse_document(&arena, markdown, &options);
     let mut numbers: Vec<(usize, usize)> = Vec::new();
     for node in root.descendants() {
         if let NodeValue::FootnoteReference(reference) = &node.data.borrow().value {
-            let label = LABELS
-                .iter()
-                .position(|label| label.eq_ignore_ascii_case(&reference.name))
-                .expect("a reference name is a label of the pool");
             let number = usize::try_from(reference.ix).expect("a number fits a usize");
-            if !numbers.contains(&(label, number)) {
-                numbers.push((label, number));
+            let entry = (label_of(&reference.name), number);
+            if !numbers.contains(&entry) {
+                numbers.push(entry);
             }
         }
     }
     numbers.sort_unstable();
-    numbers
+    let mut labels: Vec<usize> = root
+        .children()
+        .filter_map(|node| match &node.data.borrow().value {
+            NodeValue::FootnoteDefinition(definition) => Some(label_of(&definition.name)),
+            _ => None,
+        })
+        .collect();
+    labels.sort_unstable();
+    (numbers, labels)
+}
+
+/// The option sets and widths a graph renders with. At 1000 columns no
+/// line of the document wraps, so every note is one line. At 12 the
+/// tables fall back to records, and `Break` turns a line ending in a
+/// header cell into a line break.
+fn renderings() -> [(usize, RenderOptions); 3] {
+    [
+        (1000, RenderOptions::default()),
+        (12, RenderOptions::default()),
+        (12, RenderOptions::new().with_soft_breaks(SoftBreaks::Break)),
+    ]
 }
 
 #[test]
@@ -569,44 +589,263 @@ fn random_footnote_graphs_draw_what_the_body_reaches() {
         let markdown = markdown_of(&pieces);
         let expected = expected(&pieces);
 
-        // A width no line of the document wraps at, so that every note is
-        // one line.
-        let lines: Vec<String> = std::panic::catch_unwind(|| {
-            render_lines_with(&markdown, 1000, &RenderOptions::default())
-                .iter()
-                .map(ToString::to_string)
-                .collect()
-        })
-        .unwrap_or_else(|panic| {
-            eprintln!("graph {number} panicked: {markdown:?}");
-            std::panic::resume_unwind(panic)
-        });
-        let output = lines.join("\n");
-        let context = format!("graph {number}: {markdown:?} rendered as {output:?}");
-
-        for (id, number) in &expected.numbers {
-            assert_eq!(number_after(&output, *id), *number, "r{id} in {context}");
-        }
-        assert_eq!(notes_in(&lines), expected.notes, "{context}");
-        let numbers: Vec<usize> = expected.notes.iter().map(|(_, number)| *number).collect();
-        assert_eq!(
-            numbers,
-            (1..=numbers.len()).collect::<Vec<_>>(),
-            "{context}"
-        );
-        for id in &expected.dropped {
-            assert!(!output.contains(&format!("D{id}:")), "D{id} in {context}");
-        }
-
-        if expected.all_drawn {
+        // The parser draws the footnotes the model works out from its
+        // rules. Its numbers differ from the ones shown by design, as it
+        // numbers the references of the body first, and agree with the
+        // model's where no definition holds a reference.
+        let (parser_numbers, parser_labels) = parser_footnotes(&markdown);
+        let mut drawn_labels = expected.drawn_labels.clone();
+        drawn_labels.sort_unstable();
+        assert_eq!(parser_labels, drawn_labels, "graph {number}: {markdown:?}");
+        if expected.plain {
             let mut label_numbers = expected.label_numbers.clone();
             label_numbers.sort_unstable();
-            assert_eq!(parser_numbers(&markdown), label_numbers, "{context}");
+            assert_eq!(
+                parser_numbers, label_numbers,
+                "graph {number}: {markdown:?}"
+            );
+        }
+
+        for (width, options) in renderings() {
+            let lines: Vec<String> = std::panic::catch_unwind(|| {
+                render_lines_with(&markdown, width, &options)
+                    .iter()
+                    .map(ToString::to_string)
+                    .collect()
+            })
+            .unwrap_or_else(|panic| {
+                eprintln!("graph {number} panicked at width {width}: {markdown:?}");
+                std::panic::resume_unwind(panic)
+            });
+            let output = lines.join("\n");
+            let context =
+                format!("graph {number} at width {width}: {markdown:?} rendered as {output:?}");
+
+            for (id, number) in &expected.numbers {
+                assert_eq!(number_after(&output, *id), *number, "r{id} in {context}");
+            }
+            assert_eq!(notes_in(&lines), expected.notes, "{context}");
+            for id in &expected.dropped {
+                assert!(!output.contains(&format!("D{id}:")), "D{id} in {context}");
+            }
         }
 
         assert!(
             started.elapsed() < TIME_LIMIT,
             "{number} graphs took longer than {TIME_LIMIT:?}"
+        );
+    }
+}
+
+// =========================================================
+// Footnote shapes without a model
+// =========================================================
+
+/// How many documents of shapes the footnote graphs do not write a run
+/// renders.
+const SHAPED_DOCUMENTS: usize = 1500;
+
+const SHAPE_LABELS: [&str; 5] = ["a", "b", "c", "d", "e"];
+
+const SHAPE_WIDTHS: [usize; 5] = [1, 7, 12, 30, 1000];
+
+/// Writes documents of the shapes the footnote graphs leave out: a
+/// definition inside a definition, a list item, a quote, a callout and a
+/// callout title, a nested image, and a link in alt text. Every definition
+/// starts with `D<id>:`.
+struct ShapeBuilder<'a> {
+    random: &'a mut Random,
+    next_reference: usize,
+    next_definition: usize,
+}
+
+impl ShapeBuilder<'_> {
+    fn reference(&mut self) -> String {
+        let id = self.next_reference;
+        self.next_reference += 1;
+        let label = SHAPE_LABELS[self.random.below(SHAPE_LABELS.len())];
+        format!("r{id}[^{label}]")
+    }
+
+    fn inline(&mut self, depth: usize) -> String {
+        match self.random.below(if depth > 2 { 2 } else { 9 }) {
+            0 | 1 => self.reference(),
+            2 => format!("[{}](u)", self.inline(depth + 1)),
+            3 => format!("*{}*", self.inline(depth + 1)),
+            4 => format!("![{}](u.png)", self.inline(depth + 1)),
+            5 => format!("![x ![{}](v.png)](u.png)", self.inline(depth + 1)),
+            6 => format!(
+                "![{} [l {}](u)](u.png)",
+                self.inline(depth + 1),
+                self.inline(depth + 1)
+            ),
+            7 => format!("[![{}](i.png)](u)", self.inline(depth + 1)),
+            _ => format!("~~{}~~ `c`", self.inline(depth + 1)),
+        }
+    }
+
+    fn line(&mut self) -> String {
+        let count = 1 + self.random.below(3);
+        (0..count)
+            .map(|_| self.inline(0))
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
+
+    fn definition(&mut self, depth: usize) -> String {
+        let id = self.next_definition;
+        self.next_definition += 1;
+        let label = SHAPE_LABELS[self.random.below(SHAPE_LABELS.len())];
+        let mut definition = format!("[^{label}]: D{id}: {}", self.line());
+        if depth < 3 && self.random.below(2) == 0 {
+            definition.push_str("\n\n");
+            definition.push_str(&prefixed(&self.block(depth + 1), "    "));
+        }
+        definition
+    }
+
+    fn block(&mut self, depth: usize) -> String {
+        match self.random.below(if depth > 3 { 3 } else { 12 }) {
+            0 => self.line(),
+            1 => "plain".to_string(),
+            2 => self.definition(depth),
+            3 => format!("# h {}", self.line()),
+            4 => format!("| h {} |\n|--|\n| {} |", self.line(), self.line()),
+            5 => format!(
+                "- {}\n\n{}",
+                self.line(),
+                prefixed(&self.block(depth + 1), "  ")
+            ),
+            6 => prefixed(&self.block(depth + 1), "> "),
+            7 => format!(
+                "> [!NOTE] {}\n{}",
+                self.line(),
+                prefixed(&self.block(depth + 1), "> ")
+            ),
+            8 => {
+                let title = self.definition(depth + 1);
+                let title = title.lines().next().expect("a definition has a line");
+                format!("> [!NOTE] {title}\n> {}", self.line())
+            }
+            9 => format!("- {}", self.definition(depth + 1).replace('\n', "\n  ")),
+            10 => format!("{}\n===", self.line()),
+            _ => format!(
+                "1. {}\n   {}",
+                self.line(),
+                self.block(depth + 1).replace('\n', "\n   ")
+            ),
+        }
+    }
+}
+
+/// `text` with `prefix` in front of every line that has text.
+fn prefixed(text: &str, prefix: &str) -> String {
+    text.lines()
+        .map(|line| {
+            if line.is_empty() {
+                String::new()
+            } else {
+                format!("{prefix}{line}")
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
+/// Every number in square brackets in `output` that does not start a note,
+/// and the numbers of the notes. A number that wraps to the start of a line
+/// is not a note: a note is a line of the form `[n] D<id>:`.
+fn shown_and_note_numbers(lines: &[String]) -> (Vec<usize>, Vec<usize>) {
+    let mut shown = Vec::new();
+    let mut notes = Vec::new();
+    for line in lines {
+        let note = line.strip_prefix('[').and_then(|rest| {
+            let (number, rest) = rest.split_once("] D")?;
+            let (id, _) = rest.split_once(':')?;
+            id.chars().all(|c| c.is_ascii_digit()).then_some(number)
+        });
+        let mut rest = line.as_str();
+        if let Some(number) = note {
+            notes.push(number.parse().expect("a note number is a number"));
+            rest = &line[number.len() + 2..];
+        }
+        for (start, c) in rest.char_indices() {
+            if c != '[' {
+                continue;
+            }
+            let digits: String = rest[start + 1..]
+                .chars()
+                .take_while(char::is_ascii_digit)
+                .collect();
+            if !digits.is_empty() && rest[start + 1 + digits.len()..].starts_with(']') {
+                shown.push(digits.parse().expect("digits are a number"));
+            }
+        }
+    }
+    shown.sort_unstable();
+    shown.dedup();
+    notes.sort_unstable();
+    (shown, notes)
+}
+
+/// Whatever the document holds, the numbers the references show and the
+/// numbers of the notes are the same set, 1 to the number of notes, and
+/// nothing panics at any width.
+#[test]
+fn footnotes_in_nested_shapes_show_the_numbers_of_their_notes() {
+    let documents = std::env::var("PATINE_FUZZ_SHAPES")
+        .ok()
+        .and_then(|count| count.parse().ok())
+        .unwrap_or(SHAPED_DOCUMENTS);
+    let started = Instant::now();
+    let mut random = Random(SEED ^ 0x5eed);
+
+    for number in 0..documents {
+        let mut builder = ShapeBuilder {
+            random: &mut random,
+            next_reference: 0,
+            next_definition: 0,
+        };
+        let blocks = 1 + builder.random.below(6);
+        let markdown = (0..blocks)
+            .map(|_| builder.block(0))
+            .collect::<Vec<_>>()
+            .join("\n\n");
+
+        for options in [
+            RenderOptions::default(),
+            RenderOptions::new().with_soft_breaks(SoftBreaks::Break),
+        ] {
+            for width in SHAPE_WIDTHS {
+                let lines: Vec<String> = std::panic::catch_unwind(|| {
+                    render_lines_with(&markdown, width, &options)
+                        .iter()
+                        .map(ToString::to_string)
+                        .collect()
+                })
+                .unwrap_or_else(|panic| {
+                    eprintln!("document {number} panicked at width {width}: {markdown:?}");
+                    std::panic::resume_unwind(panic)
+                });
+                // In a narrow column, such as a table cell in a quote, a word
+                // breaks between its characters, and a number no longer shows
+                // as one.
+                if width < 30 {
+                    continue;
+                }
+                let (shown, notes) = shown_and_note_numbers(&lines);
+                let all: Vec<usize> = (1..=notes.len()).collect();
+                assert_eq!(notes, all, "notes of document {number}: {markdown:?}");
+                assert_eq!(
+                    shown, all,
+                    "numbers shown in document {number} at width {width}: {markdown:?} as {lines:?}"
+                );
+            }
+        }
+
+        assert!(
+            started.elapsed() < TIME_LIMIT,
+            "{number} documents took longer than {TIME_LIMIT:?}"
         );
     }
 }

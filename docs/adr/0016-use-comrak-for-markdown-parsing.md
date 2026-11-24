@@ -14,6 +14,8 @@ Amended by [20. Draw the footnotes the body reaches](0020-draw-the-footnotes-the
 
 Amended by [24. Follow comrak 1.2 where it changes the rendering](0024-follow-comrak-1-2-where-it-changes-the-rendering.md)
 
+Amended by [25. Number footnotes in source order and draw the ones comrak keeps](0025-number-footnotes-in-source-order-and-draw-the-ones-comrak-keeps.md)
+
 ## Context
 
 markdown-rs 1.0.0 (the `markdown` crate) panics on small inputs instead

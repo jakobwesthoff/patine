@@ -3734,22 +3734,133 @@ fn a_reference_in_a_heading_of_a_dropped_note_does_not_reach_its_note() {
 }
 
 #[test]
-fn a_reference_in_image_alt_text_does_not_reach_its_note() {
+fn a_reference_in_image_alt_text_shows_its_number_and_reaches_its_note() {
     assert_eq!(
         plain_lines("![pic[^a]](u) then x[^b]\n\n[^a]: A\n\n[^b]: B", 60),
-        ["[image: pic] (u) then x[1]", "", "[1] B"]
+        ["[image: pic[1]] (u) then x[2]", "", "[1] A", "", "[2] B"]
     );
     assert_eq!(
         plain_lines("![pic[^a]](u)\n\n[^a]: A", 60),
-        ["[image: pic] (u)"]
+        ["[image: pic[1]] (u)", "", "[1] A"]
     );
 }
 
 #[test]
-fn a_reference_in_image_alt_text_of_a_drawn_note_does_not_reach_its_note() {
+fn a_reference_in_image_alt_text_of_a_drawn_note_reaches_its_note() {
     assert_eq!(
         plain_lines("x[^z]\n\n[^z]: ![a[^b]](u.png)\n\n[^b]: B", 60),
-        ["x[1]", "", "[1] [image: a] (u.png)"]
+        ["x[1]", "", "[1] [image: a[2]] (u.png)", "", "[2] B"]
+    );
+}
+
+/// The numbers in the order of the source, a reference in the alt text of
+/// an image counted at its place: `y` is `[3]` and the image `[4]`, as on
+/// GitHub.
+#[test]
+fn an_alt_text_reference_takes_the_number_of_its_place_in_the_source() {
+    assert_eq!(
+        plain_lines(
+            "x[^a]\n\n[^a]: A[^c]\n\n[^c]: C\n\ny[^b]\n\n[^b]: B\n\n![bild[^d]](u.png)\n\n[^d]: D",
+            60
+        ),
+        [
+            "x[1]",
+            "",
+            "y[3]",
+            "",
+            "[image: bild[4]] (u.png)",
+            "",
+            "[1] A[2]",
+            "",
+            "[2] C",
+            "",
+            "[3] B",
+            "",
+            "[4] D"
+        ]
+    );
+}
+
+#[test]
+fn an_alt_text_of_nothing_but_references_is_not_empty() {
+    assert_eq!(
+        plain_lines("![[^x]](u.png)\n\n[^x]: X", 60),
+        ["[image: [1]] (u.png)", "", "[1] X"]
+    );
+    assert_eq!(
+        plain_lines("![![[^y]](v)](w)\n\n[^y]: Y", 60),
+        ["[image: [1]] (w)", "", "[1] Y"]
+    );
+}
+
+/// A nested image adds nothing to the alt text but the numbers of the
+/// references below it.
+#[test]
+fn a_nested_image_adds_only_the_numbers_of_its_references() {
+    assert_eq!(
+        plain_lines("x[^a]\n\n![a ![b[^c]](y) d](u)\n\n[^a]: A\n\n[^c]: C", 60),
+        ["x[1]", "", "[image: a [2] d] (u)", "", "[1] A", "", "[2] C"]
+    );
+}
+
+/// The alt text keeps the rules it has without references: a soft break is
+/// a space and inline HTML shows as written, whatever the options say.
+#[test]
+fn alt_text_with_a_reference_follows_the_alt_text_rules_under_every_option() {
+    let markdown = "![a\nb <i>c</i>[^x]](u)\n\n[^x]: X";
+    for options in [BREAK, LITERAL, BREAK_AND_LITERAL, RenderOptions::default()] {
+        assert_eq!(
+            plain_lines_with(markdown, 60, options),
+            ["[image: a b <i>c</i>[1]] (u)", "", "[1] X"]
+        );
+    }
+}
+
+/// A reference in alt text reaches its note in a link and in a table cell,
+/// and not from a note that is dropped.
+#[test]
+fn a_reference_in_image_alt_text_reaches_its_note_in_a_link_and_a_cell_but_not_from_a_dropped_note()
+{
+    let in_a_link = plain_lines("[![i[^a]](u.png)](http://l)\n\n[^a]: A", 60);
+    assert!(in_a_link.join("\n").contains("i[1]"), "{in_a_link:?}");
+    assert_eq!(in_a_link.last().map(String::as_str), Some("[1] A"));
+
+    let in_a_cell = plain_lines("| h |\n|--|\n| ![i[^a]](u.png) |\n\n[^a]: A", 60);
+    assert!(in_a_cell.join("\n").contains("i[1]"), "{in_a_cell:?}");
+    assert_eq!(in_a_cell.last().map(String::as_str), Some("[1] A"));
+
+    let in_a_dropped_note = plain_lines("x\n\n[^z]: ![i[^a]](u.png)\n\n[^a]: A", 60);
+    assert_eq!(in_a_dropped_note, ["x"]);
+}
+
+/// A reference inside a definition that is not drawn counts for nothing,
+/// where GitHub counts it: the definition that nothing reaches, and the
+/// second definition of a label.
+#[test]
+fn a_reference_inside_a_definition_that_is_not_drawn_takes_no_number() {
+    assert_eq!(
+        plain_lines(
+            "text\n\n[^z]: sees[^b]\n\n[^b]: B\n\nlater[^c]\n\n[^c]: C",
+            60
+        ),
+        ["text", "", "later[1]", "", "[1] C"]
+    );
+    assert_eq!(
+        plain_lines(
+            "x[^a]\n\n[^a]: one[^b]\n\n[^a]: two[^c]\n\n[^b]: B\n\n[^c]: C\n\ny[^d]\n\n[^d]: D",
+            60
+        ),
+        [
+            "x[1]",
+            "",
+            "y[3]",
+            "",
+            "[1] one[2]",
+            "",
+            "[2] B",
+            "",
+            "[3] D"
+        ]
     );
 }
 

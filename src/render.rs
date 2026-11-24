@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 use comrak::nodes::{
     AstNode, ListType, NodeCallout, NodeCodeBlock, NodeHtmlBlock, NodeList, NodeTable, NodeValue,
@@ -397,28 +397,33 @@ impl Renderer {
     /// Render the blocks of the document, then its footnotes as notes in
     /// the order of their numbers.
     ///
-    /// The parser appends every definition it has a reference for to the
-    /// end of the document. Which of them the document draws is up to
-    /// [`number_footnotes`]: a definition without a number is one that
-    /// only definitions nobody draws refer to, and is skipped.
+    /// The parser moves the definitions it draws to the end of the
+    /// document in the order of its own numbers, and detaches every other
+    /// definition, so the n-th definition there is the footnote the parser
+    /// numbered n. [`number_footnotes`] maps that number to the one the
+    /// references show. This holds while the parse options keep
+    /// `leave_footnote_definitions` off.
     fn render_document(&mut self, document: Node<'_>) {
         let numbers = number_footnotes(document);
 
-        let mut notes = Vec::new();
+        let mut definitions = Vec::new();
         for child in document.children() {
-            let number = match &child.data.borrow().value {
-                NodeValue::FootnoteDefinition(definition) if definition.total_references > 0 => {
-                    Some(numbers.get(&definition.name).copied())
-                }
-                _ => None,
-            };
-            match number {
-                None => self.render_node(child),
-                Some(Some(number)) => notes.push((number, child)),
-                Some(None) => {}
+            if matches!(child.data.borrow().value, NodeValue::FootnoteDefinition(_)) {
+                definitions.push(child);
+            } else {
+                self.render_node(child);
             }
         }
 
+        let mut notes: Vec<(u32, Node<'_>)> = definitions
+            .into_iter()
+            .zip(1..)
+            .filter_map(|(definition, parser_number)| {
+                numbers
+                    .get(&parser_number)
+                    .map(|&number| (number, definition))
+            })
+            .collect();
         notes.sort_by_key(|&(number, _)| number);
         for (number, note) in notes {
             self.nested(note, |renderer| {
@@ -1200,14 +1205,19 @@ impl Renderer {
     }
 
     fn render_image(&mut self, image: Node<'_>, url: &str) {
-        let mut alt = String::new();
-        push_alt_text(image, &mut alt);
-        let marker = if alt.is_empty() {
-            "[image]".to_string()
+        let alt = alt_pieces(image);
+        if alt.is_empty() {
+            self.render_text("[image]");
         } else {
-            format!("[image: {alt}]")
-        };
-        self.render_text(&marker);
+            self.render_text("[image: ");
+            for piece in &alt {
+                match piece {
+                    AltPiece::Text(text) => self.render_text(text),
+                    AltPiece::Number(number) => self.render_footnote_reference(*number),
+                }
+            }
+            self.render_text("]");
+        }
         self.write_dimmed_url_suffix(url);
     }
 
@@ -1700,99 +1710,107 @@ fn html_block_lines(block: &NodeHtmlBlock) -> &str {
 // Footnote numbers
 // =========================================================
 
-/// Number the footnotes the document draws, by footnote name, and set that
-/// number on every reference that shows it.
+/// Number the footnote references the document draws as GitHub does, in
+/// the order of the source, and set the number on every reference. Returns
+/// the number of each footnote by the number the parser gave it.
 ///
-/// A footnote is drawn when a reference in the blocks of the document
-/// points to it, or a reference in a drawn footnote does. The parser
-/// counts every reference, also those in the alt text of an image, which
-/// draws no reference. Its numbers and its reference counts would give a
-/// footnote a number, or a note, that nothing drawn leads to. The numbers
-/// here count from 1 in the order of the first drawn reference in the
-/// source.
-fn number_footnotes(document: Node<'_>) -> HashMap<String, u32> {
-    // The parser appends the definitions it has a reference for to the
-    // document. Every other block is drawn where it stands.
-    let mut definitions = HashMap::new();
-    let mut references = Vec::new();
-    for block in document.children() {
-        match &block.data.borrow().value {
-            NodeValue::FootnoteDefinition(definition) if definition.total_references > 0 => {
-                definitions.insert(definition.name.clone(), block);
+/// The parser decides which footnotes are drawn: a footnote is drawn when a
+/// reference in the body, or in a drawn footnote, points to it. It leaves
+/// the definitions it draws at the end of the document and detaches every
+/// other one with the references in it, so each reference left in the tree
+/// is a drawn one, those in the alt text of images included. The parser
+/// numbers the references of the body first. Here the footnotes are
+/// numbered from 1 in the order of the first reference in the source, a
+/// reference in a note counting where the note is written, whichever
+/// number the parser gave.
+fn number_footnotes(document: Node<'_>) -> HashMap<u32, u32> {
+    // The position of a reference in the source orders them. A definition
+    // the parser moved to the end of the document keeps the positions of
+    // its references.
+    let mut references: Vec<(usize, usize, u32)> = document
+        .descendants()
+        .filter_map(|node| {
+            let data = node.data.borrow();
+            match &data.value {
+                NodeValue::FootnoteReference(reference) => {
+                    let start = data.sourcepos.start;
+                    Some((start.line, start.column, reference.ix))
+                }
+                _ => None,
             }
-            _ => references.extend(references_below(block)),
-        }
-    }
+        })
+        .collect();
+    references.sort_unstable();
 
-    // `references` grows as definitions are reached: the references of a
-    // drawn definition join the end, and each definition is reached once.
-    let mut reached = HashSet::new();
-    let mut next = 0;
-    while let Some((name, _)) = references.get(next) {
-        next += 1;
-        if let Some(&definition) = definitions.get(name)
-            && reached.insert(name.clone())
-        {
-            references.extend(references_below(definition));
-        }
-    }
-
-    references.sort_by_key(|(_, reference)| {
-        let start = reference.data.borrow().sourcepos.start;
-        (start.line, start.column)
-    });
     let mut numbers = HashMap::new();
-    let mut last = 0;
-    for (name, reference) in references {
-        let number = *numbers.entry(name).or_insert_with(|| {
-            last += 1;
-            last
-        });
-        if let NodeValue::FootnoteReference(reference) = &mut reference.data.borrow_mut().value {
-            reference.ix = number;
+    for (_, _, parser_number) in references {
+        let next =
+            u32::try_from(numbers.len() + 1).expect("a document has fewer footnotes than u32");
+        numbers.entry(parser_number).or_insert(next);
+    }
+
+    // Every reference in the tree is drawn, so each has a number. The caller
+    // holds a borrow of the document node itself, which no reference is.
+    for node in document.descendants().skip(1) {
+        if let NodeValue::FootnoteReference(reference) = &mut node.data.borrow_mut().value {
+            reference.ix = *numbers
+                .get(&reference.ix)
+                .expect("the walk above numbered every reference");
         }
     }
     numbers
-}
-
-/// The footnote references below `parent`, in document order, with the
-/// name of the footnote each points to. Those in the alt text of an image
-/// are left out.
-fn references_below<'a>(parent: Node<'a>) -> Vec<(String, Node<'a>)> {
-    let mut references = Vec::new();
-    let mut pending: Vec<Node<'a>> = parent.reverse_children().collect();
-    while let Some(node) = pending.pop() {
-        match &node.data.borrow().value {
-            NodeValue::FootnoteReference(reference) => {
-                references.push((reference.name.clone(), node));
-            }
-            NodeValue::Image(_) => {}
-            _ => pending.extend(node.reverse_children()),
-        }
-    }
-    references
 }
 
 // =========================================================
 // Image alt text
 // =========================================================
 
-/// Append the alt text of an image to `text`: the text of its children
-/// without their styling. A soft break is a space. A hard break, a nested
-/// image and a footnote reference add nothing, and every other node adds
-/// what its children add.
-fn push_alt_text(parent: Node<'_>, text: &mut String) {
-    let mut pending: Vec<Node<'_>> = parent.reverse_children().collect();
-    while let Some(node) = pending.pop() {
-        match &node.data.borrow().value {
-            NodeValue::Text(value) => text.push_str(value),
-            NodeValue::Code(code) => text.push_str(&code.literal),
-            NodeValue::HtmlInline(html) => text.push_str(html),
-            NodeValue::SoftBreak => text.push(' '),
-            NodeValue::LineBreak | NodeValue::Image(_) | NodeValue::FootnoteReference(_) => {}
-            _ => pending.extend(node.reverse_children()),
+/// A part of the alt text of an image.
+enum AltPiece {
+    /// Text, written like any text of the document.
+    Text(String),
+    /// The number of a footnote reference, written dimmed like the number
+    /// of a reference in running text.
+    Number(u32),
+}
+
+/// The alt text of an image as pieces: the text of its children without
+/// their styling, and the numbers of the footnote references in them. A
+/// soft break is a space and inline HTML is the text as written, whatever
+/// the options say. A hard break adds nothing. A nested image adds the
+/// numbers of the footnote references below it and nothing else, and every
+/// other node adds what its children add. The alt text is empty when it
+/// has neither text nor a number.
+fn alt_pieces(image: Node<'_>) -> Vec<AltPiece> {
+    fn push_text(pieces: &mut Vec<AltPiece>, text: &str) {
+        match pieces.last_mut() {
+            _ if text.is_empty() => {}
+            Some(AltPiece::Text(last)) => last.push_str(text),
+            _ => pieces.push(AltPiece::Text(text.to_string())),
         }
     }
+
+    let mut pieces = Vec::new();
+    // Each node comes with whether a nested image encloses it, in which
+    // case only footnote references count.
+    let mut pending: Vec<(Node<'_>, bool)> = image
+        .reverse_children()
+        .map(|child| (child, false))
+        .collect();
+    while let Some((node, nested)) = pending.pop() {
+        match &node.data.borrow().value {
+            NodeValue::FootnoteReference(reference) => pieces.push(AltPiece::Number(reference.ix)),
+            NodeValue::Text(value) if !nested => push_text(&mut pieces, value),
+            NodeValue::Code(code) if !nested => push_text(&mut pieces, &code.literal),
+            NodeValue::HtmlInline(html) if !nested => push_text(&mut pieces, html),
+            NodeValue::SoftBreak if !nested => push_text(&mut pieces, " "),
+            NodeValue::Image(_) => {
+                pending.extend(node.reverse_children().map(|child| (child, true)));
+            }
+            _ => pending.extend(node.reverse_children().map(|child| (child, nested))),
+        }
+    }
+    pieces
 }
 
 // =========================================================

@@ -112,6 +112,21 @@ fn a_list_marker_under_120_quotes_is_text() {
     assert!(text.ends_with("-item"), "{text}");
 }
 
+/// Each nested image adds the numbers of the footnote references below it
+/// to the alt text of the image around it, and nothing else. The outermost
+/// image shows the one number there is.
+#[test]
+fn images_nested_20000_deep_show_the_number_of_the_reference_in_the_innermost() {
+    let levels = 20_000;
+    let markdown = format!(
+        "{}a[^x]{}\n\n[^x]: X\n",
+        "![".repeat(levels),
+        "](u)".repeat(levels)
+    );
+    let lines = render_on_a_small_stack(markdown);
+    assert_eq!(lines, ["[image: [1]] (u)", "", "[1] X"]);
+}
+
 #[test]
 fn callouts_nested_2000_deep_render_with_their_titles() {
     let markdown: String = (1..=2000)

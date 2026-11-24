@@ -10,6 +10,8 @@ Amends [16. Use comrak for Markdown parsing](0016-use-comrak-for-markdown-parsin
 
 Amended by [24. Follow comrak 1.2 where it changes the rendering](0024-follow-comrak-1-2-where-it-changes-the-rendering.md)
 
+Superseded by [25. Number footnotes in source order and draw the ones comrak keeps](0025-number-footnotes-in-source-order-and-draw-the-ones-comrak-keeps.md)
+
 ## Context
 
 ADR 16 draws footnote definitions at the end of the document in the order

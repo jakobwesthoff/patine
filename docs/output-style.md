@@ -501,22 +501,30 @@ line either way.
 
 A footnote reference (`[^1]`) shows a dimmed number in square brackets
 right after the text it follows: `a guide[1]`. Footnotes are numbered from 1
-in the order of their first references, whatever their labels in the source,
-and a second reference to a footnote shows the same number. A definition
-written above its first reference numbers the references inside it first,
-as on GitHub: with `[^a]: see[^b]` above `body[^a]`, the reference in the
-body shows `[2]` and `[^b]` is `[1]`.
+in the order of their first references in the source, whatever their
+labels, and a second reference to a footnote shows the same number. A
+reference inside a definition counts where the definition is written: with
+`[^a]: see[^b]` and `[^b]: B` above `body[^a]`, `[^b]` is `[1]` and the
+reference in the body shows `[2]`. A reference in the alt text of an image
+counts at its place and shows its number there (see Images). A reference
+without a definition stays text.
 
 The definition (`[^1]: text`) renders as paragraphs at the end of the
-document, wherever it is written, in the order of the first references to
-the definitions. The first line starts with the same dimmed number, `[1] `,
-and the lines after it sit under the text. A definition is shown when a
-reference in the body points to it or a reference in a shown definition
-does, whether in its text, a heading, a table or a list. A definition that
-only definitions which are not shown refer to, such as definitions that
-refer only to each other, is not shown, and their references take no
-numbers. A reference in the alt text of an image is not
-shown, so it does not count. A reference without a definition stays text.
+document, wherever it is written, in the order of the numbers. The first
+line starts with the same dimmed number, `[1] `, and the lines after it sit
+under the text. A definition is shown when a reference in the body points to
+it or a reference in a shown definition does, whether in its text, a heading,
+a table or a list. When a label has more than one definition, the first one
+counts and the others are not shown. A definition that no shown reference
+reaches, such as definitions that refer only to each other, is not shown.
+
+A reference inside a definition that is not shown counts for nothing: a
+definition that no shown reference reaches, or one that repeats the label
+of an earlier definition. GitHub counts such a reference. With
+`[^z]: sees[^b]` above `[^b]: B` and `later[^c]`, GitHub shows `later` as
+`[2]` and draws the note `B` with no reference to it, and patine shows
+`later[1]` and draws only the note of `c`. The Markdown parser (comrak)
+decides which definitions are shown.
 
 ```
 See a guide[1] and more.
@@ -548,6 +556,13 @@ If no alt text is provided:
 ```
 [image] (./docs/screenshot.png)
 ```
+
+A footnote reference in the alt text shows its number inside the alt text,
+dimmed like a reference in running text: `![bild[^d]](u.png)` is
+`[image: bild[4]] (u.png)` when `[^d]` is the fourth footnote. Alt text that
+holds only references is `[image: [1]]`, and `[image]` means the alt text has
+neither text nor a reference. A nested image adds only the numbers of the
+references in it to the alt text around it.
 
 A reference image (`![alt][ref]`) renders as the inline image it stands
 for, with the URL of its definition.
