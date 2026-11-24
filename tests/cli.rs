@@ -10,11 +10,19 @@
 use std::io::Write as _;
 use std::process::{Command, Stdio};
 
+/// A `patine` command without `PATINE_DEFAULT_WIDTH`, so a variable in the
+/// environment of whoever runs the tests cannot change a width.
+fn patine() -> Command {
+    let mut command = Command::new(env!("CARGO_BIN_EXE_patine"));
+    command.env_remove("PATINE_DEFAULT_WIDTH");
+    command
+}
+
 /// The bytes `patine --width <width>` writes to stdout for `input` on
 /// its stdin. A pipe, not a terminal, so the binary renders instead of
 /// printing its help.
 fn patine_bytes(input: &str, width: usize) -> Vec<u8> {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_patine"))
+    let mut child = patine()
         .args(["--width", &width.to_string()])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -61,6 +69,34 @@ fn without_sgr(text: &str) -> String {
     }
     out.push_str(rest);
     out
+}
+
+// =========================================================
+// The width of redirected output
+// =========================================================
+
+/// `--width` is a maximum on a terminal and exact for output that goes
+/// elsewhere. The tests run with stdout piped, so a width wider than any
+/// terminal must come out as given.
+#[test]
+fn a_width_wider_than_any_terminal_is_exact_for_piped_output() {
+    let text = format!(
+        "{} {} {}\n",
+        "x".repeat(150),
+        "y".repeat(149),
+        "z".repeat(99)
+    );
+
+    let shown = without_sgr(&String::from_utf8(patine_bytes(&text, 300)).expect("UTF-8"));
+
+    let lines: Vec<&str> = shown.lines().collect();
+    assert_eq!(
+        lines,
+        [
+            format!("{} {}", "x".repeat(150), "y".repeat(149)).as_str(),
+            "z".repeat(99).as_str()
+        ]
+    );
 }
 
 // =========================================================
@@ -314,7 +350,7 @@ fn a_file_argument_is_filtered_like_stdin() {
     let file = dir.join("hostile.md");
     std::fs::write(&file, "a\u{1b}b\n").expect("the temp dir is writable");
 
-    let output = Command::new(env!("CARGO_BIN_EXE_patine"))
+    let output = patine()
         .arg(&file)
         .output()
         .expect("the patine binary starts");
@@ -334,7 +370,7 @@ fn a_file_argument_is_filtered_like_stdin() {
 /// `CLICOLOR_FORCE` set, so clap's own colors are on whether or not stderr
 /// is a terminal. The text is without the SGR sequences.
 fn failure(args: &[&str]) -> (Option<i32>, String) {
-    let output = Command::new(env!("CARGO_BIN_EXE_patine"))
+    let output = patine()
         .args(args)
         .env("CLICOLOR_FORCE", "1")
         .stdin(Stdio::null())

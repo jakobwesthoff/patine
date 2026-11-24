@@ -524,7 +524,7 @@ See a guide[1] and more.
 
 ## Horizontal Rules
 
-Rendered as a line of `─` characters spanning the full terminal width.
+Rendered as a line of `─` characters spanning the full output width.
 
 ```
 ────────────────────────────────────────────────────────────────────────────────

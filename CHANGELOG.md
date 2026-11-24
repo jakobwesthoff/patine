@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `--width` is a maximum when the output goes to a terminal: the `patine`
+  command wraps at the terminal width, or at `--width` when that is
+  narrower, so the output is never wider than the terminal. Output that
+  goes to a file or a pipe still takes exactly the width given. A
+  terminal that reports a size of 0 columns counts as having no size, so
+  `--width` is used as given and without it the width is 80.
+
 ## [2.2.3] - 2026-11-01
 
 ### Changed

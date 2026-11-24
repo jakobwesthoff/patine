@@ -26,7 +26,7 @@ patine README.md
 # Pipe from stdin
 cat doc.md | patine
 
-# Override output width
+# Wrap at 100 columns, or at the terminal width if that is narrower
 patine --width 100 README.md
 ```
 
@@ -49,8 +49,8 @@ patine --width 100 README.md
 - **Tables**: Unicode box-drawing borders, bold headers, inline formatting in cells as in running text, column alignment from the delimiter row, row separators; a table whose columns would have to break a word is laid out as records, one line per column with its header name in bold and dim and the cell's text
 - **Blockquotes**: `│` bar prefix in cyan, text in its normal style, nested support
 - **Callouts**: GitHub alerts (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) and other `[!type]` markers, with a heavy `┃` bar and a bold title after a symbol in the kind's color
-- **Horizontal rules**: `─` spanning the terminal width
-- **Word wrapping**: at terminal width (overridable with `--width`)
+- **Horizontal rules**: `─` spanning the output width
+- **Word wrapping**: at the terminal width; `--width` sets a maximum on a terminal, and the exact width for output that is not a terminal
 
 ## Usage
 
@@ -61,12 +61,14 @@ Arguments:
   [FILE]  Markdown file to render. Reads from stdin if omitted.
 
 Options:
-  -w, --width <WIDTH>  Override the output width in columns
+  -w, --width <WIDTH>  Output width in columns. On a terminal the output is at most as wide as the terminal; redirected output is exactly this wide. Defaults to the terminal width
   -h, --help           Print help
   -V, --version        Print version
 ```
 
 When no file is given and stdin is a terminal, patine prints its help message.
+
+On a terminal, `--width` is a maximum: the output is as wide as the terminal or as `--width`, whichever is smaller. When stdout is a file or a pipe, the output is exactly `--width` wide. Without `--width` the output is as wide as the terminal.
 
 The command shows the control characters of a document, other than tab, as pictures from Unicode's Control Pictures block (`␛` for ESC), and the C1 controls as U+FFFD, so a file cannot run escape sequences in your terminal. Error messages show them the same way. The library leaves control characters in span text as they are, see below.
 

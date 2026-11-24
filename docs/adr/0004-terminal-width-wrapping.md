@@ -6,6 +6,8 @@ Date: 2026-04-09
 
 Accepted
 
+Amended by [23. Make the CLI output width a maximum](0023-make-the-cli-output-width-a-maximum.md)
+
 ## Context
 
 The initial design specified a hardcoded maximum content width of 79
