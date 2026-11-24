@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   invalid value is an error and an empty value counts as unset. `--help`
   lists the variable.
 
+### Changed
+
+- The dependencies are updated to their newest compatible versions,
+  among them anyhow 1.0.105 and clap 4.6.9. The requirements in
+  `Cargo.toml` now name the version in `Cargo.lock` for each dependency,
+  except unicode-width, which keeps its 0.2.2 minimum.
+
 ### Fixed
 
 - `--width` is a maximum when the output goes to a terminal: the `patine`
