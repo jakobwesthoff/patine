@@ -1,0 +1,9 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"[^&#97;]: entity definition\\n\\n[^a] and [^&#97;]\",\n\"[^`b`]: code definition\\n\\nsee [^`b`] and [^*c*]\",], WIDTH, &default())"
+---
+"[^&#97;]: entity definition\n\n[^a] and [^&#97;]"
+[^a] and [^a]
+---
+"[^`b`]: code definition\n\nsee [^`b`] and [^*c*]"
+see [^[yellow]b[]] and [^*c*]

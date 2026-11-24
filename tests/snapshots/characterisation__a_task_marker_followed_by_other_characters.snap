@@ -1,0 +1,15 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"- [x]*a*\", \"- [x]\\u{b}b\", \"- [ ]\\u{c}b\", \"- [x] c\"], WIDTH,\n&default())"
+---
+"- [x]*a*"
+[dim]☑ [][dim,italic]a[]
+---
+"- [x]\u{b}b"
+[dim]☑ b[]
+---
+"- [ ]\u{c}b"
+☐ b
+---
+"- [x] c"
+[dim]☑ c[]

@@ -1,0 +1,16 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"q[^n]\\n\\n[^n]: first\\n    > quoted\\n\\n    > more\\n   \\n    tail\\n\\nafter\",\nWIDTH, &default())"
+---
+"q[^n]\n\n[^n]: first\n    > quoted\n\n    > more\n   \n    tail\n\nafter"
+q[dim][1][]
+
+  [yellow]tail[]
+
+after
+
+[dim][1][] first
+
+  [cyan]│ []quoted
+
+  [cyan]│ []more

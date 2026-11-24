@@ -73,6 +73,22 @@ fn a_list_nested_deep_in_a_footnote_flattens_after_the_footnote_and_63_bullets()
     assert_eq!(text.matches('•').count(), 63);
 }
 
+/// A list item below 120 block quotes is a list item, which the renderer
+/// draws without a bullet of its own at that depth, and not the literal
+/// text `- item`.
+#[test]
+fn a_list_item_under_120_quotes_is_a_list_item() {
+    let quotes = "> ".repeat(120);
+    let lines = render_on_a_small_stack(format!("{quotes}para\n{quotes}\n{quotes}- item\n"));
+    let text: String = lines
+        .concat()
+        .chars()
+        .filter(|c| c.is_alphabetic() || *c == '-')
+        .collect();
+    assert!(text.ends_with("item"), "{text}");
+    assert!(!text.contains("-item"), "{text}");
+}
+
 #[test]
 fn callouts_nested_2000_deep_render_with_their_titles() {
     let markdown: String = (1..=2000)

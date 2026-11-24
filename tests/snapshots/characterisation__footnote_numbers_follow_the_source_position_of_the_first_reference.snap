@@ -1,0 +1,14 @@
+---
+source: tests/characterisation.rs
+expression: "pinned(\"x[^a]\\n\\n[^a]: A[^c]\\n\\n[^c]: C\\n\\ny[^b]\\n\\n[^b]: B\", WIDTH,\n&default())"
+---
+"x[^a]\n\n[^a]: A[^c]\n\n[^c]: C\n\ny[^b]\n\n[^b]: B"
+x[dim][1][]
+
+y[dim][3][]
+
+[dim][1][] A[dim][2][]
+
+[dim][2][] C
+
+[dim][3][] B

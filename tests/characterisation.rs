@@ -672,3 +672,87 @@ fn a_row_without_a_leading_pipe_that_starts_with_inline_markup() {
         );
     }
 }
+
+// =========================================================
+// Parser rules at the edges of other constructs
+// =========================================================
+
+/// A strikethrough delimiter that finds no partner, followed by emphasis
+/// in the same paragraph.
+#[test]
+fn a_strikethrough_delimiter_without_a_partner_before_emphasis() {
+    assert_snapshot!(pinned_all(
+        &["~~a~ *b*", "~~a~~ *b* ~c~"],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// An address whose `@` is written as a character reference.
+#[test]
+fn an_email_address_with_a_character_reference_for_the_at_sign() {
+    assert_snapshot!(pinned_all(
+        &["foo&#x40;bar.com", "<foo@bar.com>", "foo@bar.com"],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// Characters other than space and tab around the cells of a table.
+#[test]
+fn a_form_feed_around_the_cells_of_a_table() {
+    assert_snapshot!(pinned_all(
+        &[
+            "|\u{c}a\u{c}| b |\n|---|---|\n| c | d |",
+            "| a | b |\n|\u{c}---\u{c}|---|\n| c | d |",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// Footnote labels written with a character reference or with inline
+/// syntax.
+#[test]
+fn footnote_labels_with_character_references_and_inline_syntax() {
+    assert_snapshot!(pinned_all(
+        &[
+            "[^&#97;]: entity definition\n\n[^a] and [^&#97;]",
+            "[^`b`]: code definition\n\nsee [^`b`] and [^*c*]",
+        ],
+        WIDTH,
+        &default()
+    ));
+}
+
+/// What belongs to a footnote definition after a line of only spaces.
+#[test]
+fn a_footnote_definition_continued_after_a_line_of_spaces() {
+    assert_snapshot!(pinned(
+        "q[^n]\n\n[^n]: first\n    > quoted\n\n    > more\n   \n    tail\n\nafter",
+        WIDTH,
+        &default()
+    ));
+}
+
+/// The numbers of the notes follow the source position of the first
+/// reference drawn, also for a reference inside a note.
+#[test]
+fn footnote_numbers_follow_the_source_position_of_the_first_reference() {
+    assert_snapshot!(pinned(
+        "x[^a]\n\n[^a]: A[^c]\n\n[^c]: C\n\ny[^b]\n\n[^b]: B",
+        WIDTH,
+        &default()
+    ));
+}
+
+/// A task marker followed by something other than a space, a tab or the
+/// end of the line: emphasis, a vertical tab, a form feed.
+#[test]
+fn a_task_marker_followed_by_other_characters() {
+    assert_snapshot!(pinned_all(
+        &["- [x]*a*", "- [x]\u{b}b", "- [ ]\u{c}b", "- [x] c"],
+        WIDTH,
+        &default()
+    ));
+}

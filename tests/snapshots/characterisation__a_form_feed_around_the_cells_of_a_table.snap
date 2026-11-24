@@ -1,0 +1,17 @@
+---
+source: tests/characterisation.rs
+expression: "pinned_all(&[\"|\\u{c}a\\u{c}| b |\\n|---|---|\\n| c | d |\",\n\"| a | b |\\n|\\u{c}---\\u{c}|---|\\n| c | d |\",], WIDTH, &default())"
+---
+"|\u{c}a\u{c}| b |\n|---|---|\n| c | d |"
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ c │ d │
+└───┴───┘
+---
+"| a | b |\n|\u{c}---\u{c}|---|\n| c | d |"
+┌───┬───┐
+│ [bold]a[] │ [bold]b[] │
+├───┼───┤
+│ c │ d │
+└───┴───┘
