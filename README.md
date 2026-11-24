@@ -28,6 +28,9 @@ cat doc.md | patine
 
 # Wrap at 100 columns, or at the terminal width if that is narrower
 patine --width 100 README.md
+
+# The same maximum for every call
+export PATINE_DEFAULT_WIDTH=100
 ```
 
 ## Why not glow?
@@ -61,7 +64,7 @@ Arguments:
   [FILE]  Markdown file to render. Reads from stdin if omitted.
 
 Options:
-  -w, --width <WIDTH>  Output width in columns. On a terminal the output is at most as wide as the terminal; redirected output is exactly this wide. Defaults to the terminal width
+  -w, --width <WIDTH>  Output width in columns. On a terminal the output is at most as wide as the terminal; redirected output is exactly this wide. Defaults to the terminal width [env: PATINE_DEFAULT_WIDTH]
   -h, --help           Print help
   -V, --version        Print version
 ```
@@ -69,6 +72,8 @@ Options:
 When no file is given and stdin is a terminal, patine prints its help message.
 
 On a terminal, `--width` is a maximum: the output is as wide as the terminal or as `--width`, whichever is smaller. When stdout is a file or a pipe, the output is exactly `--width` wide. Without `--width` the output is as wide as the terminal.
+
+The environment variable `PATINE_DEFAULT_WIDTH` is the default of `--width` and means the same. An explicit `--width` overrides it. An invalid value is an error, reported as an invalid value for `--width`. An empty value counts as unset, so `PATINE_DEFAULT_WIDTH= patine README.md` renders at the terminal width for one call.
 
 The command shows the control characters of a document, other than tab, as pictures from Unicode's Control Pictures block (`␛` for ESC), and the C1 controls as U+FFFD, so a file cannot run escape sequences in your terminal. Error messages show them the same way. The library leaves control characters in span text as they are, see below.
 

@@ -8,6 +8,8 @@ Accepted
 
 Amends [4. Wrap text at terminal width, never wrap code blocks](0004-terminal-width-wrapping.md)
 
+Builds on [21. Show control characters as pictures in the CLI](0021-show-control-characters-as-pictures-in-the-cli.md)
+
 ## Context
 
 `patine --width <n>` laid the output out for exactly `n` columns. On a
@@ -40,6 +42,14 @@ The decision looks at whether stdout is a terminal and not at whether a
 size can be read, because a size can be read in a run whose output goes
 to a file.
 
+The environment variable `PATINE_DEFAULT_WIDTH` is the default of
+`--width` and means the same: a maximum on a terminal, the width as
+given otherwise. An explicit `--width` overrides it. An invalid value
+fails like an invalid `--width`, and the message names `--width`, not the
+variable. An empty value counts as unset. clap reads the variable, so
+`--help` lists it, without its value, since the value is text from the
+environment and the help goes to the terminal.
+
 The command computes the width in a function of the requested width,
 whether stdout is a terminal and the terminal width. The function reads
 the terminal width only when its result depends on it.
@@ -48,6 +58,10 @@ the terminal width only when its result depends on it.
 
 - With stdout a terminal, `--width` no longer makes the output wider
   than the terminal.
+- An error message that quotes a value from the variable shows its
+  control characters as pictures, as ADR 21 does for the arguments.
+- `--width ''` counts as unset as well, as the same parser reads the
+  flag and the variable.
 - `tests/cli.rs` runs the binary with stdout piped. The tests whose
   result depends on a width pass `--width`, so the terminal `cargo test`
   runs in does not change them.

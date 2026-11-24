@@ -100,6 +100,139 @@ fn a_width_wider_than_any_terminal_is_exact_for_piped_output() {
 }
 
 // =========================================================
+// The default width from the environment
+// =========================================================
+
+/// A paragraph of sixty nine-letter words, long enough to wrap at any
+/// width the tests ask for.
+fn running_text() -> String {
+    "abcdefghi ".repeat(60)
+}
+
+/// The output of `patine` run with `args` and `PATINE_DEFAULT_WIDTH` set
+/// to `default_width`, for `input` on its stdin, whatever its exit code.
+fn patine_with_default_width(
+    args: &[&str],
+    default_width: &str,
+    input: &str,
+) -> std::process::Output {
+    let mut child = patine()
+        .args(args)
+        .env("PATINE_DEFAULT_WIDTH", default_width)
+        .env("CLICOLOR_FORCE", "1")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("the patine binary starts");
+    child
+        .stdin
+        .take()
+        .expect("stdin is piped")
+        .write_all(input.as_bytes())
+        .expect("patine reads its stdin");
+    child.wait_with_output().expect("patine finishes")
+}
+
+/// What the library writes for `input` at `width`, as text.
+fn library_text(input: &str, width: usize) -> String {
+    let mut bytes = Vec::new();
+    patine::render(input, &mut bytes, width).expect("rendering to a vector succeeds");
+    String::from_utf8(bytes).expect("patine writes UTF-8")
+}
+
+#[test]
+fn the_default_width_variable_sets_the_width() {
+    let text = running_text();
+
+    let output = patine_with_default_width(&[], "40", &text);
+
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(
+        String::from_utf8_lossy(&output.stdout),
+        library_text(&text, 40)
+    );
+}
+
+#[test]
+fn an_explicit_width_overrides_the_default_width_variable() {
+    let text = running_text();
+
+    let output = patine_with_default_width(&["--width", "60"], "40", &text);
+
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(
+        String::from_utf8_lossy(&output.stdout),
+        library_text(&text, 60)
+    );
+}
+
+#[test]
+fn an_invalid_default_width_fails_like_an_invalid_flag() {
+    let output = patine_with_default_width(&[], "abc", "text\n");
+
+    assert_eq!(output.status.code(), Some(2));
+    let stderr = without_sgr(&String::from_utf8_lossy(&output.stderr));
+    assert!(
+        stderr.contains("invalid value 'abc' for '--width <WIDTH>'"),
+        "{stderr:?}"
+    );
+}
+
+#[test]
+fn an_empty_default_width_counts_as_unset() {
+    let output = patine_with_default_width(&[], "", "text\n");
+
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(
+        without_sgr(&String::from_utf8_lossy(&output.stdout)),
+        "text\n"
+    );
+}
+
+#[test]
+fn an_empty_width_flag_counts_as_unset() {
+    let output = patine_with_default_width(&["--width", ""], "40", "text\n");
+
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(
+        without_sgr(&String::from_utf8_lossy(&output.stdout)),
+        "text\n"
+    );
+}
+
+#[test]
+fn a_control_in_an_invalid_default_width_is_pictured() {
+    let output = patine_with_default_width(&[], "\u{1b}]0;x\u{7}", "text\n");
+
+    let stderr = without_sgr(&String::from_utf8_lossy(&output.stderr));
+    assert_eq!(output.status.code(), Some(2));
+    assert_eq!(controls_in(&stderr), Vec::<char>::new(), "{stderr:?}");
+    assert!(stderr.contains("\u{241b}]0;x\u{2407}"), "{stderr:?}");
+}
+
+#[test]
+fn a_control_in_a_default_width_that_a_flag_overrides_is_harmless() {
+    let output = patine_with_default_width(&["--width", "60"], "\u{1b}]0;x\u{7}", "text\n");
+
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(
+        without_sgr(&String::from_utf8_lossy(&output.stdout)),
+        "text\n"
+    );
+}
+
+#[test]
+fn help_names_the_default_width_variable_without_its_value() {
+    let output = patine_with_default_width(&["--help"], "\u{1b}]0;x\u{7}", "");
+
+    let stdout = without_sgr(&String::from_utf8_lossy(&output.stdout));
+    assert!(output.status.success(), "{:?}", output.status);
+    assert_eq!(controls_in(&stdout), Vec::<char>::new(), "{stdout:?}");
+    assert!(stdout.contains("[env: PATINE_DEFAULT_WIDTH]"), "{stdout:?}");
+}
+
+// =========================================================
 // Which controls, and what they become
 // =========================================================
 

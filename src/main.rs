@@ -7,6 +7,7 @@ use std::io::{self, IsTerminal, Read, Write};
 use std::path::PathBuf;
 
 use anyhow::Context;
+use clap::error::{ContextKind, ContextValue};
 use clap::{CommandFactory, Parser};
 use patine::{StyledLine, StyledSpan};
 
@@ -20,8 +21,26 @@ struct Cli {
     /// Output width in columns. On a terminal the output is at most as wide
     /// as the terminal; redirected output is exactly this wide. Defaults to
     /// the terminal width.
-    #[arg(short, long)]
-    width: Option<usize>,
+    // The variable's value stays out of the help: it is text from the
+    // environment, and the help is written to the terminal.
+    #[arg(short, long, env = "PATINE_DEFAULT_WIDTH", hide_env_values = true,
+        value_parser = parse_width)]
+    width: Option<Width>,
+}
+
+/// A width in columns, or nothing when the text is empty.
+///
+/// clap reads a variable that is set but empty as a value of its own,
+/// which is no number. An empty `PATINE_DEFAULT_WIDTH` is how a call
+/// switches the default off, so empty text parses to no width.
+#[derive(Clone, Copy)]
+struct Width(Option<usize>);
+
+fn parse_width(text: &str) -> Result<Width, std::num::ParseIntError> {
+    if text.is_empty() {
+        return Ok(Width(None));
+    }
+    text.parse().map(|columns| Width(Some(columns)))
 }
 
 fn main() -> anyhow::Result<()> {
@@ -41,11 +60,15 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
-    let output_width = output_width(cli.width, io::stdout().is_terminal(), || {
-        crossterm::terminal::size()
-            .ok()
-            .map(|(columns, _)| usize::from(columns))
-    });
+    let output_width = output_width(
+        cli.width.and_then(|width| width.0),
+        io::stdout().is_terminal(),
+        || {
+            crossterm::terminal::size()
+                .ok()
+                .map(|(columns, _)| usize::from(columns))
+        },
+    );
 
     let mut stdout = io::stdout().lock();
     let lines = harmless(patine::render_lines(&markdown, output_width));
@@ -100,16 +123,29 @@ fn output_width(
 /// and names, which the replacement leaves alone, so the second parse
 /// fails the way the first did, with the same kind of message in clap's
 /// colors.
+///
+/// A value from `PATINE_DEFAULT_WIDTH` can hold controls too. The second
+/// parse reads the same variable, so its message quotes the value, and the
+/// quoted value is replaced before the message is printed. The command
+/// is the same for both parses, so `--help` and `--version`, which clap
+/// reports through the same error, show the same text.
 fn parse_cli() -> Cli {
     if let Ok(cli) = Cli::try_parse() {
         return cli;
     }
     let harmless_arguments = std::env::args_os()
         .map(|argument| OsString::from(harmless_text(&argument.to_string_lossy())));
-    Cli::try_parse_from(harmless_arguments)
+    let mut error = Cli::try_parse_from(harmless_arguments)
         .err()
-        .expect("replacing controls in arguments does not make a rejected command line valid")
-        .exit()
+        .expect("replacing controls in arguments does not make a rejected command line valid");
+    if let Some(ContextValue::String(value)) = error.get(ContextKind::InvalidValue) {
+        let harmless_value = harmless_text(value);
+        error.insert(
+            ContextKind::InvalidValue,
+            ContextValue::String(harmless_value),
+        );
+    }
+    error.exit()
 }
 
 // =========================================================

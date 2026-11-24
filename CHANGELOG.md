@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The environment variable `PATINE_DEFAULT_WIDTH` is the default of
+  `--width` and means the same. An explicit `--width` overrides it, an
+  invalid value is an error and an empty value counts as unset. `--help`
+  lists the variable.
+
 ### Fixed
 
 - `--width` is a maximum when the output goes to a terminal: the `patine`
