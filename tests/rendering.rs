@@ -3584,8 +3584,16 @@ fn a_reference_inside_link_text_keeps_the_url_suffix() {
 }
 
 #[test]
-fn a_duplicate_unreferenced_definition_renders_in_place_without_a_number() {
-    assert_eq!(plain_lines("[^a]: one\n\n[^a]: two", 80), ["one"]);
+fn a_duplicate_unreferenced_definition_is_dropped() {
+    assert_eq!(plain_lines("[^a]: one\n\n[^a]: two", 80), [] as [&str; 0]);
+}
+
+#[test]
+fn the_first_of_two_definitions_of_a_label_is_the_note() {
+    assert_eq!(
+        plain_lines("x[^a]\n\n[^a]: one\n\n[^a]: two", 80),
+        ["x[1]", "", "[1] one"]
+    );
 }
 
 #[test]
@@ -3738,14 +3746,28 @@ fn a_note_nested_in_a_dropped_note_does_not_reach_its_note() {
     );
 }
 
+/// The parser takes a definition indented under a note for a definition of
+/// its own. With no reference to it, it is dropped with its text, and the
+/// note only it refers to goes too.
 #[test]
-fn a_note_nested_in_a_drawn_note_reaches_its_note() {
+fn a_note_nested_in_a_drawn_note_that_nothing_refers_to_is_dropped_with_its_text() {
     assert_eq!(
         plain_lines(
             "x[^a]\n\n[^a]: outer\n\n    [^b]: nested[^c]\n\n[^c]: C",
             60
         ),
-        ["x[1]", "", "[1] outer", "", "  nested[2]", "", "[2] C"]
+        ["x[1]", "", "[1] outer"]
+    );
+}
+
+#[test]
+fn a_note_nested_in_a_drawn_note_is_drawn_when_the_note_refers_to_it() {
+    assert_eq!(
+        plain_lines(
+            "x[^a]\n\n[^a]: outer[^b]\n\n    [^b]: nested[^c]\n\n[^c]: C",
+            60
+        ),
+        ["x[1]", "", "[1] outer[2]", "", "[2] nested[3]", "", "[3] C"]
     );
 }
 
@@ -3767,9 +3789,11 @@ fn labels_match_whatever_their_case() {
         plain_lines("x[^a] y[^A]\n\n[^A]: upper", 60),
         ["x[1] y[1]", "", "[1] upper"]
     );
+    // Labels that differ in case are one label: the first definition is
+    // the note and the second is dropped.
     assert_eq!(
         plain_lines("x[^a]\n\n[^A]: upper\n\n[^a]: lower", 60),
-        ["x[1]", "", "upper", "", "[1] lower"]
+        ["x[1]", "", "[1] upper"]
     );
 }
 

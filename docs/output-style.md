@@ -17,10 +17,12 @@ All examples show the visual output, not the Markdown source.
   halfwidth sound mark, `ﾞ` or `ﾟ`, takes one column. Control
   characters keep their Unicode width.
 - Nested structures (lists, code blocks) are indented 2 spaces per level.
-- Block quotes, callouts, list items and footnote definitions nest 64
-  levels deep. Blocks below that depth render in document order at the
-  indent they have reached, without a bar or bullet of their own; a
-  callout there keeps its title line.
+- Block quotes and callouts nest 64 levels deep in the renderer. A list,
+  a list item or a footnote definition opens only below fewer than 100
+  containers of any kind, so lists inside lists reach about 50 levels;
+  deeper markers show as text. Blocks below the depth of 64 render in
+  document order at the indent they have reached, without a bar or
+  bullet of their own; a callout there keeps its title line.
 - The indent and the bars of nested blocks stop growing before a line is
   left with less than 20 columns of text; a prefix of 6 columns is always
   kept. Deeper levels keep the indent they reached.

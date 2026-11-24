@@ -37,7 +37,7 @@ fn quotes_nested_100000_deep_render_with_the_bars_that_fit() {
 }
 
 #[test]
-fn lists_nested_2000_deep_render_with_64_bullets_and_all_their_text() {
+fn lists_nested_2000_deep_render_the_50_levels_the_parser_reads_and_all_their_text() {
     let markdown: String = (0..2000)
         .map(|level| format!("{}- item {level}\n", "  ".repeat(level)))
         .collect();
@@ -51,13 +51,16 @@ fn lists_nested_2000_deep_render_with_64_bullets_and_all_their_text() {
     for level in 0..2000 {
         assert!(text.contains(&format!("item {level}")), "item {level}");
     }
-    assert_eq!(text.matches('•').count(), 64);
+    // The parser opens a list only below fewer than 100 ancestors, a list
+    // and its item being two. A deeper marker is text of the item above,
+    // which the renderer keeps, so every item shows but 50 bullets.
+    assert_eq!(text.matches('•').count(), 50);
 }
 
 #[test]
-fn a_list_nested_deep_in_a_footnote_flattens_after_the_footnote_and_63_bullets() {
-    // The footnote itself is one of the 64 block containers a document
-    // nests, so 63 bullets fit below it.
+fn a_list_nested_deep_in_a_footnote_renders_the_49_levels_the_parser_reads_and_all_their_text() {
+    // The footnote is one of the 100 ancestors the parser allows, so 49
+    // lists fit below it.
     let list: String = (0..100)
         .map(|level| format!("    {}- item {level}\n", "  ".repeat(level)))
         .collect();
@@ -70,14 +73,35 @@ fn a_list_nested_deep_in_a_footnote_flattens_after_the_footnote_and_63_bullets()
     for level in 0..100 {
         assert!(text.contains(&format!("item {level}")), "item {level}");
     }
-    assert_eq!(text.matches('•').count(), 63);
+    assert_eq!(text.matches('•').count(), 49);
 }
 
-/// A list item below 120 block quotes is a list item, which the renderer
-/// draws without a bullet of its own at that depth, and not the literal
-/// text `- item`.
+/// Block quotes and list items that nest past the renderer's 64 block
+/// containers render in document order without a bullet of their own. The
+/// parser still reads the list here: 60 quotes and 10 lists are 80
+/// ancestors.
 #[test]
-fn a_list_item_under_120_quotes_is_a_list_item() {
+fn a_list_nested_in_60_quotes_flattens_after_four_bullets() {
+    let quotes = "> ".repeat(60);
+    let list: String = (0..10)
+        .map(|level| format!("{quotes}{}- item {level}\n", "  ".repeat(level)))
+        .collect();
+    let lines = render_on_a_small_stack(list);
+    let text = lines
+        .join(" ")
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    for level in 0..10 {
+        assert!(text.contains(&format!("item {level}")), "item {level}");
+    }
+    assert_eq!(text.matches('•').count(), 4);
+}
+
+/// The parser opens a list only below fewer than 100 ancestors of any
+/// kind, block quotes included. Below 120 quotes the marker is text.
+#[test]
+fn a_list_marker_under_120_quotes_is_text() {
     let quotes = "> ".repeat(120);
     let lines = render_on_a_small_stack(format!("{quotes}para\n{quotes}\n{quotes}- item\n"));
     let text: String = lines
@@ -85,8 +109,7 @@ fn a_list_item_under_120_quotes_is_a_list_item() {
         .chars()
         .filter(|c| c.is_alphabetic() || *c == '-')
         .collect();
-    assert!(text.ends_with("item"), "{text}");
-    assert!(!text.contains("-item"), "{text}");
+    assert!(text.ends_with("-item"), "{text}");
 }
 
 #[test]

@@ -42,23 +42,30 @@ fn line_count(markdown: &str, width: usize) -> (usize, usize) {
     (lines.len(), bytes)
 }
 
-/// 70 lists inside each other and a paragraph under them. However deep the
+/// 45 lists inside each other and a paragraph under them, which the parser
+/// reads as the paragraph of the deepest item. However deep the
 /// lists, a line keeps at least 20 columns of text where the width has them,
 /// so a paragraph of short words takes about as many lines as it does
 /// without the lists, and not one line per word.
 #[test]
 fn a_paragraph_under_nested_lists_keeps_room_for_its_text() {
     let words = 20_000;
-    let mut markdown: String = (0..70)
+    let mut markdown: String = (0..45)
         .map(|level| format!("{}- item\n", "  ".repeat(level)))
         .collect();
-    markdown.push_str(&format!("\n{}", "  ".repeat(70)));
+    markdown.push_str(&format!("\n{}", "  ".repeat(45)));
     markdown.push_str(&"ab ".repeat(words));
 
     for width in [80, 40] {
         let (lines, _) = line_count(&markdown, width);
         assert!(
             lines < words / 3,
+            "{lines} lines for {words} words at width {width}"
+        );
+        // The paragraph wraps. Indented four columns past its item's text
+        // it would be a code block, one line however many words it has.
+        assert!(
+            lines > words / 20,
             "{lines} lines for {words} words at width {width}"
         );
     }

@@ -3,7 +3,7 @@ source: tests/characterisation.rs
 expression: "pinned_all(&[\"foo&#x40;bar.com\", \"<foo@bar.com>\", \"foo@bar.com\"], WIDTH,\n&default())"
 ---
 "foo&#x40;bar.com"
-[underline]foo@bar.com[]
+foo@bar.com
 ---
 "<foo@bar.com>"
 [underline]foo@bar.com[]

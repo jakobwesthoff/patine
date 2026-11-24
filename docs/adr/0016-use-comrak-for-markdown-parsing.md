@@ -12,6 +12,8 @@ Amended by [18. Render GitHub alerts as callouts](0018-render-github-alerts-as-c
 
 Amended by [20. Draw the footnotes the body reaches](0020-draw-the-footnotes-the-body-reaches.md)
 
+Amended by [24. Follow comrak 1.2 where it changes the rendering](0024-follow-comrak-1-2-where-it-changes-the-rendering.md)
+
 ## Context
 
 markdown-rs 1.0.0 (the `markdown` crate) panics on small inputs instead

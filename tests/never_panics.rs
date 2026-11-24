@@ -364,21 +364,20 @@ struct Expected {
 }
 
 fn expected(pieces: &[Piece]) -> Expected {
-    // The last definition of a label is the one the parser keeps. An
-    // earlier one stays where it was written and draws as plain text, so
-    // the references in it belong to the body.
+    // The first definition of a label is the one the parser keeps. A later
+    // one is detached from the document with everything in it, so the
+    // references in it do not exist.
     let mut winner: Vec<Option<usize>> = vec![None; LABELS.len()];
     for piece in pieces {
         if let Piece::Definition { id, label, .. } = piece {
-            winner[*label] = Some(*id);
+            winner[*label].get_or_insert(*id);
         }
     }
 
-    // Each reference with the definition it sits in, when that one is a
-    // winner. A reference to a label without a definition is text.
+    // Each reference with the definition it sits in. A reference to a label
+    // without a definition is text.
     let mut references: Vec<(&Reference, Option<usize>)> = Vec::new();
     let mut references_of: Vec<(usize, Vec<&Reference>)> = Vec::new();
-    let mut losers = 0;
     for piece in pieces {
         match piece {
             Piece::Block {
@@ -390,12 +389,10 @@ fn expected(pieces: &[Piece]) -> Expected {
                 references: found,
                 ..
             } => {
-                let owner = (winner[*label] == Some(*id)).then_some(*id);
-                if owner.is_none() {
-                    losers += 1;
+                if winner[*label] == Some(*id) {
+                    references.extend(found.iter().map(|reference| (reference, Some(*id))));
+                    references_of.push((*id, found.iter().collect()));
                 }
-                references.extend(found.iter().map(|reference| (reference, owner)));
-                references_of.push((*id, found.iter().collect()));
             }
         }
     }
@@ -479,8 +476,11 @@ fn expected(pieces: &[Piece]) -> Expected {
         })
         .collect::<Vec<_>>();
 
+    // The parser numbers the references of the body before those inside
+    // definitions, and patine numbers by source position. The two agree
+    // for a document in which no definition holds a reference.
     let all_drawn = dropped.is_empty()
-        && losers == 0
+        && references_of.iter().all(|(_, inside)| inside.is_empty())
         && references.iter().all(|(reference, _)| counts(reference));
     Expected {
         numbers,

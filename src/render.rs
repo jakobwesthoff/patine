@@ -173,7 +173,7 @@ fn callout_title_leaf(callout: Node<'_>) -> Option<Node<'_>> {
             | NodeValue::Heading(_)
             | NodeValue::CodeBlock(_)
             | NodeValue::HtmlBlock(_)
-            | NodeValue::ThematicBreak => true,
+            | NodeValue::ThematicBreak(_) => true,
             NodeValue::Callout(_) => !node.children().any(|child| is_callout_title(child)),
             _ => false,
         };
@@ -385,17 +385,9 @@ impl Renderer {
             }
             NodeValue::CodeBlock(block) => self.render_code_block(block),
             NodeValue::Table(table) => self.render_table(node, table),
-            NodeValue::ThematicBreak => self.render_thematic_break(),
+            NodeValue::ThematicBreak(_) => self.render_thematic_break(),
             NodeValue::HtmlBlock(html) => self.render_block_html(html),
             NodeValue::Document => self.render_document(node),
-            // A definition the parser left where it was written, because
-            // a later definition of the same name replaced it. The ones
-            // the document draws as notes come from `render_document`.
-            NodeValue::FootnoteDefinition(_) => {
-                self.nested(node, |renderer| {
-                    renderer.render_footnote_definition(node, None);
-                });
-            }
             // Everything else, such as an item outside a list, renders its
             // children; a leaf we do not handle draws nothing.
             _ => self.render_children(node),
@@ -430,7 +422,7 @@ impl Renderer {
         notes.sort_by_key(|&(number, _)| number);
         for (number, note) in notes {
             self.nested(note, |renderer| {
-                renderer.render_footnote_definition(note, Some(number));
+                renderer.render_footnote_definition(note, number);
             });
         }
     }
@@ -469,7 +461,7 @@ impl Renderer {
                 | NodeValue::Paragraph
                 | NodeValue::CodeBlock(_)
                 | NodeValue::Table(_)
-                | NodeValue::ThematicBreak
+                | NodeValue::ThematicBreak(_)
                 | NodeValue::HtmlBlock(_) => self.render_node(node),
                 NodeValue::Callout(callout) => {
                     self.ensure_block_spacing();
@@ -804,7 +796,7 @@ impl Renderer {
     fn draws_title(&self, leaf: Node<'_>) -> bool {
         let literal_html = self.options.html == Html::Literal;
         match &leaf.data.borrow().value {
-            NodeValue::ThematicBreak => false,
+            NodeValue::ThematicBreak(_) => false,
             NodeValue::CodeBlock(block) => !block.literal.trim().is_empty(),
             NodeValue::HtmlBlock(html) => literal_html && !html.literal.trim().is_empty(),
             NodeValue::Callout(callout) => !callout.default_title().trim().is_empty(),
@@ -978,16 +970,8 @@ impl Renderer {
 
     /// Render a footnote's blocks behind its number, `[1] `, the way a
     /// list item renders behind its bullet: the text starts after the
-    /// number and every later line sits under it. A definition without a
-    /// number is one the parser left where it was written because a later
-    /// definition of the same name replaced it; it renders without a
-    /// prefix.
-    fn render_footnote_definition(&mut self, definition: Node<'_>, number: Option<u32>) {
-        let Some(number) = number else {
-            self.render_children(definition);
-            return;
-        };
-
+    /// number and every later line sits under it.
+    fn render_footnote_definition(&mut self, definition: Node<'_>, number: u32) {
         self.ensure_block_spacing();
         self.write_indent();
         let marker = format!("[{number}]");
@@ -1112,9 +1096,9 @@ impl Renderer {
                             self.render_footnote_reference(reference.ix);
                             continue;
                         }
-                        NodeValue::Strong => Some(Style::Bold),
-                        NodeValue::Emph => Some(Style::Italic),
-                        NodeValue::Strikethrough => Some(Style::Strikethrough),
+                        NodeValue::Strong(_) => Some(Style::Bold),
+                        NodeValue::Emph(_) => Some(Style::Italic),
+                        NodeValue::Strikethrough(_) => Some(Style::Strikethrough),
                         NodeValue::Link(_) => Some(Style::Underline),
                         // Any other node renders its children.
                         _ => None,
@@ -1721,17 +1705,14 @@ fn html_block_lines(block: &NodeHtmlBlock) -> &str {
 ///
 /// A footnote is drawn when a reference in the blocks of the document
 /// points to it, or a reference in a drawn footnote does. The parser
-/// counts every reference, also those in a definition it dropped because
-/// nothing refers to it, and also those in the alt text of an image, which
+/// counts every reference, also those in the alt text of an image, which
 /// draws no reference. Its numbers and its reference counts would give a
 /// footnote a number, or a note, that nothing drawn leads to. The numbers
 /// here count from 1 in the order of the first drawn reference in the
-/// source, which is the order the parser numbers in when every footnote is
-/// drawn.
+/// source.
 fn number_footnotes(document: Node<'_>) -> HashMap<String, u32> {
     // The parser appends the definitions it has a reference for to the
-    // document. Every other block, a definition it left in place included,
-    // is drawn where it stands.
+    // document. Every other block is drawn where it stands.
     let mut definitions = HashMap::new();
     let mut references = Vec::new();
     for block in document.children() {

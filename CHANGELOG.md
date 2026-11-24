@@ -20,6 +20,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   among them anyhow 1.0.105 and clap 4.6.9. The requirements in
   `Cargo.toml` now name the version in `Cargo.lock` for each dependency,
   except unicode-width, which keeps its 0.2.2 minimum.
+- patine parses with comrak 1.2.0 instead of 0.59.0. The public API does
+  not change, and these inputs render differently, as ADR 24 records:
+  - The first definition of a footnote label is the note, and a later one
+    with the same label is dropped: `[^a]: one` followed by `[^a]: two`
+    shows `one` for a reference, where it showed `two` and `one` in
+    place. A footnote label written with a character reference
+    (`[^&#97;]`) no longer matches `[^a]`, and a reference without a
+    definition stays text with its label read as Markdown (`[^*b*]`
+    shows `b` in italics). A label of inline code, `` [^`b`] ``, matches
+    its definition `` [^`b`]: ``, where it was text.
+  - A footnote definition indented under another, as `    [^b]: text`
+    below `[^a]: outer`, is a definition of its own. When no reference
+    points to it, it is dropped with its text, where it showed inside
+    the note of `a`.
+  - A line of one to three spaces no longer ends a footnote definition:
+    the indented text after it belongs to the note.
+  - A task marker needs a space, a tab or the end of the line after it:
+    `- [x]*a*` is a list item showing `[x]`, as is a marker followed by
+    a vertical tab or a form feed, where each was a task item.
+  - A list, footnote definition or fenced container opens only below
+    fewer than 100 containers of any kind. Lists inside lists stop at
+    about 50 levels, where they stopped at 64, and the deeper markers
+    show as text. A list below about 100 block quotes is text.
+  - In a table row, `\\|` is an escaped backslash followed by a cell
+    separator: `| c \\| d | e |` over two columns is `c \` and `d`, and
+    `e` is cut off. A form feed next to the pipes of the delimiter row
+    ends the table.
+  - A trailing `_` does not belong to an address: `_https://z.com_` and
+    `https://z.com_` have a link, `_www.z.com_` has a link that shows
+    its `http://` URL, and `foo&#x40;bar.com` is no mail link.
+  - `~~a~ *b*` shows `b` in italics.
 
 ### Fixed
 

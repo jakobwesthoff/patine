@@ -3,7 +3,7 @@ source: tests/characterisation.rs
 expression: "pinned_all(&[\"~~a~ *b*\", \"~~a~~ *b* ~c~\"], WIDTH, &default())"
 ---
 "~~a~ *b*"
-~~a~ *b*
+~~a~ [italic]b[]
 ---
 "~~a~~ *b* ~c~"
 [strike]a[] [italic]b[] [strike]c[]
