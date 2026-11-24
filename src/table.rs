@@ -354,14 +354,22 @@ fn layout_records<'a>(
     };
 
     // ── Names and the room beside them ──────────────────────────────────
-    // A cell holds no line ending, so laid out without a width limit a
-    // name takes at most one line.
+    // Laid out without a width limit a cell takes one line per hard break,
+    // which a character reference to a line ending makes with
+    // `SoftBreaks::Break`. The name beside the values is those lines joined
+    // with a space, so that no text of the header is lost. A stacked name
+    // is laid out below from the cell again, one line per line of the cell.
     let names: Vec<StyledLine> = (0..num_cols)
         .map(|i| match header.get(i) {
-            Some(cell) => render_cell(cell, UNLIMITED, LongWords::Overflow)
-                .into_iter()
-                .next()
-                .unwrap_or_default(),
+            Some(cell) => {
+                let mut lines = render_cell(cell, UNLIMITED, LongWords::Overflow).into_iter();
+                let mut name = lines.next().unwrap_or_default();
+                for line in lines {
+                    name.push_str(" ", TextStyle::default());
+                    append(&mut name, &line);
+                }
+                name
+            }
             None => StyledLine::default(),
         })
         .collect();

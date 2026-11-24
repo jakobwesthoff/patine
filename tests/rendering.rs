@@ -1461,6 +1461,21 @@ fn records_in_a_blockquote_carry_the_bars() {
     );
 }
 
+/// A character reference writes a line ending into a header cell, and
+/// `SoftBreaks::Break` turns it into a line break. The record name keeps
+/// every line of the cell, joined with a space.
+#[test]
+fn a_record_name_keeps_every_line_of_its_header_cell() {
+    assert_eq!(
+        plain_lines_with(
+            "| a&#10;b | c | d |\n|--|--|--|\n| wordy | wordy | wordy |",
+            24,
+            BREAK
+        ),
+        ["a b  wordy", "c    wordy", "d    wordy"]
+    );
+}
+
 #[test]
 fn a_value_word_wider_than_its_room_breaks_between_characters() {
     assert_eq!(

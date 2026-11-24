@@ -60,6 +60,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   goes to a file or a pipe still takes exactly the width given. A
   terminal that reports a size of 0 columns counts as having no size, so
   `--width` is used as given and without it the width is 80.
+- A table laid out as records with the names beside the values showed
+  only the first line of a header cell as the name of its field. A
+  header cell has a second line where a character reference writes a
+  line ending and the soft break option is `Break`: `| a&#10;b |`
+  showed `a`. The name now shows every line, joined with a space: `a b`.
+  A longer name leaves less room beside it, so such a table can lay out
+  stacked instead. A stacked name already showed one line per line of
+  the cell.
 
 ## [2.2.3] - 2026-11-01
 
